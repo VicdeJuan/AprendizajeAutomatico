@@ -1,5 +1,6 @@
 package datos;
 import java.util.ArrayList;
+import particionado.Particion;
 public class Datos {
 public enum TiposDeAtributos {Continuo, Nominal};
 	ArrayList<TiposDeAtributos> tipoAtributos;

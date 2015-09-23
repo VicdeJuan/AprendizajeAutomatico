@@ -1,5 +1,6 @@
 package particionado;
 
+import datos.Datos;
 import java.util.ArrayList;
 
 public interface EstrategiaParticionado {

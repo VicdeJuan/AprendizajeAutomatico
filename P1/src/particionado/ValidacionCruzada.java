@@ -1,6 +1,8 @@
 package particionado;
 
+import datos.Datos;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 
 public class ValidacionCruzada implements EstrategiaParticionado {
 
@@ -12,7 +14,7 @@ public class ValidacionCruzada implements EstrategiaParticionado {
 	}
 
 	@Override
-	public int getNumeroPArticiones() { 
+	public int getNumeroParticiones() { 
 		return numParticiones;
 	}
 

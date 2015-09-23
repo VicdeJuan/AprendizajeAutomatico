@@ -1,6 +1,10 @@
 
 package clasificadores;
+import datos.Datos;
 import java.util.ArrayList;
+import particionado.*;
+
+
 abstract public class Clasificador {
 	//Métodos abstractos que se implementan en cada clasificador concreto
 	abstract public void entrenamiento (Datos datosTrain);
@@ -14,19 +18,19 @@ abstract public class Clasificador {
 	// Realiza una clasificacion utilizando una estrategia de particionado determinada
 	public static ArrayList<Double> validacion(EstrategiaParticionado part, Datos datos,
 	Clasificador clas) {
-		//Creamos las particiones siguiendo la estrategia llamando a datos.creaParticiones
-		//Para validación cruzada: En un bucle hasta nv entrenamos el clasf con la particion
-		de train i (extraerDatosTrain)
-		//
+		/*Creamos las particiones siguiendo la estrategia llamando a datos.creaParticiones
+		Para validación cruzada: En un bucle hasta nv entrenamos el clasf con la particion 
+                de train i (extraerDatosTrain)
+		
 		y obtenemos el error en la particion test de i (extraerDatosTest)
-		//Para validación porcentual entrenamos el clasf con la partición de train
-		(extraerDatosTrain) y
-		// obtenemos el error en la particion test (extraerDatosTest)
+		Para validación porcentual entrenamos el clasf con la partición de train
+		(extraerDatosTrain) y obtenemos el error en la particion test (extraerDatosTest) */
 		return null;
 	}
 	public static void main(String []args) {
 		Datos d = Datos.cargaDeFichero(args[0]);
-		EstrategiaParticionado part = new ValidacionCruzada ();
+		EstrategiaParticionado part;
+                part = new ValidacionCruzada();
 		Clasificador c = new ClasificadorAPriori();
 		ArrayList<Double> errores = Clasificador.validacion(part, d, c);
 		// Se imprimen

@@ -15,6 +15,7 @@ public enum TiposDeAtributos {Continuo, Nominal};
 		return null;
 	}
 	public static Datos cargaDeFichero(String nombreDeFichero) {
+            //Edito simplemente para probar un commit al repositorio de GitHub
 		return null;
 	}
 }

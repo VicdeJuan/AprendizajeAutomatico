@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import particionado.Particion;
 public class Datos {
-        private int numDatos;
-        private ArrayList<String> nombreDatos;
+        final private int numDatos;
+        
 	ArrayList<TiposDeAtributos> tipoAtributos;
 	ArrayList<dataStructure[]> datos;
         
@@ -21,13 +21,34 @@ public class Datos {
             this.datos = datos;
             
 	}
+        
+        private static ArrayList getSList(List src,ArrayList<Integer> indices){
+            ArrayList toret = new ArrayList<>();
+            
+            for (int i : indices)
+                toret.add(src.get(i));
+            
+            return toret;
+                    
+        }
+        
+        private Datos extraeDatosGen(Particion idx, boolean Train){
+            ArrayList<dataStructure[]> d;
+            if (Train)
+                d = Datos.getSList(datos, idx.getIndicesTrain());
+            else
+                d = Datos.getSList(datos, idx.getIndicesTest());
+            return new Datos(d.size(), tipoAtributos, d);
+        }
+        
 	public Datos extraeDatosTrain(Particion idx) {
-                
-		return null;
+            return extraeDatosGen(idx,true);
 	}
+        
 	public Datos extraeDatosTest(Particion idx) {
-		return null;
+            return extraeDatosGen(idx,false);
 	}
+        
 	public static Datos cargaDeFichero(String nombreDeFichero) {
             
             try (BufferedReader br = new BufferedReader(new FileReader(nombreDeFichero)))

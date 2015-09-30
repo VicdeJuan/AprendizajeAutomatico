@@ -1,12 +1,7 @@
 package particionado;
 
 import datos.Datos;
-import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ValidacionSimple implements EstrategiaParticionado {
 
@@ -33,7 +28,6 @@ public class ValidacionSimple implements EstrategiaParticionado {
                 
                 ArrayList<Integer> ints = AAUtils.seq(datos.getNumDatos(), true);
                 
-                Particion toAdd = null;
                 for (int i = 0; i < numParticiones; i++)
                     particiones.add(new Particion( (ArrayList<Integer>) ints.subList(0, div), (ArrayList<Integer>) ints.subList(div, ints.size())));
                 

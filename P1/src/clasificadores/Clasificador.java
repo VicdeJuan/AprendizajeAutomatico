@@ -36,7 +36,7 @@ abstract public class Clasificador {
 		ArrayList<Double> errores = Clasificador.validacion(part, d, c);
 		// Se imprimen
 	}
-        public void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
+        public static void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
             if (!h.containsKey(key))
                 h.put(key,1);
             else{

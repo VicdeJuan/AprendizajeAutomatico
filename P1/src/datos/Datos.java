@@ -138,7 +138,7 @@ public class Datos {
             for (int i : indices){
                 dataStructure[] arr = datos.get(i);
                 values.add(arr);
-                clasesToRet.put(this.getClassFromRow(arr),1);
+                AAUtils.AddOrCreate(clases, this.getClassFromRow(arr), 1);
             }
    
             return new Datos(indices.size(), tipoAtributos, values, clasesToRet);

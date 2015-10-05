@@ -86,7 +86,7 @@ public class ClasificadorAPrioriTest {
     public void testValidacion() {
         System.out.println("Validación");
         
-        instance.entrenamiento(datos);
+        
         EstrategiaParticionado estC = new ValidacionCruzada();
         EstrategiaParticionado estS = new ValidacionSimple();
         ArrayList<Double> ValCru = Clasificador.validacion(estC, datos, instance);
@@ -94,7 +94,7 @@ public class ClasificadorAPrioriTest {
         assertEquals(1,ValSim.size());
         assertEquals(10,estC.getNumeroParticiones());
         assertEquals(estC.getNumeroParticiones(),ValCru.size());
-        assertEquals(0.0,ValSim.get(0),0.0001);        
+        assertEquals(0.000001,ValSim.get(0),0.0001);        
         for (Double ValCru1 : ValCru) {
             assertEquals(0, ValCru1, 0.0001);        
         }

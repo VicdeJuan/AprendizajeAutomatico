@@ -23,8 +23,7 @@ public class ClasificadorAPriori extends Clasificador {
     @Override
     public void entrenamiento(Datos datostrain) {
         HashMap<String,Integer> classes = new HashMap();
-        for (Iterator<dataStructure[]> it = datostrain.getDatos().iterator(); it.hasNext();) {
-            dataStructure[] row = it.next();
+        for (dataStructure[] row : datostrain.getDatos()) {
             String clase = datostrain.getClassFromRow(row);
             AAUtils.AddOrCreate(classes, clase, 1);
         }

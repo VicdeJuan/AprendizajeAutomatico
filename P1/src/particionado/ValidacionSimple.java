@@ -22,7 +22,7 @@ public class ValidacionSimple implements EstrategiaParticionado {
 	/* Crea particiones según el método tradicional de división de los datos según el porcentaje deseado. Devuelve una sola partición con un conjunto de train y otro de test.*/
 
 	public ArrayList<Particion> crearParticiones(Datos datos) {
-                double percent = 0.25;
+                double percent = 0.75;
                 int div =  (int) (percent * datos.getNumDatos());
 		ArrayList<Particion> particiones= new ArrayList<>();
                 

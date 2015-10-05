@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import particionado.AAUtils;
 import particionado.Particion;
 public class Datos {
         final private int numDatos;
@@ -24,7 +25,7 @@ public class Datos {
             this.clases = classes;
             
 	}
-        public String getClass(dataStructure[] row){
+        public String getClassFromRow(dataStructure[] row){
             // la clase es el último atributo del array SIEMPRE.
             return (String) row[row.length-1].getVal();
         }
@@ -36,6 +37,12 @@ public class Datos {
         public ArrayList<dataStructure[]> getDatos() {
             return datos;
         }
+
+        public HashMap<String, Integer> getClases() {
+            return clases;
+        }
+        
+        
         
 	public Datos extraeDatosTrain(Particion idx) {
             return extraeDatosGen(idx, true);
@@ -99,7 +106,7 @@ public class Datos {
                             
                             
                             if (!skip){
-                                clases.put(clase, 1);
+                                AAUtils.AddOrCreate(clases, clase, 1);
                                 toAdd.add(add);
                             }
                                 
@@ -131,7 +138,7 @@ public class Datos {
             for (int i : indices){
                 dataStructure[] arr = datos.get(i);
                 values.add(arr);
-                clasesToRet.put(this.getClass(arr),1);
+                clasesToRet.put(this.getClassFromRow(arr),1);
             }
    
             return new Datos(indices.size(), tipoAtributos, values, clasesToRet);

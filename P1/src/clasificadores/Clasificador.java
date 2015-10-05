@@ -12,9 +12,13 @@ abstract public class Clasificador {
 	abstract public HashMap<String,Integer> clasifica (Datos datosTest);
 	// Obtiene el numero de aciertos y errores para calcular la tasa de fallo
 	public double error (Datos datos, Clasificador clas) {
-		HashMap<String, Integer> clases = clas.clasifica(datos);
-		//Aqui se compara con clases reales y se calcula el error
-		return 1;
+		HashMap<String, Integer> clasClases = clas.clasifica(datos);
+		HashMap<String, Integer> realClases = datos.getClases();
+                double dif = 0;
+                for (String key : realClases.keySet())
+                    dif += Math.abs(realClases.get(key) - clasClases.get(key));
+                
+		return dif/datos.getNumDatos();
 	}
 	// Realiza una clasificacion utilizando una estrategia de particionado determinada
 	public static ArrayList<Double> validacion(EstrategiaParticionado part, Datos datos,
@@ -36,13 +40,6 @@ abstract public class Clasificador {
 		ArrayList<Double> errores = Clasificador.validacion(part, d, c);
 		// Se imprimen
 	}
-        public static void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
-            if (!h.containsKey(key))
-                h.put(key,1);
-            else{
-                h.put(key, h.get(key)+value);
-            }
-            
-        }
+        
 
 }

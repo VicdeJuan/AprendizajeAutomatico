@@ -7,6 +7,7 @@ package particionado;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  *
@@ -23,6 +24,15 @@ public class AAUtils {
         
         return ints;
     }
+    
+    public static void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
+            if (!h.containsKey(key))
+                h.put(key,1);
+            else{
+                h.put(key, h.get(key)+value);
+            }
+            
+        }
     
     
 }

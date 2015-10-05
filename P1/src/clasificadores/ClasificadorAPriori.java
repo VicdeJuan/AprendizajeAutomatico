@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import particionado.AAUtils;
 
 public class ClasificadorAPriori extends Clasificador {
     
@@ -24,8 +25,8 @@ public class ClasificadorAPriori extends Clasificador {
         HashMap<String,Integer> classes = new HashMap();
         for (Iterator<dataStructure[]> it = datostrain.getDatos().iterator(); it.hasNext();) {
             dataStructure[] row = it.next();
-            String clase = datostrain.getClass(row);
-            super.AddOrCreate(classes, clase, 1);
+            String clase = datostrain.getClassFromRow(row);
+            AAUtils.AddOrCreate(classes, clase, 1);
         }
         
         ClaseMasRepetida = Collections.max(

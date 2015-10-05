@@ -39,7 +39,7 @@ public class ClasificadorAPrioriTest {
     public void tearDown() {
     }
     Datos datos = Datos.cargaDeFichero("data/test.data");
-
+    ClasificadorAPriori instance = new ClasificadorAPriori();
     /**
      * Test of entrenamiento method, of class ClasificadorAPriori.
      */
@@ -47,7 +47,6 @@ public class ClasificadorAPrioriTest {
     public void testEntrenamiento() {
         System.out.println("entrenamiento");
         
-        ClasificadorAPriori instance = new ClasificadorAPriori();
         instance.entrenamiento(datos);
         
         assertEquals(instance.getClaseMasRepetida(),"+");
@@ -60,12 +59,22 @@ public class ClasificadorAPrioriTest {
     public void testClasifica() {
         System.out.println("clasifica");
         
-        ClasificadorAPriori instance = new ClasificadorAPriori();
+        
         HashMap<String, Integer> expResult = new HashMap<String,Integer>();
         expResult.put("+", 7);
         instance.entrenamiento(datos);
         HashMap<String, Integer> result = instance.clasifica(datos);
         assertEquals(expResult, result);
+        
+        
+    }
+    
+    @Test
+    public void testError() {
+        System.out.println("error");
+        
+        instance.entrenamiento(datos);
+        assertEquals(0,instance.error(datos, instance),0.0001);        
         
     }
     

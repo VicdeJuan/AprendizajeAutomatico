@@ -1,18 +1,51 @@
 package clasificadores;
 
 import datos.Datos;
+import datos.dataStructure;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class ClasificadorAPriori extends Clasificador {
+    
+    private String ClaseMasRepetida;
 
+    public String getClaseMasRepetida() {
+        return ClaseMasRepetida;
+    }
+    
+    
+    
     @Override
     public void entrenamiento(Datos datostrain) {
-        // Busco la clase mayoritaria de los datos y la guardo
+        HashMap<String,Integer> classes = new HashMap();
+        for (Iterator<dataStructure[]> it = datostrain.getDatos().iterator(); it.hasNext();) {
+            dataStructure[] row = it.next();
+            String clase = datostrain.getClass(row);
+            super.AddOrCreate(classes, clase, 1);
+        }
+        
+        ClaseMasRepetida = Collections.max(
+                classes.entrySet(),
+                new Comparator<Entry<String,Integer>>(){
+                    @Override
+                    public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+                        return o1.getValue() > o2.getValue()? 1:-1;
+                    }
+                }).getKey();
+        
+        
     }
 
     @Override
-    public ArrayList<Integer> clasifica(Datos datos) {
+    public HashMap<String,Integer> clasifica(Datos datos) {
         // Asigno la clase mayoritaria a todos los datos
-        return null;
+        HashMap<String,Integer> toret = new HashMap<>();
+        toret.put(ClaseMasRepetida,datos.getNumDatos());
+            
+        return toret;
     }
 }

@@ -2,16 +2,17 @@
 package clasificadores;
 import datos.Datos;
 import java.util.ArrayList;
+import java.util.HashMap;
 import particionado.*;
 
 
 abstract public class Clasificador {
 	//Métodos abstractos que se implementan en cada clasificador concreto
 	abstract public void entrenamiento (Datos datosTrain);
-	abstract public ArrayList<Integer> clasifica (Datos datosTest);
+	abstract public HashMap<String,Integer> clasifica (Datos datosTest);
 	// Obtiene el numero de aciertos y errores para calcular la tasa de fallo
 	public double error (Datos datos, Clasificador clas) {
-		ArrayList<Integer> clases = this.clasifica(datos);
+		HashMap<String, Integer> clases = clas.clasifica(datos);
 		//Aqui se compara con clases reales y se calcula el error
 		return 1;
 	}
@@ -35,5 +36,13 @@ abstract public class Clasificador {
 		ArrayList<Double> errores = Clasificador.validacion(part, d, c);
 		// Se imprimen
 	}
+        public void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
+            if (!h.containsKey(key))
+                h.put(key,1);
+            else{
+                h.put(key, h.get(key)+value);
+            }
+            
+        }
 
 }

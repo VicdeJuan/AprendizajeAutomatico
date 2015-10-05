@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import particionado.Particion;
 public class Datos {
@@ -11,38 +12,33 @@ public class Datos {
         
 	ArrayList<TiposDeAtributos> tipoAtributos;
 	ArrayList<dataStructure[]> datos;
+        HashMap<String,Integer> clases;
         
         public int getNumDatos(){
             return numDatos;
         }
-	public Datos(int numDatos, ArrayList<TiposDeAtributos> tipos, ArrayList<dataStructure[]> datos) {
+	public Datos(int numDatos, ArrayList<TiposDeAtributos> tipos, ArrayList<dataStructure[]> datos,HashMap<String,Integer> classes) {
             this.numDatos = numDatos;
             this.tipoAtributos = tipos;
             this.datos = datos;
+            this.clases = classes;
             
 	}
-        
-        private static ArrayList getSList(List src,ArrayList<Integer> indices){
-            ArrayList toret = new ArrayList<>();
-            
-            for (int i : indices)
-                toret.add(src.get(i));
-            
-            return toret;
-                    
+        public String getClass(dataStructure[] row){
+            // la clase es el último atributo del array SIEMPRE.
+            return (String) row[row.length-1].getVal();
         }
-        
-        private Datos extraeDatosGen(Particion idx, boolean Train){
-            ArrayList<dataStructure[]> d;
-            if (Train)
-                d = Datos.getSList(datos, idx.getIndicesTrain());
-            else
-                d = Datos.getSList(datos, idx.getIndicesTest());
-            return new Datos(d.size(), tipoAtributos, d);
+
+        public ArrayList<TiposDeAtributos> getTipoAtributos() {
+            return tipoAtributos;
+        }
+
+        public ArrayList<dataStructure[]> getDatos() {
+            return datos;
         }
         
 	public Datos extraeDatosTrain(Particion idx) {
-            return extraeDatosGen(idx,true);
+            return extraeDatosGen(idx, true);
 	}
         
 	public Datos extraeDatosTest(Particion idx) {
@@ -69,28 +65,49 @@ public class Datos {
                         int i=0,j=0;
                         
                         ArrayList<dataStructure[]> toAdd = new ArrayList<>(); 
+                        HashMap<String,Integer> clases = new HashMap<>();
+                        String clase = null;
                         double val;
+                        boolean skip = false;
                         
                         while ((sCurrentLine = br.readLine()) != null) {
                             j=0;
                             dataStructure[] add = new dataStructure[Atrb.size()];
-                            
+                            skip = false;
                             for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*"))){
                                 
                                 if (Atrb.get(j) == TiposDeAtributos.Continuo){
-                                    if ("?".equals(str)) val = Double.NaN;
-                                    else val = Double.parseDouble(str);
-                                    add[j] = new dataStructure(val,Atrb.get(j));
+                                    if ("?".equals(str)) {
+                                        skip = true;
+                                        break;
+                                    }
+                                    else{   
+                                        val = Double.parseDouble(str);
+                                        add[j] = new dataStructure(val,Atrb.get(j));
+                                    }
+                                    
                                 }
                                 else
                                     add[j] = new dataStructure(str,Atrb.get(j));
+                                // Si hay interrogación en algún atributo, nos saltamos la fila como hacen los
+                                // algoritmos de Weka y R.
                                 j++;
+                                //TODO: chapucilla...
+                                //En la última iteración del bucle, str tendrá la clase.
+                                clase = str;
                             }
+                            
+                            
+                            if (!skip){
+                                clases.put(clase, 1);
+                                toAdd.add(add);
+                            }
+                                
                             i++;
-                            toAdd.add(add);
+                            
 			}
                         
-                        return new Datos(nDatos, Atrb,toAdd);        
+                        return new Datos(nDatos, Atrb,toAdd,clases);        
 		} catch (IOException e) {
 			e.printStackTrace();
                         return null;
@@ -98,4 +115,25 @@ public class Datos {
                 
                 
 	}
+
+ 
+
+    private Datos extraeDatosGen(Particion idx, boolean train) {
+            ArrayList<dataStructure[]> values = new ArrayList<>();
+            HashMap<String,Integer> clasesToRet = new HashMap<>();
+            ArrayList<Integer> indices = null;
+            if (train)
+                indices = idx.getIndicesTrain();
+            else
+                indices = idx.getIndicesTest();
+                
+            
+            for (int i : indices){
+                dataStructure[] arr = datos.get(i);
+                values.add(arr);
+                clasesToRet.put(this.getClass(arr),1);
+            }
+   
+            return new Datos(indices.size(), tipoAtributos, values, clasesToRet);
+    }
 }

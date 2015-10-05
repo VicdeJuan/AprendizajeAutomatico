@@ -47,7 +47,7 @@ public class DatosTest {
     @Test
     public void testCargaDeFichero() {
         System.out.println("cargaDeFichero");
-        String nombreDeFichero = "data/crx.data";
+        String nombreDeFichero = "data/test.data";
         ArrayList<TiposDeAtributos> Atrb;
         Atrb = new ArrayList<> ();
         
@@ -69,9 +69,8 @@ public class DatosTest {
         Atrb.add(TiposDeAtributos.Nominal);
         
         Datos result = Datos.cargaDeFichero(nombreDeFichero);
-        assertEquals(690, result.getNumDatos());
+        assertEquals(7, result.getNumDatos());
         assertEquals(result.datos.get(0).length, Atrb.size());
-        
         assertEquals(result.tipoAtributos, Atrb);
     }
     

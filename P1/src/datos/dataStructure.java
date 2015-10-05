@@ -11,7 +11,7 @@ import datos.TiposDeAtributos;
  *
  * @author vicdejuan
  */
-class dataStructure {
+public class dataStructure {
     private double val;
     private String str;
     public TiposDeAtributos tipoAtributo;

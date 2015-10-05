@@ -21,8 +21,9 @@ public class ValidacionCruzada extends ValidacionSimple {
 		ArrayList<Particion> particiones=new ArrayList<>();
                 
                 for (int i=0; i< numParticiones-1; i++)
-                    particiones.add(super.crearParticiones(datos).get(i));
+                    particiones.add(super.crearParticiones(datos).get(1));
                
+                particiones.add(super.crearParticiones(datos).get(0));
                 
                 
 		return particiones;

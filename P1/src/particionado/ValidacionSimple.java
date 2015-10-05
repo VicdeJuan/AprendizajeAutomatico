@@ -28,8 +28,10 @@ public class ValidacionSimple implements EstrategiaParticionado {
                 
                 ArrayList<Integer> ints = AAUtils.seq(datos.getNumDatos(), true);
                 
-                for (int i = 0; i < numParticiones; i++)
-                    particiones.add(new Particion( (ArrayList<Integer>) ints.subList(0, div), (ArrayList<Integer>) ints.subList(div, ints.size())));
+                for (int i = 0; i < numParticiones; i++){
+                    particiones.add(new Particion(new ArrayList<>(ints.subList(0, div)) , new ArrayList<>(ints.subList(div, ints.size()))));
+                }
+                    
                 
                 return particiones;
 	}

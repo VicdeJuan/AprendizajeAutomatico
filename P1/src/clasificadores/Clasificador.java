@@ -10,6 +10,7 @@ abstract public class Clasificador {
 	//Métodos abstractos que se implementan en cada clasificador concreto
 	abstract public void entrenamiento (Datos datosTrain);
 	abstract public HashMap<String,Integer> clasifica (Datos datosTest);
+        
 	// Obtiene el numero de aciertos y errores para calcular la tasa de fallo
 	public double error (Datos datos, Clasificador clas) {
 		HashMap<String, Integer> clasClases = clas.clasifica(datos);
@@ -20,6 +21,7 @@ abstract public class Clasificador {
                 
 		return dif/datos.getNumDatos();
 	}
+        
 	// Realiza una clasificacion utilizando una estrategia de particionado determinada
 	public static ArrayList<Double> validacion(EstrategiaParticionado part, Datos datos,
 	Clasificador clas) {
@@ -30,7 +32,19 @@ abstract public class Clasificador {
 		y obtenemos el error en la particion test de i (extraerDatosTest)
 		Para validación porcentual entrenamos el clasf con la partición de train
 		(extraerDatosTrain) y obtenemos el error en la particion test (extraerDatosTest) */
-		return null;
+                
+                ArrayList<Double> toret = new ArrayList<>();
+                ArrayList<Particion> particiones = part.crearParticiones(datos);
+                //La última de las particiones es la de test.
+                Particion test = particiones.get(part.getNumeroParticiones()-1);
+                
+                for (int i = 0; i< part.getNumeroParticiones();i++){
+                    clas.entrenamiento(datos.extraeDatosTrain(particiones.get(i)));
+                    
+                    toret.add(clas.error(datos.extraeDatosTest(test), clas));
+                }
+            
+		return toret;
 	}
 	public static void main(String []args) {
 		Datos d = Datos.cargaDeFichero(args[0]);

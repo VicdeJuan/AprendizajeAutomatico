@@ -6,6 +6,7 @@
 package clasificadores;
 
 import datos.Datos;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,6 +14,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import particionado.EstrategiaParticionado;
+import particionado.ValidacionCruzada;
+import particionado.ValidacionSimple;
 
 /**
  *
@@ -77,5 +81,24 @@ public class ClasificadorAPrioriTest {
         assertEquals(0,instance.error(datos, instance),0.0001);        
         
     }
+    
+    @Test
+    public void testValidacion() {
+        System.out.println("Validación");
+        
+        instance.entrenamiento(datos);
+        EstrategiaParticionado estC = new ValidacionCruzada();
+        EstrategiaParticionado estS = new ValidacionSimple();
+        ArrayList<Double> ValCru = Clasificador.validacion(estC, datos, instance);
+        ArrayList<Double> ValSim = Clasificador.validacion(estS, datos, instance);
+        assertEquals(1,ValSim.size());
+        assertEquals(10,estC.getNumeroParticiones());
+        assertEquals(estC.getNumeroParticiones(),ValCru.size());
+        assertEquals(0.0,ValSim.get(0),0.0001);        
+        for (Double ValCru1 : ValCru) {
+            assertEquals(0, ValCru1, 0.0001);        
+        }
+    }
+    
     
 }

@@ -5,13 +5,19 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 public class ValidacionCruzada extends ValidacionSimple {
-
+    
+        
 	private int numParticiones = 10;
 
 	@Override
 	public String getNombreEstrategia() {
 		return "Validación cruzada";
 	}
+        
+        @Override
+        public int getNumeroParticiones(){
+            return this.numParticiones;
+        }
 
 	@Override
 	/* Crea particiones según el método de validación cruzada simple. 
@@ -20,8 +26,8 @@ public class ValidacionCruzada extends ValidacionSimple {
 	public ArrayList<Particion> crearParticiones(Datos datos) {
 		ArrayList<Particion> particiones=new ArrayList<>();
                 
-                for (int i=0; i< numParticiones-1; i++)
-                    particiones.add(super.crearParticiones(datos).get(1));
+                for (int i=0; i< this.numParticiones-1; i++)
+                    particiones.add(super.crearParticiones(datos).get(0));
                
                 particiones.add(super.crearParticiones(datos).get(0));
                 

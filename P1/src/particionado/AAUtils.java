@@ -25,31 +25,28 @@ public class AAUtils {
         return ints;
     }
     
-    public static void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
+    public static void AddOrCreate(HashMap<String,Double> h, String key, double value){
             if (!h.containsKey(key))
-                h.put(key,1);
+                h.put(key,value);
             else{
                 h.put(key, h.get(key)+value);
             }
             
         }
 
-    public static void AddOrCreateDoubleArray(HashMap<String,double[]> h, String key, int firstIdx, double firstVal, int secondIdx, double secondVal){
-        double[] frecToAdd = new double[2];    
-        if (!h.containsKey(key)){
-            frecToAdd[firstIdx] = firstVal;
-            frecToAdd[secondIdx] = secondVal;
+    
+    public static void AddOrCreate(HashMap<String,Integer> h, String key, Integer value){
+            if (!h.containsKey(key))
+                h.put(key,value);
+            else{
+                h.put(key, h.get(key)+value);
+            }
+            
         }
-        else{
-            frecToAdd = h.get(key);
-            frecToAdd[firstIdx] = firstVal + h.get(key)[firstIdx];
-            frecToAdd[secondIdx] = secondVal + h.get(key)[secondIdx];
-        }
-        h.put(key, frecToAdd);
-    }
 
-    public static void updateSMT(HashMap<String, HashMap<String, double[]>> SMT, String actualClass, String atrb, int firstIdx, double firstVal, int secondIdx, double secondVal) {
-        HashMap<String, double[]> toAdd;
+
+    public static void updateSMT(HashMap<String, HashMap<String, HashMap<String,Double>>> SMT, String actualClass, String atrb, String firstIdx, double firstVal) {
+     HashMap<String, HashMap<String,Double>> toAdd;
         
         if (!SMT.containsKey(actualClass)){    
             toAdd = new HashMap<>();
@@ -57,10 +54,22 @@ public class AAUtils {
             toAdd = SMT.get(actualClass);
             
         }
-        AAUtils.AddOrCreateDoubleArray(toAdd, atrb, firstIdx, firstVal, secondIdx, secondVal);
-        SMT.put(actualClass, toAdd);
+        
+        if (toAdd.containsKey(atrb)){
+            AAUtils.AddOrCreate(toAdd.get(atrb), firstIdx, firstVal);
+            
+        }else{
+            HashMap <String,Double> pair = new HashMap<>();
+            AAUtils.AddOrCreate(pair, firstIdx, firstVal);
+            toAdd.put(atrb, pair);
+        }
+        SMT.put(actualClass, toAdd);        
         
     }
     
+    public static void updateSMT(HashMap<String, HashMap<String, HashMap<String,Double>>> SMT, String actualClass, String atrb, String firstIdx, double firstVal, String secondIdx, double secondVal) {
+        AAUtils.updateSMT(SMT, actualClass, atrb, firstIdx, firstVal);
+        AAUtils.updateSMT(SMT, actualClass, atrb, secondIdx, secondVal);
+    }
     
 }

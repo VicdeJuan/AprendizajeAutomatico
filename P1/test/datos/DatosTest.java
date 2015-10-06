@@ -72,6 +72,7 @@ public class DatosTest {
         assertEquals(6, result.getNumDatos());
         assertEquals(result.datos.get(0).size(), Atrb.size());
         assertEquals(result.tipoAtributos, Atrb);
+        assertEquals(result.getTipoAtributos().get("A13"),TiposDeAtributos.Nominal);
     }
     
 }

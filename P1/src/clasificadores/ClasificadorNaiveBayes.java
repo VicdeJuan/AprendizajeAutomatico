@@ -20,13 +20,21 @@ public class ClasificadorNaiveBayes extends Clasificador {
     
     private boolean Laplace;
     
-    HashMap <String,HashMap<String, double[]>> SMT;
+    HashMap <String,HashMap<String, HashMap<String,Double>>> SMT;
+
+    public boolean isLaplace() {
+        return Laplace;
+    }
+
+    public HashMap<String, HashMap<String, HashMap<String,Double>>> getSMT() {
+        return SMT;
+    }
     
     
     
     
     private boolean IsNominal(Datos datos, String atrb){
-        return datos.getTipoAtributos().get(datos.getNomDatos().indexOf(atrb)) == TiposDeAtributos.Nominal;
+        return datos.getTipoAtributos().get(atrb) == TiposDeAtributos.Nominal;
     }
     
     @Override
@@ -35,21 +43,39 @@ public class ClasificadorNaiveBayes extends Clasificador {
         SMT = new HashMap<>();
         double val;
         
-        for (dataStructure[] row : datosTrain.getDatos()){
-            for(String  actualClass : datosTrain.getClases().keySet()){
-                for (String atrb : datosTrain.getNomDatos()){
-                    if (this.IsNominal(datosTrain, atrb))
-                        val = 1;
-                    else
-                        val = row.get(atrb);
-                    AAUtils.updateSMT(SMT,actualClass,atrb,0,val,1,val*val);
-                    
+        for(String  actualClass : datosTrain.getClases().keySet()){
+            for (HashMap<String,dataStructure> row : datosTrain.getDatos()){
+                if (actualClass.equals(datosTrain.getClassFromRow(row))){
+                    for (String atrb : datosTrain.getNomDatos()){
+                    if (datosTrain.getTipoAtributos().get(atrb) == TiposDeAtributos.Nominal){
+                            val = 1;  
+                            AAUtils.updateSMT(SMT, actualClass, atrb, (String) row.get(atrb).getVal(), val);   
+                        }
+                        else{
+                            val = (double) row.get(atrb).getVal();
+                            AAUtils.updateSMT(SMT,actualClass,atrb,"esp",val,"var",val*val);
+                     }
+                   
+                    }
                 }
             }
         }
         
+        
+        // Dividir tooodos por el número total de datos. ¿Necesario? Es ineficiente...
+        for (Map.Entry<String, HashMap<String, HashMap<String,Double>>> clase : SMT.entrySet()){
+            int todiv = datosTrain.getClases().get(clase.getKey());
+            for (Map.Entry<String, HashMap<String,Double>> atrb : clase.getValue().entrySet())
+                for (Map.Entry<String, Double> entry : atrb.getValue().entrySet()){
+                    atrb.getValue().put(entry.getKey(), entry.getValue()/todiv);
+                }
+        }
+            
+                
     }
 
+    
+    
     @Override
     public HashMap<String, Integer> clasifica(Datos datosTest) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

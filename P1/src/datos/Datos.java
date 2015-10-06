@@ -11,30 +11,37 @@ import particionado.Particion;
 public class Datos {
         final private int numDatos;
         
-	ArrayList<TiposDeAtributos> tipoAtributos;
-	ArrayList<dataStructure[]> datos;
+	HashMap<String,TiposDeAtributos> tipoAtributos;
+	ArrayList<HashMap<String,dataStructure>> datos;
         HashMap<String,Integer> clases;
-        
+        ArrayList<String> nomDatos;
         public int getNumDatos(){
             return numDatos;
         }
-	public Datos(int numDatos, ArrayList<TiposDeAtributos> tipos, ArrayList<dataStructure[]> datos,HashMap<String,Integer> classes) {
+	public Datos(int numDatos, HashMap<String,TiposDeAtributos> tipos, ArrayList<HashMap<String,dataStructure>> datos,HashMap<String,Integer> classes,ArrayList<String> nombreDatos) {
             this.numDatos = numDatos;
             this.tipoAtributos = tipos;
             this.datos = datos;
             this.clases = classes;
+            this.nomDatos = nombreDatos;
             
 	}
-        public String getClassFromRow(dataStructure[] row){
+        public String getClassFromRow(HashMap<String,dataStructure> row){
             // la clase es el último atributo del array SIEMPRE.
-            return (String) row[row.length-1].getVal();
+            return (String) row.get("Class").getVal();
         }
 
-        public ArrayList<TiposDeAtributos> getTipoAtributos() {
+        public ArrayList<String> getNomDatos() {
+            return nomDatos;
+        }
+        
+        
+        
+        public HashMap<String,TiposDeAtributos> getTipoAtributos() {
             return tipoAtributos;
         }
 
-        public ArrayList<dataStructure[]> getDatos() {
+        public ArrayList<HashMap<String,dataStructure>> getDatos() {
             return datos;
         }
 
@@ -61,18 +68,22 @@ public class Datos {
                         int nDatos = (int) Double.parseDouble(sCurrentLine);
                         // La segunda linea son los nombres de los datos.
                         sCurrentLine = br.readLine();
-                        List<String> nomDatos =  Arrays.asList(sCurrentLine.split("\\s*,\\s*"));
+                        ArrayList<String> nomDatos =  new ArrayList<>(Arrays.asList(sCurrentLine.split("\\s*,\\s*")));
                         // La tercera linea son los tipos de datos.
                         sCurrentLine = br.readLine();
-                        ArrayList<TiposDeAtributos> Atrb = new ArrayList<TiposDeAtributos>();
-                        
-                        for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*")))
-                            Atrb.add(TiposDeAtributos.valueOf(str));
+                        HashMap<String,TiposDeAtributos> Atrb = new HashMap<>();
+                        int i=0;
+                        for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*"))){
+                            Atrb.put(nomDatos.get(i),TiposDeAtributos.valueOf(str));
+                            i++;
+                        }
+                            
+                                
                         
                         int j=0;
                         
                         // Empezamos a parsear los datos.
-                        ArrayList<dataStructure[]> toAdd = new ArrayList<>(); 
+                        ArrayList<HashMap<String,dataStructure>> toAdd = new ArrayList<>(); 
                         HashMap<String,Integer> clases = new HashMap<>();
                         String clase = null;
                         double val;
@@ -81,7 +92,7 @@ public class Datos {
                         
                         while ((sCurrentLine = br.readLine()) != null) {
                             j=0;
-                            dataStructure[] add = new dataStructure[Atrb.size()];
+                            HashMap<String,dataStructure> add = new HashMap<>();
                             skip = false;
                             for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*"))){
                                 if ("?".equals(str)) {
@@ -90,12 +101,12 @@ public class Datos {
                                         break;
                                 }
                                 
-                                if (Atrb.get(j) == TiposDeAtributos.Continuo){
+                                if (Atrb.get(nomDatos.get(j)) == TiposDeAtributos.Continuo){
                                     val = Double.parseDouble(str);
-                                    add[j] = new dataStructure(val,Atrb.get(j));                                    
+                                    add.put(nomDatos.get(j),new dataStructure(val,Atrb.get(nomDatos.get(j))));                                    
                                 }
                                 else
-                                    add[j] = new dataStructure(str,Atrb.get(j));
+                                    add.put(nomDatos.get(j),new dataStructure(str,Atrb.get(nomDatos.get(j))));                                    
                                 // Si hay interrogación en algún atributo, nos saltamos la fila como hacen los
                                 // algoritmos de Weka y R.
                                 j++;
@@ -111,7 +122,7 @@ public class Datos {
                             }                            
 			}
                         
-                        return new Datos(nDatos-jumpedRows, Atrb,toAdd,clases);        
+                        return new Datos(nDatos-jumpedRows, Atrb,toAdd,clases,nomDatos);        
 		} catch (IOException e) {
 			e.printStackTrace();
                         return null;
@@ -123,7 +134,7 @@ public class Datos {
  
 
     private Datos extraeDatosGen(Particion idx, boolean train) {
-            ArrayList<dataStructure[]> values = new ArrayList<>();
+            ArrayList<HashMap<String,dataStructure>> values = new ArrayList<>();
             HashMap<String,Integer> clasesToRet = new HashMap<>();
             ArrayList<Integer> indices = null;
             if (train)
@@ -133,11 +144,11 @@ public class Datos {
                 
             
             for (int i : indices){
-                dataStructure[] arr = datos.get(i);
+                HashMap<String,dataStructure> arr = datos.get(i);
                 values.add(arr);
                 AAUtils.AddOrCreate(clases, this.getClassFromRow(arr), 1);
             }
    
-            return new Datos(indices.size(), tipoAtributos, values, clasesToRet);
+            return new Datos(indices.size(), tipoAtributos, values, clasesToRet,nomDatos);
     }
 }

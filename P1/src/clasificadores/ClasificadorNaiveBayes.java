@@ -6,7 +6,11 @@
 package clasificadores;
 
 import datos.Datos;
+import datos.TiposDeAtributos;
+import datos.dataStructure;
 import java.util.HashMap;
+import java.util.Map;
+import particionado.AAUtils;
 
 /**
  *
@@ -14,9 +18,36 @@ import java.util.HashMap;
  */
 public class ClasificadorNaiveBayes extends Clasificador {
     
+    private boolean Laplace;
+    
+    HashMap <String,HashMap<String, double[]>> SMT;
+    
+    
+    
+    
+    private boolean IsNominal(Datos datos, String atrb){
+        return datos.getTipoAtributos().get(datos.getNomDatos().indexOf(atrb)) == TiposDeAtributos.Nominal;
+    }
+    
     @Override
     public void entrenamiento(Datos datosTrain) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        SMT = new HashMap<>();
+        double val;
+        
+        for (dataStructure[] row : datosTrain.getDatos()){
+            for(String  actualClass : datosTrain.getClases().keySet()){
+                for (String atrb : datosTrain.getNomDatos()){
+                    if (this.IsNominal(datosTrain, atrb))
+                        val = 1;
+                    else
+                        val = row.get(atrb);
+                    AAUtils.updateSMT(SMT,actualClass,atrb,0,val,1,val*val);
+                    
+                }
+            }
+        }
+        
     }
 
     @Override

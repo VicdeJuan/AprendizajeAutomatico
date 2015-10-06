@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import particionado.AAUtils;
 
@@ -23,7 +22,7 @@ public class ClasificadorAPriori extends Clasificador {
     @Override
     public void entrenamiento(Datos datostrain) {
         HashMap<String,Integer> classes = new HashMap();
-        for (dataStructure[] row : datostrain.getDatos()) {
+        for (HashMap<String,dataStructure> row : datostrain.getDatos()) {
             String clase = datostrain.getClassFromRow(row);
             AAUtils.AddOrCreate(classes, clase, 1);
         }

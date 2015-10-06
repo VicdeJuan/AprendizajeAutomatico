@@ -33,6 +33,34 @@ public class AAUtils {
             }
             
         }
+
+    public static void AddOrCreateDoubleArray(HashMap<String,double[]> h, String key, int firstIdx, double firstVal, int secondIdx, double secondVal){
+        double[] frecToAdd = new double[2];    
+        if (!h.containsKey(key)){
+            frecToAdd[firstIdx] = firstVal;
+            frecToAdd[secondIdx] = secondVal;
+        }
+        else{
+            frecToAdd = h.get(key);
+            frecToAdd[firstIdx] = firstVal + h.get(key)[firstIdx];
+            frecToAdd[secondIdx] = secondVal + h.get(key)[secondIdx];
+        }
+        h.put(key, frecToAdd);
+    }
+
+    public static void updateSMT(HashMap<String, HashMap<String, double[]>> SMT, String actualClass, String atrb, int firstIdx, double firstVal, int secondIdx, double secondVal) {
+        HashMap<String, double[]> toAdd;
+        
+        if (!SMT.containsKey(actualClass)){    
+            toAdd = new HashMap<>();
+        } else{
+            toAdd = SMT.get(actualClass);
+            
+        }
+        AAUtils.AddOrCreateDoubleArray(toAdd, atrb, firstIdx, firstVal, secondIdx, secondVal);
+        SMT.put(actualClass, toAdd);
+        
+    }
     
     
 }

@@ -7,6 +7,7 @@ package datos;
 
 import datos.TiposDeAtributos;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,29 +49,28 @@ public class DatosTest {
     public void testCargaDeFichero() {
         System.out.println("cargaDeFichero");
         String nombreDeFichero = "data/test.data";
-        ArrayList<TiposDeAtributos> Atrb;
-        Atrb = new ArrayList<> ();
+        HashMap<String,TiposDeAtributos> Atrb = new HashMap<> ();
         
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Nominal);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Continuo);
-        Atrb.add(TiposDeAtributos.Nominal);
-        
+        Atrb.put("A1",TiposDeAtributos.Nominal);
+        Atrb.put("A2",TiposDeAtributos.Continuo);
+        Atrb.put("A3",TiposDeAtributos.Continuo);
+        Atrb.put("A4",TiposDeAtributos.Nominal);
+        Atrb.put("A5",TiposDeAtributos.Nominal);
+        Atrb.put("A6",TiposDeAtributos.Nominal);
+        Atrb.put("A7",TiposDeAtributos.Nominal);
+        Atrb.put("A8",TiposDeAtributos.Continuo);
+        Atrb.put("A9",TiposDeAtributos.Nominal);
+        Atrb.put("A10",TiposDeAtributos.Nominal);
+        Atrb.put("A11",TiposDeAtributos.Continuo);
+        Atrb.put("A12",TiposDeAtributos.Nominal);
+        Atrb.put("A13",TiposDeAtributos.Nominal);
+        Atrb.put("A14",TiposDeAtributos.Continuo);
+        Atrb.put("A15",TiposDeAtributos.Continuo);
+        Atrb.put("Class",TiposDeAtributos.Nominal);
+            
         Datos result = Datos.cargaDeFichero(nombreDeFichero);
         assertEquals(6, result.getNumDatos());
-        assertEquals(result.datos.get(0).length, Atrb.size());
+        assertEquals(result.datos.get(0).size(), Atrb.size());
         assertEquals(result.tipoAtributos, Atrb);
     }
     

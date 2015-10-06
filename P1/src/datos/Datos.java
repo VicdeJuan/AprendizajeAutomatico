@@ -13,12 +13,12 @@ public class Datos {
         
 	HashMap<String,TiposDeAtributos> tipoAtributos;
 	ArrayList<HashMap<String,dataStructure>> datos;
-        HashMap<String,Integer> clases;
+        HashMap<String,Double> clases;
         ArrayList<String> nomDatos;
         public int getNumDatos(){
             return numDatos;
         }
-	public Datos(int numDatos, HashMap<String,TiposDeAtributos> tipos, ArrayList<HashMap<String,dataStructure>> datos,HashMap<String,Integer> classes,ArrayList<String> nombreDatos) {
+	public Datos(int numDatos, HashMap<String,TiposDeAtributos> tipos, ArrayList<HashMap<String,dataStructure>> datos,HashMap<String,Double> classes,ArrayList<String> nombreDatos) {
             this.numDatos = numDatos;
             this.tipoAtributos = tipos;
             this.datos = datos;
@@ -45,7 +45,7 @@ public class Datos {
             return datos;
         }
 
-        public HashMap<String, Integer> getClases() {
+        public HashMap<String, Double> getClases() {
             return clases;
         }
         
@@ -84,7 +84,7 @@ public class Datos {
                         
                         // Empezamos a parsear los datos.
                         ArrayList<HashMap<String,dataStructure>> toAdd = new ArrayList<>(); 
-                        HashMap<String,Integer> clases = new HashMap<>();
+                        HashMap<String,Double> clases = new HashMap<>();
                         String clase = null;
                         double val;
                         boolean skip;
@@ -117,7 +117,7 @@ public class Datos {
                             
                             
                             if (!skip){
-                                AAUtils.AddOrCreate(clases, clase, 1);
+                                AAUtils.AddOrCreate(clases, clase, 1.0);
                                 toAdd.add(add);
                             }                            
 			}
@@ -135,7 +135,7 @@ public class Datos {
 
     private Datos extraeDatosGen(Particion idx, boolean train) {
             ArrayList<HashMap<String,dataStructure>> values = new ArrayList<>();
-            HashMap<String,Integer> clasesToRet = new HashMap<>();
+            HashMap<String,Double> clasesToRet = new HashMap<>();
             ArrayList<Integer> indices = null;
             if (train)
                 indices = idx.getIndicesTrain();

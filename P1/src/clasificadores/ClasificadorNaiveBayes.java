@@ -19,7 +19,15 @@ import particionado.AAUtils;
 public class ClasificadorNaiveBayes extends Clasificador {
     
     private boolean Laplace;
+    /*
+    Clave -> Clase
+    Valor -> MAP:
+            Clave -> Atributo
+            Valor -> MAP:
+                    Clave -> µ|σ (continuo) ó atrb (nominal)
+                    Valor -> valor (continuo) ó frec (nominal)
     
+    */
     HashMap <String,HashMap<String, HashMap<String,Double>>> SMT;
 
     public boolean isLaplace() {
@@ -77,8 +85,18 @@ public class ClasificadorNaiveBayes extends Clasificador {
     
     
     @Override
-    public HashMap<String, Integer> clasifica(Datos datosTest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public HashMap<String, Double> clasifica(Datos datosTest) {
+        HashMap<String,Double> toRet = new HashMap<>();
+        for (HashMap<String, dataStructure> row : datosTest.getDatos()){
+            for (String clas : SMT.keySet()){
+                toRet.put(clas, ClasificadorNaiveBayes.computa());
+            }
+        }
+        return toRet;
+    }
+    
+    private static double computa(){
+        return 0.0;
     }
     
 }

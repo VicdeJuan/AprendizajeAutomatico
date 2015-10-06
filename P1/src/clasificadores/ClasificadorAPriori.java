@@ -40,10 +40,10 @@ public class ClasificadorAPriori extends Clasificador {
     }
 
     @Override
-    public HashMap<String,Integer> clasifica(Datos datos) {
+    public HashMap<String,Double> clasifica(Datos datos) {
         // Asigno la clase mayoritaria a todos los datos
-        HashMap<String,Integer> toret = new HashMap<>();
-        toret.put(ClaseMasRepetida,datos.getNumDatos());
+        HashMap<String,Double> toret = new HashMap<>();
+        toret.put(ClaseMasRepetida,(double) datos.getNumDatos());
             
         return toret;
     }

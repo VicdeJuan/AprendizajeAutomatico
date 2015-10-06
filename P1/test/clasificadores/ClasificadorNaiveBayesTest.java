@@ -155,8 +155,8 @@ public class ClasificadorNaiveBayesTest {
         System.out.println("clasifica");
         Datos datosTest = null;
         ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes();
-        HashMap<String, Integer> expResult = null;
-        HashMap<String, Integer> result = instance.clasifica(datosTest);
+        HashMap<String, Double> expResult = null;
+        HashMap<String, Double> result = instance.clasifica(datosTest);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

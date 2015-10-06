@@ -9,14 +9,14 @@ import particionado.*;
 abstract public class Clasificador {
 	//Métodos abstractos que se implementan en cada clasificador concreto
 	abstract public void entrenamiento (Datos datosTrain);
-	abstract public HashMap<String,Integer> clasifica (Datos datosTest);
+	abstract public HashMap<String,Double> clasifica (Datos datosTest);
         
 	// Obtiene el numero de aciertos y errores para calcular la tasa de fallo
 	public double error (Datos datos, Clasificador clas) {
-		HashMap<String, Integer> clasClases = clas.clasifica(datos);
-		HashMap<String, Integer> realClases = datos.getClases();
+		HashMap<String, Double> clasClases = clas.clasifica(datos);
+		HashMap<String, Double> realClases = datos.getClases();
                 double dif = 0;
-                int real,clasificados;
+                double real,clasificados;
                 for (String key : realClases.keySet()){
                     real = clasificados = 0;
                     if (realClases.containsKey(key))

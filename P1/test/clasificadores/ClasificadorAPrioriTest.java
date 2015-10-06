@@ -64,10 +64,10 @@ public class ClasificadorAPrioriTest {
         System.out.println("clasifica");
         
         
-        HashMap<String, Integer> expResult = new HashMap<String,Integer>();
-        expResult.put("+", 6);
+        HashMap<String, Double> expResult = new HashMap<>();
+        expResult.put("+", 6.0);
         instance.entrenamiento(datos);
-        HashMap<String, Integer> result = instance.clasifica(datos);
+        HashMap<String, Double> result = instance.clasifica(datos);
         assertEquals(expResult, result);
         
         

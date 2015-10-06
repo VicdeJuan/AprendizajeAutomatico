@@ -58,7 +58,7 @@ public class ClasificadorNaiveBayes extends Clasificador {
                         }
                         else{
                             val = (double) row.get(atrb).getVal();
-                            AAUtils.updateSMT(SMT,actualClass,atrb,"esp",val,"var",val*val);
+                            AAUtils.updateSMT(SMT,actualClass,atrb,"esp",val,"var",0.0);
                      }
                    
                     }
@@ -66,8 +66,9 @@ public class ClasificadorNaiveBayes extends Clasificador {
             }
         }
         
-        
+        // TODO: cálculo de varianza.
         // Dividir tooodos por el número total de datos. ¿Necesario? Es ineficiente...
+        // TODO: revisar los divisores.
         for (Map.Entry<String, HashMap<String, HashMap<String,Double>>> clase : SMT.entrySet()){
             double todiv = datosTrain.getClases().get(clase.getKey());
             for (Map.Entry<String, HashMap<String,Double>> atrb : clase.getValue().entrySet())
@@ -110,18 +111,17 @@ public class ClasificadorNaiveBayes extends Clasificador {
         double x,mean,sd;
         for (Map.Entry<String, dataStructure> atrb : row.entrySet()){
             //if Continuo
-            if (atrb.getValue().getTipoAtributo() == TiposDeAtributos.Nominal){
+            if (atrb.getValue().getTipoAtributo() == TiposDeAtributos.Continuo){
                 x = (double) atrb.getValue().getVal();
                 mean = SMT.get(clas).get(atrb.getKey()).get("esp");
                 sd = SMT.get(clas).get(atrb.getKey()).get("var");
                 producto *= distribucionNormal(x, mean, sd);
             }else{
-                // Vaya chapucerío...
-                producto *= SMT.get(clas).get(atrb.getKey()).get((String) atrb.getValue().getVal());
+                //TODO:
+                producto *= 1;//SMT.get(clas).get(atrb.getKey()).get((String) atrb.getValue().getVal());
             }
-            producto *= prob_hip;
         }
-        return producto;
+        return producto*prob_hip;
     }
     
     private static double distribucionNormal(double mean, double sd, double x){

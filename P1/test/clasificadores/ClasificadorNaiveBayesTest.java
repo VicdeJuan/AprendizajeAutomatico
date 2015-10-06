@@ -82,12 +82,12 @@ public class ClasificadorNaiveBayesTest {
         mas.put("A1", add);
 
         add = new HashMap<>();
-        add.put("esp",33.718); add.put("var",1315.7246200000002);
+        add.put("esp",33.718); add.put("var",0.0);
         mas.put("A2",add);
                 
 
         add = new HashMap<>();
-        add.put("esp",3.125); add.put("var",13.772764999999998);
+        add.put("esp",3.125); add.put("var",0.0);
         mas.put("A3",add);
 
                  
@@ -115,12 +115,12 @@ public class ClasificadorNaiveBayesTest {
         menos.put("A1",add);
 
         add = new HashMap<>();
-        add.put("esp",27.83); add.put("var",774.5088999999999);
+        add.put("esp",27.83); add.put("var",0.0);
         menos.put("A2",add);
 
         add = new HashMap<>();
         add.put("esp",1.54);
-        add.put("var",2.3716);
+        add.put("var",0.0);
         menos.put("A3",add);
 
         add = new HashMap<>();
@@ -162,7 +162,7 @@ public class ClasificadorNaiveBayesTest {
         HashMap<String, Double> result = instance.clasifica(datosTest);
         
         assertEquals(result.containsKey("female"),true);
-        assertEquals(result.get("female"),0.0005378,0.1);
+        assertEquals(0.0005378,result.get("female"),0.1);
         
     }
     

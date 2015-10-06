@@ -22,7 +22,7 @@ public class Datos {
             this.numDatos = numDatos;
             this.tipoAtributos = tipos;
             this.datos = datos;
-            this.clases = classes;
+            this.clases = new HashMap<>(classes);
             this.nomDatos = nombreDatos;
             
 	}
@@ -146,7 +146,7 @@ public class Datos {
             for (int i : indices){
                 HashMap<String,dataStructure> arr = datos.get(i);
                 values.add(arr);
-                AAUtils.AddOrCreate(clases, this.getClassFromRow(arr), 1);
+                AAUtils.AddOrCreate(clasesToRet, this.getClassFromRow(arr), 1);
             }
    
             return new Datos(indices.size(), tipoAtributos, values, clasesToRet,nomDatos);

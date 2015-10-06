@@ -1,4 +1,4 @@
 1
-Class,height,weight,footsize
-Nominal,Continuo,Continuo,Continuo
-sample,6,130,8
+height,weight,footsize,Class
+Continuo,Continuo,Continuo,Nominal
+6,130,8,sample

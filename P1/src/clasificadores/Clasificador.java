@@ -62,10 +62,10 @@ abstract public class Clasificador {
 	public static void main(String []args) {
 		Datos d = Datos.cargaDeFichero(args[0]);
 		EstrategiaParticionado part;
-                part = new ValidacionCruzada();
+                part = new ValidacionSimple();
 		Clasificador c = new ClasificadorAPriori();
 		ArrayList<Double> errores = Clasificador.validacion(part, d, c);
-		// Se imprimen
+		System.out.println(errores);
 	}
         
 

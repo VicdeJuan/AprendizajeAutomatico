@@ -26,7 +26,7 @@ public class ClasificadorAPriori extends Clasificador {
             String clase = datostrain.getClassFromRow(row);
             AAUtils.AddOrCreate(classes, clase, 1);
         }
-        
+        System.out.println(classes);
         ClaseMasRepetida = Collections.max(
                 classes.entrySet(),
                 new Comparator<Entry<String,Integer>>(){
@@ -44,7 +44,7 @@ public class ClasificadorAPriori extends Clasificador {
         // Asigno la clase mayoritaria a todos los datos
         HashMap<String,Double> toret = new HashMap<>();
         toret.put(ClaseMasRepetida,(double) datos.getNumDatos());
-            
+      
         return toret;
     }
 }

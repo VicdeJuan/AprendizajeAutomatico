@@ -14,7 +14,11 @@ import datos.TiposDeAtributos;
 public class dataStructure {
     private double val;
     private String str;
-    public TiposDeAtributos tipoAtributo;
+    private TiposDeAtributos tipoAtributo;
+
+    public TiposDeAtributos getTipoAtributo() {
+        return tipoAtributo;
+    }
     
     public dataStructure(double val, TiposDeAtributos atrb){
         this.val = val;

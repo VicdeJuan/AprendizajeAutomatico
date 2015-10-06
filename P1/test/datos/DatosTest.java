@@ -74,5 +74,18 @@ public class DatosTest {
         assertEquals(result.tipoAtributos, Atrb);
         assertEquals(result.getTipoAtributos().get("A13"),TiposDeAtributos.Nominal);
     }
-    
+     @Test
+    public void testCargaDeFicheroPesos() {
+        System.out.println("cargaDeFichero");
+        String nombreDeFichero = "data/pesos.test";
+        HashMap<String,TiposDeAtributos> Atrb = new HashMap<> ();
+        Datos result = Datos.cargaDeFichero(nombreDeFichero);
+        
+        Atrb.put("Class",TiposDeAtributos.Nominal);
+        Atrb.put("height",TiposDeAtributos.Continuo);
+        Atrb.put("weight",TiposDeAtributos.Continuo);
+        Atrb.put("footsize",TiposDeAtributos.Continuo);
+        assertEquals(1, result.getNumDatos());
+        assertEquals(Atrb,result.getTipoAtributos());
+    }
 }

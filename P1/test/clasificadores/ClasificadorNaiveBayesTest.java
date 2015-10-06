@@ -153,13 +153,17 @@ public class ClasificadorNaiveBayesTest {
     @Test
     public void testClasifica() {
         System.out.println("clasifica");
-        Datos datosTest = null;
+        
         ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes();
-        HashMap<String, Double> expResult = null;
+        Datos datosTest = Datos.cargaDeFichero("data/pesos.test");
+        Datos datosTrain = Datos.cargaDeFichero("data/pesos.data");
+        assertEquals(8,datosTrain.getDatos().size());
+        instance.entrenamiento(datosTrain);
         HashMap<String, Double> result = instance.clasifica(datosTest);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        assertEquals(result.containsKey("female"),true);
+        assertEquals(result.get("female"),0.0005378,0.1);
+        
     }
     
 }

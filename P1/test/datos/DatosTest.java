@@ -69,7 +69,7 @@ public class DatosTest {
         Atrb.add(TiposDeAtributos.Nominal);
         
         Datos result = Datos.cargaDeFichero(nombreDeFichero);
-        assertEquals(7, result.getNumDatos());
+        assertEquals(6, result.getNumDatos());
         assertEquals(result.datos.get(0).length, Atrb.size());
         assertEquals(result.tipoAtributos, Atrb);
     }

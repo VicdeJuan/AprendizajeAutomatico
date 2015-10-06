@@ -65,7 +65,7 @@ public class ClasificadorAPrioriTest {
         
         
         HashMap<String, Integer> expResult = new HashMap<String,Integer>();
-        expResult.put("+", 7);
+        expResult.put("+", 6);
         instance.entrenamiento(datos);
         HashMap<String, Integer> result = instance.clasifica(datos);
         assertEquals(expResult, result);
@@ -76,9 +76,8 @@ public class ClasificadorAPrioriTest {
     @Test
     public void testError() {
         System.out.println("error");
-        
         instance.entrenamiento(datos);
-        assertEquals(0,instance.error(datos, instance),0.0001);        
+        assertEquals(1.0/6,instance.error(datos, instance),0.0001);        
         
     }
     

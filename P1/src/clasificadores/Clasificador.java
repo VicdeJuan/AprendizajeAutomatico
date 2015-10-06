@@ -16,10 +16,23 @@ abstract public class Clasificador {
 		HashMap<String, Integer> clasClases = clas.clasifica(datos);
 		HashMap<String, Integer> realClases = datos.getClases();
                 double dif = 0;
-                for (String key : realClases.keySet())
-                    dif += Math.abs(realClases.get(key) - clasClases.get(key));
+                int real,clasificados;
+                for (String key : realClases.keySet()){
+                    real = clasificados = 0;
+                    if (realClases.containsKey(key))
+                            real = realClases.get(key);
+                    if (clasClases.containsKey(key))
+                            clasificados = clasClases.get(key);
+                    dif += Math.abs(real - clasificados);
+                    
+                }
+                /* 
+                    Dividimos entre 2 para no contabilizar doble los errores. 
+                    Si una clase debería ser + y es -, es 1 único error, 
+                    aunque dif se incrementa en 2, la del + que no es menos y la del - que no es +
+                */
                 
-		return dif/datos.getNumDatos();
+		return (dif/2)/datos.getNumDatos();
 	}
         
 	// Realiza una clasificacion utilizando una estrategia de particionado determinada

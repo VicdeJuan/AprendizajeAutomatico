@@ -69,30 +69,30 @@ public class Datos {
                         for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*")))
                             Atrb.add(TiposDeAtributos.valueOf(str));
                         
-                        int i=0,j=0;
+                        int j=0;
                         
+                        // Empezamos a parsear los datos.
                         ArrayList<dataStructure[]> toAdd = new ArrayList<>(); 
                         HashMap<String,Integer> clases = new HashMap<>();
                         String clase = null;
                         double val;
-                        boolean skip = false;
+                        boolean skip;
+                        int jumpedRows = 0;
                         
                         while ((sCurrentLine = br.readLine()) != null) {
                             j=0;
                             dataStructure[] add = new dataStructure[Atrb.size()];
                             skip = false;
                             for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*"))){
+                                if ("?".equals(str)) {
+                                        skip = true;
+                                        jumpedRows++;
+                                        break;
+                                }
                                 
                                 if (Atrb.get(j) == TiposDeAtributos.Continuo){
-                                    if ("?".equals(str)) {
-                                        skip = true;
-                                        break;
-                                    }
-                                    else{   
-                                        val = Double.parseDouble(str);
-                                        add[j] = new dataStructure(val,Atrb.get(j));
-                                    }
-                                    
+                                    val = Double.parseDouble(str);
+                                    add[j] = new dataStructure(val,Atrb.get(j));                                    
                                 }
                                 else
                                     add[j] = new dataStructure(str,Atrb.get(j));
@@ -108,13 +108,10 @@ public class Datos {
                             if (!skip){
                                 AAUtils.AddOrCreate(clases, clase, 1);
                                 toAdd.add(add);
-                            }
-                                
-                            i++;
-                            
+                            }                            
 			}
                         
-                        return new Datos(nDatos, Atrb,toAdd,clases);        
+                        return new Datos(nDatos-jumpedRows, Atrb,toAdd,clases);        
 		} catch (IOException e) {
 			e.printStackTrace();
                         return null;

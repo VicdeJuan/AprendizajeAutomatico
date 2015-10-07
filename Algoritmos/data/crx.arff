@@ -1,21 +1,21 @@
 @relation crx
 
-@atribute A1 String
-@atribute A2 Continuo
-@atribute A3 Continuo
-@atribute A4 String
-@atribute A5 String
-@atribute A6 String
-@atribute A7 String
-@atribute A8 Continuo
-@atribute A9 String
-@atribute A10 String
-@atribute A11 Continuo
-@atribute A12 String
-@atribute A13 String
-@atribute A14 Continuo
-@atribute A15 Continuo
-@atribute Class String
+@attribute	A1	{a,b}
+@attribute	A2	NUMERIC
+@attribute A3 NUMERIC
+@attribute A4 STRING
+@attribute A5 STRING
+@attribute A6 STRING
+@attribute A7 STRING
+@attribute A8 NUMERIC
+@attribute A9 STRING
+@attribute A10 STRING
+@attribute A11 NUMERIC
+@attribute A12 STRING
+@attribute A13 STRING
+@attribute A14 NUMERIC
+@attribute A15 NUMERIC
+@attribute Class STRING
 
 @data
 %

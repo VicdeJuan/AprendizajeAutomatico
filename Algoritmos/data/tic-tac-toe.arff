@@ -1,15 +1,15 @@
 @relation tic-tac-toe
 
-@atribute TLeftSq String
-@atribute TMidSq String
-@atribute TRightSq String
-@atribute MLeftSq String
-@atribute MMidSq String
-@atribute MRightSq String
-@atribute BLeftSq String
-@atribute BMidSq String
-@atribute BRightSq String
-@atribute Class String
+@attribute TLeftSq String
+@attribute TMidSq String
+@attribute TRightSq String
+@attribute MLeftSq String
+@attribute MMidSq String
+@attribute MRightSq String
+@attribute BLeftSq String
+@attribute BMidSq String
+@attribute BRightSq String
+@attribute Class String
 
 @data
 %

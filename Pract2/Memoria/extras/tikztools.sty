@@ -1,0 +1,171 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tikztools}[2014/04/07 Extended tikz tools]
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\usetikzlibrary{decorations.pathmorphing,decorations.markings,patterns,intersections,positioning,external,calc, shapes.misc}
+
+\tikzset{>=latex}
+
+\tikzstyle{nodepoint}=[inner sep=1pt, circle, draw, black, fill=black]
+\tikzset{cross/.style={cross out, draw=black, fill=none, minimum size=2*(#1 - \pgflinewidth), inner sep = 0pt, outer sep = 0pt}, cross/.default={2pt}}
+
+\tikzstyle{vnlin}=[rectangle, inner sep=0pt, minimum height=6pt, minimum width=0pt, draw, fill=black]
+\tikzstyle{hnlin}=[rectangle, inner sep=0pt, minimum height=0pt, minimum width=6pt, draw, fill=black]
+\tikzstyle{dense directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0.2 and 0.8 step 1cm with {\arrow{stealth};}}}]
+\tikzstyle{full directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0 and 1 step 1cm with {\arrow{stealth};}}}]
+\tikzstyle{directed}=[postaction={decorate,decoration={markings,
+        mark=at position 0.5 with {\arrow[scale=1.3]{stealth};}}}]
+\tikzstyle{sparse directed}=[postaction={decorate,decoration={markings,
+        mark=between positions 0.25 and 0.75 step 0.25 with {\arrow[scale=1.3]{stealth};}}}]
+
+\tikzstyle{plot directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0.05 and 0.95 step 0.7cm with {\arrow{stealth};}}}]
+
+\tikzstyle{invert dense directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0.2 and 0.8 step 1cm with {\arrowreversed{stealth};}}}]
+
+\tikzstyle{invert full directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0 and 1 step 1cm with {\arrowreversed{stealth};}}}]
+
+\tikzstyle{invert directed}=[postaction={decorate,decoration={markings,
+        mark=at position 0.5 with {\arrowreversed[scale=1.3]{stealth};}}}]
+
+\tikzstyle{invert sparse directed}=[postaction={decorate,decoration={markings,
+        mark=between positions 0.25 and 0.75 step 0.25 with {\arrowreversed[scale=1.3]{stealth};}}}]
+
+\tikzstyle{invert plot directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0.05 and 0.95 step 0.7cm with {\arrowreversed{stealth};}}}]
+
+\tikzstyle{really dense directed}=[postaction={decorate,decoration={markings,
+    mark=between positions 0.1 and 0.9 step 0.25cm with {\arrow{stealth};}}}]
+
+
+\newcommand{\inputtikz}[1]{\centering\tikzsetnextfilename{#1.tgen}\input{tikz/#1.tex}\tikzpicturedependsonfile{tikz/#1.tex}}
+
+\pgfkeys{
+	/cfam/.is family,
+	/cfam,
+	start/.estore in = \crvfstart,
+	start/.value required,
+	end/.estore in = \crvfend,
+	end/.value required,
+	step/.estore in = \crvfstep,
+	step/.value required,
+	boffset/.estore in = \crvfbofst,
+	boffset/.value required,
+	eoffset/.estore in = \crvfeofst,
+	eoffset/.value required,
+	etarget/.estore in = \crvfeofstnode,
+	etarget/.value required,
+	btarget/.estore in = \crvfbofstnode,
+	btarget/.value required,
+	offset/.value required,
+	offset/.code={ %
+		\def\crveofsetnode{#1}
+		\def\crvbofsetnode{#1}
+	},
+	default/.style =
+	  {start = 0, end = 1, step = 0.1, boffset = 0, eoffset = 0,
+	  etarget=CFA,btarget=CFB},
+	.unknown/.code={%
+		\let\currname\pgfkeyscurrentname%
+		\let\currval\pgfkeyscurrentvalue%
+
+		\ifx#1\pgfkeysnovalue%
+			\pgfkeys{cfam/remainingkeys/.append style/.expand once={\currname}}%
+		\else%
+	 		\pgfkeys{cfam/remainingkeys/.append style/.expand twice={\expandafter\currname\expandafter=\currval}}%
+		\fi%
+	}%
+}
+
+
+\newcommand{\curvefam}[4][]{
+	\pgfkeys{/cfam, default, #1}
+	\edef\crvfpa{#2}
+	\edef\crvfpb{#3}
+	\edef\crvftr{#4}
+
+	\node (CFA) at \crvfpa {};
+	\node (CFB) at \crvfpb {};
+	\node (CFTR) at \crvftr {};
+
+	\pgfmathsetmacro{\crvfnext}{\crvfend - \crvfstep}
+
+	\foreach \x [count=\i] in {\crvfend,\crvfnext,...,\crvfstart}
+	{
+		\pgfmathsetmacro{\crvfaof}{\i * \crvfbofst}
+		\pgfmathsetmacro{\crvfbof}{\i * \crvfeofst}
+		\draw[/cfam/remainingkeys]
+			($(CFA) + \crvfaof*(\crvfbofstnode) - \crvfaof*(CFA)$)
+			..controls ( $(CFA)!.5!(CFB)!\x!(CFTR)$ )
+			.. ($(CFB) + \crvfbof*(\crvfeofstnode) - \crvfbof*(CFB)$);
+	}
+}
+
+\pgfkeys{
+	/cnorm/.is family,
+	/cnorm,
+	length/.estore in = \cnlen,
+	length/.value required,
+	default/.style =
+	  { length=0.5cm },
+	.unknown/.code={%
+		\let\currname\pgfkeyscurrentname%
+		\let\currval\pgfkeyscurrentvalue%
+
+		\ifx#1\pgfkeysnovalue%
+			\pgfkeys{cnorm/remainingkeys/.append style/.expand once={\currname}}%
+		\else%
+	 		\pgfkeys{cnorm/remainingkeys/.append style/.expand twice={\expandafter\currname\expandafter=\currval}}%
+		\fi%
+	}%
+}
+
+
+\newcommand{\curveNormal}[2][]{ %
+	\pgfkeys{/cnorm, default, #1}
+	\coordinate (O) at (\x, {#2});
+	\edef\x{\x + 0.1}
+	\coordinate (OD) at (\x, {#2});
+	\draw[->, /cnorm/remainingkeys] (O) -- ($(O)!\cnlen!90:(OD)$);
+}
+
+
+\pgfkeys{
+	/angle/.is family,
+	/angle,
+	name/.estore in = \aname,
+	name/.value required,
+	radius/.estore in = \aradius,
+	radius/.value required,
+	sepradius/.estore in = \asepradius,
+	sepradius/.value required,
+	default/.style =
+	  { name={}, radius=5mm, sepradius=3mm },
+	.unknown/.code={%
+		\let\currname\pgfkeyscurrentname%
+		\let\currval\pgfkeyscurrentvalue%
+
+		\ifx#1\pgfkeysnovalue%
+			\pgfkeys{angle/remainingkeys/.append style/.expand once={\currname}}%
+		\else%
+	 		\pgfkeys{angle/remainingkeys/.append style/.expand twice={\expandafter\currname\expandafter=\currval}}%
+		\fi%
+	}%
+}
+
+\newcommand{\tikzangle}[4][]{ %
+	\pgfkeys{/angle, default, #1}
+	\begin{scope}
+			\path[clip] (#2) -- (#3) -- (#4);
+			\fill[red, draw=black, opacity=0.2, /angle/remainingkeys] (#2) circle (\aradius);
+			\node (bisect_a) at ($(#2)!5mm!(#3)$) {};
+			\node (bisect_b) at ($(#2)!5mm!(#4)$) {};
+			\node (bisect) at ($(bisect_a)!0.5!(bisect_b)$) {};
+			\node[anchor=center] at ($(#2)!\aradius + \asepradius!(bisect)$) {\aname};
+	\end{scope}
+}

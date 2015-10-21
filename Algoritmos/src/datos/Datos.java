@@ -10,7 +10,7 @@ import particionado.AAUtils;
 import particionado.Particion;
 public class Datos {
         final private int numDatos;
-        
+        int numAtributos;
 	HashMap<String,TiposDeAtributos> tipoAtributos;
 	ArrayList<HashMap<String,dataStructure>> datos;
         HashMap<String,Double> clases;
@@ -24,8 +24,14 @@ public class Datos {
             this.datos = datos;
             this.clases = new HashMap<>(classes);
             this.nomDatos = nombreDatos;
-            
+            numAtributos = tipos.size();            
 	}
+
+        public int getNumAtributos() {
+            return numAtributos;
+        }
+        
+        
         public String getClassFromRow(HashMap<String,dataStructure> row){
             // la clase es el último atributo del array SIEMPRE.
             return (String) row.get("Class").getVal();

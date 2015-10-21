@@ -17,8 +17,6 @@ hs_err_pid*
 
 
 # Ficheros a ignorar de LaTeX
-*.pdf 	#ignoramos los pdfs porque se pueden regenerar
-!_*.pdf	# No ignoramos los pdfs que empiecen por "_" (los enunciados o lo que sea)
 
 *.auxlock
 *.nb
@@ -59,6 +57,7 @@ hs_err_pid*
 .fuse*
 *.kate-swp
 *.backup
+*.pdf
 !_*.pdf
 *.bak
 Icon*

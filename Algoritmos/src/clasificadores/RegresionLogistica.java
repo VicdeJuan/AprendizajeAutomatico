@@ -6,12 +6,14 @@
 package clasificadores;
 
 import datos.Datos;
+import datos.TiposDeAtributos;
 import datos.dataStructure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import particionado.AAUtils;
 
 /**
  *
@@ -19,80 +21,125 @@ import java.util.logging.Logger;
  */
 public class RegresionLogistica extends Clasificador {
 
-    ArrayList<Double> coef;
+    HashMap<String,Double> coef;
+    HashMap<String,Double> valoresParaNominales;
+    private final String STR_DELIM = "_";
+
     
     @Override
     public void entrenamiento(Datos datosTrain) {
         // Los coeficientes serán los b_i tales que p(x) = (1,x) · b. Teniendo b n+1 dimensiones si hay n atributos. 
         // El numero de atributos INCLUYE la clase, por eso tiene n+1 de dimensión. 
-        coef = new ArrayList<>(datosTrain.getNumAtributos());
-
+        coef = new HashMap<>();
+        valoresParaNominales = new HashMap<>();
+        
+        double terminoIndependiente = 0;
+        
+        coef.put("Class", terminoIndependiente);
+        
         
  
     }
 
+    
     @Override
     public HashMap<String, Double> clasifica(Datos datosTest) {
-        HashMap<String,Double> toret = new HashMap<>();
-        for (Map.Entry<String, Double> a : datosTest.getClases().entrySet()){
-            String key = a.getKey();
-            // Para la clase KEY iteramos por los campos.
-            for (HashMap<String, dataStructure> line : datosTest.getDatos()){
-                ArrayList<Double> values = Hash2ArrayList(line);
-                try {
-                    toret.put(key, escalarProd(values,coef));
-                } catch (Exception ex) {
-                    Logger.getLogger(RegresionLogistica.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        HashMap<String,Double> retval = new HashMap<>();
+        String clas_max;
+        double val,val_max;
+        for (HashMap<String, dataStructure> line : datosTest.getDatos()){
+		clas_max = "";
+		val_max = Double.NEGATIVE_INFINITY;
+        	for (String clas : datosTest.getClases().keySet()){
+                	val = escalarProdHash(convertHashFromDiscToCont(line), coef);
+			val = 1/(1+Math.exp(-val));
+	                if (val >= val_max){
+        		        clas_max = clas;
+		                val_max = val;
+        	        }
+            	}
+         	AAUtils.AddOrCreate(retval, clas_max, 1);
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return retval;
     }
     
-    
-    private double escalarProd(ArrayList <Double> a, ArrayList <Double> b) throws Exception{
-        double acum = 0;
+    /**
+     * Producto escalar entre 2 hashes coordenada a coordenada utilizando la clave para asegurar.
+     * @param a :   Primer vector del argumento.
+     * @param b :   segundo vector para multiplicar.
+     *              Se recomienda el vector de pesos como segundo argumento.
+     * @return
+     */
+    private double escalarProdHash(HashMap <String,Double> a, HashMap <String,Double> b){
+        double acum = 0,debug1,debug2;
         if (a == null || b == null)
-            return acum;
-        if (a.isEmpty() || b.isEmpty())
-            return acum;
-        
-        if (a.size() != b.size())
-            throw new Exception("Las dimensiones de este producto escalar no son las mismas");
-        
-        for (int i = 0; i<a.size(); i++)
-            acum += a.get(i)*b.get(i);
+            return Double.NaN;
+        if (a.isEmpty() || b.isEmpty() || (a.size() != b.size()))
+            return Double.NaN;
+             
+        for ( String key : a.keySet()){
+            if (!b.containsKey(key))
+                return Double.NaN;
+	    debug1 = a.get(key);
+	    debug2 = b.get(key);
+            acum += a.get(key)* b.get(key);
+        }
         
         return acum;
     }
-
+    
     /**
-     * Este método devuelve un array de doubles a partir de una línea de datos.
-     * 
-     * El ArrayList devuelto termina con un 1
-     * 
-     * TODO: 
-     *  La línea de datos contiene valores continuos y discretos. Ahora mismo sólo está implementado con continuos.
-     *   
-     * 
-     * @param line
+     * Convierte un hashmap con valores discretos a un hashmap de valores continuos.
+     * @param line  :   Vector de atributos 
      * @return 
      */
-    private ArrayList<Double> Hash2ArrayList(HashMap<String, dataStructure> line) {
-        // Para convertir los datos a un array y facilitar el producto escalar.
-        ArrayList<Double> toret = new ArrayList<>();
-        double val;
-        
-        for (String a : line.keySet()){
-            if ("Class".equals(a))
-                val = 1;
-            else
-                val = (Double) line.get(a).getVal();
-            
-            toret.add(val);
+    private HashMap<String, Double> convertHashFromDiscToCont(HashMap<String, dataStructure> line) {
+        HashMap<String, Double> retval = new HashMap<>();
+        double val = 0;
+        for (Map.Entry<String, dataStructure> entry : line.entrySet()){
+            if (entry.getValue().getTipoAtributo() == TiposDeAtributos.Continuo){
+                val = (Double)entry.getValue().getVal();
+            }else {
+                /*Si es nominal, convertimos (aunque tal vez este caso no se de nunca)*/
+                 val = convertCont(entry.getKey(),(String) entry.getValue().getVal());
+            }
+            retval.put(entry.getKey(), val);
         }
-            // Aquí habría que añadir un convertidor a continuo de los valores discretos.
-            
-        return toret;
+        
+        return retval;
     }
+
+    /**
+     * Convierte un atributo nominal en un atributo continuo utilizando los pesos construidos en el entrenamiento.
+     * 
+     * @param atributo        : nombre del atributo que convertir
+     * @param valorNominal    : valor nominal para ser convertido a double 
+     * @return valor double correspondiente al valorNominal.
+     */
+    private double convertCont(String atributo, String valorNominal) {
+            double val = 0;
+        
+            if ("Class".equals(atributo))
+                val = 1;
+            else{
+                val = valoresParaNominales.get(atributo + STR_DELIM + valorNominal);
+            }
+            return val;
+    }
+
+
+	    /**
+	     * Método necesario para los test.
+	     * @param coeficientes 
+	     */
+	void setCoef(HashMap<String, Double> coeficientes) {
+		coef = coeficientes;
+	}
+
+	public HashMap<String, Double> getCoef() {
+		return coef;
+	}
+
+    
+
 }

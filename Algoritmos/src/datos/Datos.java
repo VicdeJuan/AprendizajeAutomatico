@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import particionado.AAUtils;
 import particionado.Particion;
 public class Datos {
@@ -14,10 +16,11 @@ public class Datos {
 	ArrayList<HashMap<String,dataStructure>> datos;
         HashMap<String,Double> clases;
         ArrayList<String> nomDatos;
+	
         public int getNumDatos(){
             return numDatos;
         }
-	public Datos(int numDatos, HashMap<String,TiposDeAtributos> tipos, ArrayList<HashMap<String,dataStructure>> datos,HashMap<String,Double> classes,ArrayList<String> nombreDatos) {
+	public Datos(int numDatos, HashMap<String,TiposDeAtributos> tipos, ArrayList<HashMap<String,dataStructure>> datos,HashMap<String,Double> classes,ArrayList<String> nombreDatos ) {
             this.numDatos = numDatos;
             this.tipoAtributos = tipos;
             this.datos = datos;
@@ -66,6 +69,8 @@ public class Datos {
         
 	public static Datos cargaDeFichero(String nombreDeFichero) {
             
+		HashMap <String,Double> medias = new HashMap<>();
+		HashMap <String,Double> varianzas = new HashMap<>();
             try (BufferedReader br = new BufferedReader(new FileReader(nombreDeFichero)))
 		{
                         // La primera línea siempre será el número de datos.
@@ -100,6 +105,8 @@ public class Datos {
                             HashMap<String,dataStructure> add = new HashMap<>();
                             skip = false;
                             for (String str : Arrays.asList(sCurrentLine.split("\\s*,\\s*"))){
+                                // Si hay interrogación en algún atributo, nos saltamos la fila como hacen los
+                                // algoritmos de Weka y R.
                                 if ("?".equals(str)) {
                                         skip = true;
                                         jumpedRows++;
@@ -109,11 +116,10 @@ public class Datos {
                                 if (Atrb.get(nomDatos.get(j)) == TiposDeAtributos.Continuo){
                                     val = Double.parseDouble(str);
                                     add.put(nomDatos.get(j),new dataStructure(val,Atrb.get(nomDatos.get(j))));                                    
+				    AAUtils.AddOrCreate(medias, nomDatos.get(j), val);
                                 }
                                 else
                                     add.put(nomDatos.get(j),new dataStructure(str,Atrb.get(nomDatos.get(j))));                                    
-                                // Si hay interrogación en algún atributo, nos saltamos la fila como hacen los
-                                // algoritmos de Weka y R.
                                 j++;
                                 //TODO: chapucilla...
                                 //En la última iteración del bucle, str tendrá la clase.
@@ -126,8 +132,69 @@ public class Datos {
                                 toAdd.add(add);
                             }                            
 			}
-                        
-                        return new Datos(nDatos-jumpedRows, Atrb,toAdd,clases,nomDatos);        
+
+			ArrayList<HashMap<String,dataStructure>> toAdd_Normalizado = new ArrayList<>();
+			HashMap<String, dataStructure> lineaNormalizada = new HashMap<>();
+			/**
+			 * Normalizamos los datos
+			*/
+			// Calculamos las medias:
+			for (Map.Entry<String, Double> mu : medias.entrySet()){
+				medias.put(mu.getKey(), mu.getValue()/(nDatos-jumpedRows));
+			}
+			
+			// Calculamos las varianzas:
+			HashMap<String,Double> var_aux = new HashMap<>();
+			for (HashMap<String, dataStructure> line : toAdd){
+				
+				for (String  key : line.keySet()){
+					dataStructure entry = line.get(key);
+					if (line.get(key).getTipoAtributo() == TiposDeAtributos.Nominal)
+						continue;
+					val = (Double) entry.getVal();
+					val = Math.pow(val - medias.get(key),2);
+					AAUtils.AddOrCreate(var_aux, key, val);
+				}
+			}
+			for (Map.Entry<String, Double> sig : var_aux.entrySet()){
+				varianzas.put(sig.getKey(), sig.getValue()/(nDatos-jumpedRows));
+			}	
+			
+			// Normalizamos en sí:
+			
+			
+			double aux;
+			for (i = 0; i < toAdd.size(); i++){
+				HashMap<String, dataStructure> line = toAdd.get(i); 	
+				lineaNormalizada.clear();
+				for (Map.Entry<String, dataStructure> entry : line.entrySet()){
+					if (entry.getValue().getTipoAtributo() == TiposDeAtributos.Nominal){
+						lineaNormalizada.put(entry.getKey(),entry.getValue());
+					}else{
+						aux = (Double) entry.getValue().getVal();
+						aux = aux - medias.get(entry.getKey());
+						aux = aux / Math.sqrt(varianzas.get(entry.getKey())) ;
+						lineaNormalizada.put(entry.getKey(), new dataStructure(aux, TiposDeAtributos.Continuo));
+					}
+				}	
+				toAdd_Normalizado.add(new HashMap<>(lineaNormalizada));
+			}
+			/*
+			Calculas las medias por si acaso:
+			
+			HashMap <String,Double> medias_aux = new HashMap<>();
+			for (HashMap<String, dataStructure> line : toAdd_Normalizado)
+			for (Map.Entry<String, dataStructure> entry : line.entrySet()){
+				if (entry.getValue().getTipoAtributo() != TiposDeAtributos.Nominal)
+					AAUtils.AddOrCreate(medias_aux, entry.getKey(), (Double) entry.getValue().getVal());
+			}
+			for (Map.Entry<String, Double> entry : medias_aux.entrySet()){
+				medias.put(entry.getKey(), entry.getValue()/(nDatos-jumpedRows));
+			}*/
+                        return new Datos(nDatos-jumpedRows, Atrb,toAdd_Normalizado,clases,nomDatos);        
+			
+			
+                        //return new Datos(nDatos-jumpedRows, Atrb,toAdd,clases,nomDatos);        
 		} catch (IOException e) {
 			e.printStackTrace();
                         return null;

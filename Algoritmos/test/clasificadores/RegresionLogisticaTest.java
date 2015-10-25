@@ -72,8 +72,8 @@ coeficientes.put("Class", 	-64.2444);
 		RegresionLogistica instance = new RegresionLogistica();
 		instance.entrenamiento(datos);
 		// TODO review the generated test code and remove the default call to fail.
-		assertEquals(coeficientes,instance.getCoef());
-		fail("The test case is a prototype.");
+		for(String a:coeficientes.keySet())
+			assertEquals(instance.coef.get(a), coeficientes.get(a));
 	}
 
 	/**
@@ -127,7 +127,7 @@ coeficientes.put("Class", 	-64.2444);
 		HashMap<String, Double> result = instance.clasifica(datos);
 		double err = instance.error(datos, instance);
 		// TODO review the generated test code and remove the default call to fail.
-		assertEquals( 0.0035, err, 0.001);
+		assertEquals( 0.35, err, 0.001);
 	}
 	
 }

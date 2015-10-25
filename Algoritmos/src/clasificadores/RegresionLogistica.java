@@ -48,19 +48,32 @@ public class RegresionLogistica extends Clasificador {
         String clas_max;
         double val,val_max;
         for (HashMap<String, dataStructure> line : datosTest.getDatos()){
-		clas_max = "";
-		val_max = Double.NEGATIVE_INFINITY;
-        	for (String clas : datosTest.getClases().keySet()){
+		val = escalarProdHash(convertHashFromDiscToCont(line), coef);
+		val = 1/(1+Math.exp(-val));
+		/**
+		 * TODO: El 1 y el 0 aquí... lo he puesto a mano y es una chapuza.
+		 * Cuando lo veamos en clase sabré a qué clase corresponde >0.5 y a cual no.
+		 */
+		if (val > 0.5)
+			clas_max = datosTest.getClases().keySet().toArray()[1].toString();
+		else 
+			clas_max = datosTest.getClases().keySet().toArray()[0].toString();
+        	/*for (String clas : datosTest.getClases().keySet()){
                 	val = escalarProdHash(convertHashFromDiscToCont(line), coef);
 			val = 1/(1+Math.exp(-val));
 	                if (val >= val_max){
         		        clas_max = clas;
 		                val_max = val;
         	        }
-            	}
+            	}*/
          	AAUtils.AddOrCreate(retval, clas_max, 1);
         }
-        return retval;
+	/**
+	 * debería ser 	M-> 211 ; Es M-> 209
+	 * 		B-> 358 ; Es B-> 360
+	 */
+	
+	return retval;
     }
     
     /**

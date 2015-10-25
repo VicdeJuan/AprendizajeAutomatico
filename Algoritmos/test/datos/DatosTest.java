@@ -8,12 +8,14 @@ package datos;
 import datos.TiposDeAtributos;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import particionado.AAUtils;
 import particionado.Particion;
 
 /**
@@ -77,7 +79,7 @@ public class DatosTest {
      @Test
     public void testCargaDeFicheroPesos() {
         System.out.println("cargaDeFichero");
-        String nombreDeFichero = "data/pesos.test";
+        String nombreDeFichero = "data/pesos.data";
         HashMap<String,TiposDeAtributos> Atrb = new HashMap<> ();
         Datos result = Datos.cargaDeFichero(nombreDeFichero);
         
@@ -85,7 +87,31 @@ public class DatosTest {
         Atrb.put("height",TiposDeAtributos.Continuo);
         Atrb.put("weight",TiposDeAtributos.Continuo);
         Atrb.put("footsize",TiposDeAtributos.Continuo);
-        assertEquals(1, result.getNumDatos());
+        assertEquals(8, result.getNumDatos());
         assertEquals(Atrb,result.getTipoAtributos());
+    }
+    @Test
+    public void estanNormalizados() {
+
+	    
+        System.out.println("cargaDeFichero");
+        String nombreDeFichero = "data/wdbc.data";
+        HashMap<String,TiposDeAtributos> Atrb = new HashMap<> ();
+        Datos result = Datos.cargaDeFichero(nombreDeFichero);
+	HashMap<String,Double> medias = new HashMap<>();
+	HashMap<String,Double> medias_aux = new HashMap<>();
+
+	
+	for (HashMap<String, dataStructure> line : result.getDatos())
+		for (Map.Entry<String, dataStructure> entry : line.entrySet()){
+			if (entry.getValue().getTipoAtributo() != TiposDeAtributos.Nominal)
+				AAUtils.AddOrCreate(medias_aux, entry.getKey(), (Double) entry.getValue().getVal());
+		}
+	for (Map.Entry<String, Double> entry : medias_aux.entrySet()){
+		medias.put(entry.getKey(), entry.getValue()/result.getNumDatos());
+	}
+
+	for (Double val : medias.values())
+		assertEquals(val,0,0.001);
     }
 }

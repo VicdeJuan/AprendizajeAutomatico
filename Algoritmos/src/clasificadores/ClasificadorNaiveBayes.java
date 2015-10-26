@@ -33,6 +33,12 @@ public class ClasificadorNaiveBayes extends Clasificador {
     HashMap <String,HashMap<String, HashMap<String,Double>>> SMT;
     HashMap <String,Double> probs_hips;
     double total;
+
+    ClasificadorNaiveBayes(Boolean laplace) {
+        this.Laplace = laplace;
+    }
+
+
     
     public boolean isLaplace() {
         return Laplace;

@@ -81,3 +81,4 @@ tikzgen/*
 *~
 *.sublime-project
 /Algoritmos/build/
+/Algoritmos/dist/

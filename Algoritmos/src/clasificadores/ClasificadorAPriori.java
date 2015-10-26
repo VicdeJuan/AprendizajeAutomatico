@@ -2,6 +2,7 @@ package clasificadores;
 
 import datos.Datos;
 import datos.dataStructure;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class ClasificadorAPriori extends Clasificador {
             String clase = datostrain.getClassFromRow(row);
             AAUtils.AddOrCreate(classes, clase, 1);
         }
+        System.out.println(classes);
         ClaseMasRepetida = Collections.max(
                 classes.entrySet(),
                 new Comparator<Entry<String,Integer>>(){

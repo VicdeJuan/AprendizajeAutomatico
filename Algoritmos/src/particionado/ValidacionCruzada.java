@@ -1,16 +1,13 @@
 package particionado;
 
 import datos.Datos;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 
 public class ValidacionCruzada extends ValidacionSimple {
     
         
-    private int numParticiones = 10;
-
-    public ValidacionCruzada(int val) {
-        numParticiones = val;
-    }
+	private int numParticiones = 10;
 
 	@Override
 	public String getNombreEstrategia() {

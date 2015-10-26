@@ -24,7 +24,6 @@ import particionado.ValidacionSimple;
 public class RegresionLogisticaTest {
 	
 	    Datos datos = Datos.cargaDeFichero("data/wdbc.data");
-	    RegresionLogistica instance = new RegresionLogistica();
 	
 	/**
 	 * Test of entrenamiento method, of class RegresionLogistica.
@@ -67,9 +66,10 @@ coeficientes.put("Atributo29",	 1240.458);
 coeficientes.put("Atributo30",	 2677.7547);
 coeficientes.put("Class", 	-64.2444);
 
-
+                int epocas = 7;
+                double eta = 1;
 		System.out.println("entrenamiento");
-		RegresionLogistica instance = new RegresionLogistica();
+		RegresionLogistica instance = new RegresionLogistica(epocas,eta);
 		instance.entrenamiento(datos);
 		// TODO review the generated test code and remove the default call to fail.
 		for(String a:coeficientes.keySet())
@@ -121,10 +121,11 @@ coeficientes.put("Class", 	-64.2444);
 
 		System.out.println("clasifica");
 		
-		instance.setCoef(coeficientes);
+                RegresionLogistica instance = new RegresionLogistica(1,7);
+		instance.entrenamiento(datos);
 		
 		
-		HashMap<String, Double> result = instance.clasifica(datos);
+		//HashMap<String, Double> result = instance.clasifica(datos);
 		double err = instance.error(datos, instance);
 		// TODO review the generated test code and remove the default call to fail.
 		assertEquals( 0.35, err, 0.001);

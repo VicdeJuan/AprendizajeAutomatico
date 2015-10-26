@@ -80,3 +80,4 @@ tikzgen/*
 
 *~
 *.sublime-project
+/Algoritmos/build/

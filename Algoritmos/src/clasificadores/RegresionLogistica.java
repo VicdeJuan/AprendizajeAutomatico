@@ -71,10 +71,10 @@ public class RegresionLogistica extends Clasificador {
         // Bucle en si del calculo de los coeficientes.
         for (int iepoc = 1; iepoc < numEpoc; iepoc++) {
             for (HashMap<String, dataStructure> line : datosTrain.getDatos()) {
-                val = escalarProdHash(convertHashFromDiscToCont(line), coef_aux);
+                val = AAUtils.escalarProdHash(convertHashFromDiscToCont(line), coef_aux);
                 val = 1 / (1 + Math.exp(-val));
                 // Actualizamos coef_aux
-                coef_aux = restaHash(coef_aux, linearProdHash(eta * (val - tStr.get(datosTrain.getClassFromRow(line))), convertHashFromDiscToCont(line)));
+                coef_aux = AAUtils.restaHash(coef_aux, AAUtils.linearProdHash(eta * (val - tStr.get(datosTrain.getClassFromRow(line))), convertHashFromDiscToCont(line)));
             }
         }
 
@@ -82,22 +82,7 @@ public class RegresionLogistica extends Clasificador {
 
     }
 
-    private HashMap<String, Double> restaHash(HashMap<String, Double> v1, HashMap<String, Double> v2) {
-        HashMap<String, Double> toret = new HashMap<>();
-        for (String key : v1.keySet()) {
-            toret.put(key, v1.get(key) - v2.get(key));
-        }
-
-        return toret;
-    }
-
-    private HashMap<String, Double> linearProdHash(double esc, HashMap<String, Double> vector) {
-        HashMap<String, Double> toret = new HashMap<>();
-        for (Map.Entry<String, Double> entry : vector.entrySet()) {
-            toret.put(entry.getKey(), esc * entry.getValue());
-        }
-        return toret;
-    }
+    
 
     @Override
     public HashMap<String, Double> clasifica(Datos datosTest) {
@@ -105,7 +90,7 @@ public class RegresionLogistica extends Clasificador {
         String clas_max;
         double val;
         for (HashMap<String, dataStructure> line : datosTest.getDatos()) {
-            val = escalarProdHash(convertHashFromDiscToCont(line), coef);
+            val = AAUtils.escalarProdHash(convertHashFromDiscToCont(line), coef);
             val = 1 / (1 + Math.exp(-val));
             /**
              * TODO: El 1 y el 0 aquí... lo he puesto a mano y es una chapuza.
@@ -128,36 +113,6 @@ public class RegresionLogistica extends Clasificador {
          */
 
         return retval;
-    }
-
-    /**
-     * Producto escalar entre 2 hashes coordenada a coordenada utilizando la
-     * clave para asegurar.
-     *
-     * @param a : Primer vector del argumento.
-     * @param b : segundo vector para multiplicar. Se recomienda el vector de
-     * pesos como segundo argumento.
-     * @return
-     */
-    private double escalarProdHash(HashMap<String, Double> a, HashMap<String, Double> b) {
-        double acum = 0, debug1, debug2;
-        if (a == null || b == null) {
-            return Double.NaN;
-        }
-        if (a.isEmpty() || b.isEmpty() || (a.size() != b.size())) {
-            return Double.NaN;
-        }
-
-        for (String key : a.keySet()) {
-            if (!b.containsKey(key)) {
-                return Double.NaN;
-            }
-            debug1 = a.get(key);
-            debug2 = b.get(key);
-            acum += a.get(key) * b.get(key);
-        }
-
-        return acum;
     }
 
     /**

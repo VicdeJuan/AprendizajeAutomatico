@@ -47,7 +47,7 @@ public class ClasificadorNaiveBayesTest {
         System.out.println("entrenamiento");
         Datos datosTrain = Datos.cargaDeFichero("data/naiveTrain.data");
         assertNotNull(datosTrain);
-        ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes();
+        ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes(false);
         instance.entrenamiento(datosTrain);
         HashMap<String, HashMap<String, HashMap<String,Double>>> SMTGot = instance.getSMT();
         HashMap<String, HashMap<String, HashMap<String,Double>>> SMTExpected = new HashMap<>() ;
@@ -154,7 +154,7 @@ public class ClasificadorNaiveBayesTest {
     public void testClasifica() {
         System.out.println("clasifica");
         
-        ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes();
+        ClasificadorNaiveBayes instance = new ClasificadorNaiveBayes(false);
         Datos datosTest = Datos.cargaDeFichero("data/pesos.test");
         Datos datosTrain = Datos.cargaDeFichero("data/pesos.data");
         assertEquals(8,datosTrain.getDatos().size());

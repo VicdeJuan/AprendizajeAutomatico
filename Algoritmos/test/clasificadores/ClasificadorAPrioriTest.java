@@ -86,7 +86,7 @@ public class ClasificadorAPrioriTest {
         System.out.println("Validación");
         
         
-        EstrategiaParticionado estC = new ValidacionCruzada();
+        EstrategiaParticionado estC = new ValidacionCruzada(10);
         EstrategiaParticionado estS = new ValidacionSimple();
         ArrayList<Double> ValCru = Clasificador.validacion(estC, datos, instance);
         ArrayList<Double> ValSim = Clasificador.validacion(estS, datos, instance);

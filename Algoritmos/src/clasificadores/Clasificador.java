@@ -1,6 +1,7 @@
 
 package clasificadores;
 import datos.Datos;
+import java.io.File;
 import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +117,11 @@ abstract public class Clasificador {
                         exit(-1);
 		}
 		String fichero = args[0];
+		File f = new File(fichero);
+		if (!f.exists()){
+			System.out.printf("El fichero %s no existe\n", fichero);
+			exit(-1);
+		}
                 String clasificador = DEFAULT_CLASIF;
 		Boolean laplace = DEFAULT_LAPLACE;
 		int numK = DEFAULT_KNN;
@@ -164,9 +170,9 @@ abstract public class Clasificador {
 			case NAIVEBAYES:
 				c = new ClasificadorNaiveBayes(laplace);
 				break;
-			/*case VECINOSPROXIMOS:
+			case VECINOSPROXIMOS:
 				c = new ClasificadorKNN(numK);
-				break;*/
+				break;
 			case REGRESIONLOGISTICA:
 				c = new RegresionLogistica(eta,numK);
 				break;

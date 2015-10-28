@@ -4,6 +4,7 @@ import datos.Datos;
 import datos.TiposDeAtributos;
 import datos.dataStructure;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class ClasificadorKNN extends Clasificador {
 
 	@Override
 	public HashMap<String, Double> clasifica(Datos datosTest) {
-		TreeMap<String, dataStructure> lineaOrden;
+		ArrayList <HashMap<String,dataStructure>> lineaOrden;
 		HashMap<String, Double> intermedio = new HashMap<>();
 		HashMap<String, Double> retval = new HashMap<>();
 		String max_clase = "";
@@ -38,11 +39,12 @@ public class ClasificadorKNN extends Clasificador {
 		for (HashMap<String, dataStructure> line : datosTest.getDatos()) {
 			Comparator comp;
 			comp = new ComparatorImpl(line);
-			lineaOrden = new TreeMap<>(comp);
-			lineaOrden.putAll((Map<? extends String, ? extends dataStructure>) datosTrain);
+			lineaOrden = new ArrayList<>(datosTest.getNumDatos());
+			lineaOrden.addAll(datosTest.getDatos());
+			Collections.sort(lineaOrden, comp);
+
 			for (int i = 0; i < numVecinos; i++) {
-				AAUtils.AddOrCreate(intermedio, lineaOrden.firstKey(), 1.0);
-				lineaOrden.remove(lineaOrden.firstKey());
+				AAUtils.AddOrCreate(intermedio, datosTest.getClassFromRow(lineaOrden.get(i)) , 1.0);
 			}
 			for (String clase : intermedio.keySet()) {
 				if (intermedio.get(clase) > max_val) {
@@ -99,7 +101,7 @@ public class ClasificadorKNN extends Clasificador {
 		return val;
 	}
 
-	private class ComparatorImpl implements Comparator<Entry<String, HashMap<String, dataStructure>>> {
+	private class ComparatorImpl implements Comparator<HashMap<String, dataStructure>> {
 
 		HashMap<String, Double> point;
 
@@ -112,9 +114,9 @@ public class ClasificadorKNN extends Clasificador {
 		}
 
 		@Override
-		public int compare(Entry<String, HashMap<String, dataStructure>> o1, Entry<String, HashMap<String, dataStructure>> o2) {
-			double a = distancia(o1.getValue());
-			double b = distancia(o2.getValue());
+		public int compare(HashMap<String, dataStructure> o1, HashMap<String, dataStructure> o2) {
+			double a = distancia(o1);
+			double b = distancia(o2);
 			return Double.compare(a, b);
 		}
 

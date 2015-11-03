@@ -1,39 +1,74 @@
 package particionado;
 
-import datos.Datos;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class ValidacionSimple implements EstrategiaParticionado {
+import Datos.Datos;
 
-	private int numParticiones = 1;
-
-	@Override
-	public String getNombreEstrategia() {
-		return "Validación simple";
+public class ValidacionSimple implements EstrategiaParticionado{
+	private int numParticiones=0;
+	
+	
+	public ValidacionSimple(){
+		this.numParticiones = 1;
 	}
-
+	
+	
 	@Override
-	public int getNumeroParticiones() { 
+	
+	//Devuelve el nombre de la estrategia de particionado
+	public String getNombreEstrategia(){
+		return "Validacion Simple";
+	}
+	
+	@Override
+	//Devuelve el numero de particiones
+	
+	public int getNumeroParticiones(){
 		return numParticiones;
 	}
+	
+	
+	
+	protected static Random randomgenerator = new Random(SEED);
+	public static int randInt(int min, int max) {
 
-                
-	@Override
-	/* Crea particiones según el método tradicional de división de los datos según el porcentaje deseado. Devuelve una sola partición con un conjunto de train y otro de test.*/
+	    Random rand = randomgenerator;
+	    return rand.nextInt((max - min) + 1) + min;
 
-	public ArrayList<Particion> crearParticiones(Datos datos) {
-                double percent = 0.75;
-                int div =  (int) (percent * datos.getNumDatos());
-		ArrayList<Particion> particiones= new ArrayList<>();
-                
-                ArrayList<Integer> ints = AAUtils.seq(datos.getNumDatos()-1, true);
-                
-                particiones.add(new Particion(new ArrayList<>(ints.subList(0, div)) , new ArrayList<>(ints.subList(div, ints.size()))));
-                
-                    
-                
-                return particiones;
 	}
-
-
+	
+	@Override
+	// Crea particiones segun el metodo tradicional
+	// de division de los datos segun el porcentaje
+	// deseado. Devuelve una sola partición con un 
+	// conjunto de train y otro de test
+	
+	public ArrayList<Particion> crearParticiones(Datos datos, double porcTrain){
+		
+		ArrayList<Particion> particiones= new ArrayList<Particion>();
+		ArrayList<Integer> train = new ArrayList<Integer>();
+		ArrayList<Integer> test = new ArrayList<Integer>();
+		
+		/////////////////////////para depurar////////////////////////////
+		int res = datos.getNumDatos();
+		
+		
+		int numTrain = (int) Math.ceil((double)(res*porcTrain/100));
+		
+		while(train.size()<numTrain){
+			Integer numEleg = randInt(0,res-1);
+			if(!train.contains(numEleg))
+				train.add(numEleg);
+		}
+		
+		for(Integer i=0; i< res;i++)
+			if(!train.contains(i))
+				test.add(i);
+		
+		particiones.add(new Particion(train,test));
+		
+		
+		return particiones;
+	}
 }

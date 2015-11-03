@@ -1,11 +1,13 @@
 package particionado;
 
-import datos.Datos;
 import java.util.ArrayList;
 
-public interface EstrategiaParticionado {
+import Datos.Datos;
 
-	public String  getNombreEstrategia();
+public interface EstrategiaParticionado {
+	static final int SEED = 15;	
+	public String getNombreEstrategia();
 	public int getNumeroParticiones();
-	public ArrayList<Particion> crearParticiones(Datos datos);
+	public ArrayList<Particion> crearParticiones(Datos datos, double porc);
+
 }

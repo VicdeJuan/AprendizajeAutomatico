@@ -1,125 +1,99 @@
 package clasificadores;
 
-import datos.Datos;
-import datos.TiposDeAtributos;
-import datos.dataStructure;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import particionado.AAUtils;
+import Datos.Datos;
+import comparadores.*;
 
 public class ClasificadorKNN extends Clasificador {
+	
+	Datos datosTrain;
+	int k;
 
-	HashMap<String, Double> valoresParaNominales;
-
-	private final String STR_DELIM = "_";
-	ArrayList<HashMap<String, HashMap<String, dataStructure>>> datosTrain;
-	private final int numVecinos;
-
-	public ClasificadorKNN(int numVecinos) {
-		this.numVecinos = numVecinos;
+	public ClasificadorKNN(int numK){
+		k = numK;
 	}
 
 	@Override
-	public void entrenamiento(Datos datosTrain) {
-		this.datosTrain = new ArrayList(datosTrain.getDatos());
+	public void entrenamiento(Datos datostrain) {
+				
+		datosTrain = datostrain;
+		//DEBUG
+		//System.out.println("Datos entrenamiento: "+datosTrain.getDatos());
+	
 	}
 
 	@Override
-	public HashMap<String, Double> clasifica(Datos datosTest) {
-		ArrayList <HashMap<String,dataStructure>> lineaOrden;
-		HashMap<String, Double> intermedio = new HashMap<>();
-		HashMap<String, Double> retval = new HashMap<>();
-		String max_clase = "";
-		double max_val = Double.MIN_VALUE;
-		for (HashMap<String, dataStructure> line : datosTest.getDatos()) {
-			Comparator comp;
-			comp = new ComparatorImpl(line);
-			lineaOrden = new ArrayList<>(datosTest.getNumDatos());
-			lineaOrden.addAll(datosTest.getDatos());
-			Collections.sort(lineaOrden, comp);
-
-			for (int i = 0; i < numVecinos; i++) {
-				AAUtils.AddOrCreate(intermedio, datosTest.getClassFromRow(lineaOrden.get(i)) , 1.0);
+	public ArrayList<String> clasifica(Datos datostest) {
+		
+		//DEBUG
+		//System.out.println("Datos de test: "+datostest.getDatos());
+		
+		int maximo;
+		int indiceMaximo;
+		ArrayList<String> prediccion = new ArrayList<String>();
+		int dimClase = datosTrain.getClases().size();
+		int[] decidirClase =new int[dimClase];
+		
+		for(int i=0; i<dimClase; i++){
+			decidirClase[i] = 0;
+		}
+		
+				
+		for(ArrayList<String> fila: datostest.getDatos()){
+			Collections.sort(datosTrain.getDatos(), new ComparadorMinkowski(fila, datosTrain));
+			
+			//DEBUG
+			//System.out.println("__________Ordenamos para punto :"+fila);
+			//System.out.println("__________Obtenemos: "+datosTrain.getDatos());
+			
+			//reinicializamos variables para obtener la clase del vecino más próximo:
+			maximo=0;
+			indiceMaximo=0;
+			for(int i=0; i<dimClase; i++){
+				decidirClase[i] = 0;
 			}
-			for (String clase : intermedio.keySet()) {
-				if (intermedio.get(clase) > max_val) {
-					max_clase = clase;
+			
+			/**
+			 * Por cada datos de los k que miramos, sumamos uno a la correspondiente posición de la clase 
+			 * en el array decidirClase (que es binario).
+			 */
+			for(int i=0; i<k; i++){
+				for(int j=0; j<dimClase; j++){
+					if(datosTrain.getDatos().get(i).get(fila.size()-1).equals(datosTrain.getClases().get(j))){
+						decidirClase[j]++;
+					}
 				}
 			}
-
-			AAUtils.AddOrCreate(retval, max_clase, 1);
-			intermedio.clear();
-			max_val = Double.MIN_VALUE;
-		}
-		return retval;
-	}
-
-	/**
-	 * Convierte un hashmap con valores discretos a un hashmap de valores
-	 * continuos.
-	 *
-	 * @param line : Vector de atributos
-	 * @return
-	 */
-	private HashMap<String, Double> convertHashFromDiscToCont(HashMap<String, dataStructure> line) {
-		HashMap<String, Double> retval = new HashMap<>();
-		double val;
-		for (Map.Entry<String, dataStructure> entry : line.entrySet()) {
-			if (entry.getValue().getTipoAtributo() == TiposDeAtributos.Continuo) {
-				val = (Double) entry.getValue().getVal();
-			} else {
-				/*Si es nominal, convertimos (aunque tal vez este caso no se de nunca)*/
-				val = convertCont(entry.getKey(), (String) entry.getValue().getVal());
+			
+			//DEBUG
+			//for(int i=0; i<dimClase; i++){
+			//	System.out.println("Clase: "+datosTrain.getClases().get(i)+": "+decidirClase[i]);
+			//}
+						
+			
+			for(int i=0; i<dimClase; i++){
+				if (decidirClase[i] > maximo){
+					maximo = decidirClase[i];
+					indiceMaximo = i;
+				}
 			}
-			retval.put(entry.getKey(), val);
+						
+			prediccion.add(datosTrain.getClases().get(indiceMaximo));
+			//DEBUG
+			//System.out.println("Indice maximo es: "+indiceMaximo);
+			//System.out.println(prediccion);
 		}
-
-		return retval;
+		//System.out.println(prediccion);
+		return prediccion;
+		
 	}
-
-	/**
-	 * Convierte un atributo nominal en un atributo continuo utilizando los
-	 * pesos construidos en el entrenamiento.
-	 *
-	 * @param atributo : nombre del atributo que convertir
-	 * @param valorNominal : valor nominal para ser convertido a double
-	 * @return valor double correspondiente al valorNominal.
-	 */
-	private double convertCont(String atributo, String valorNominal) {
-		double val;
-
-		if ("Class".equals(atributo)) {
-			val = 1;
-		} else {
-			val = valoresParaNominales.get(atributo + STR_DELIM + valorNominal);
-		}
-		return val;
-	}
-
-	private class ComparatorImpl implements Comparator<HashMap<String, dataStructure>> {
-
-		HashMap<String, Double> point;
-
-		public ComparatorImpl(HashMap<String, dataStructure> point) {
-			this.point = convertHashFromDiscToCont(point);
-		}
-
-		private double distancia(HashMap<String, dataStructure> p) {
-			return AAUtils.restaCuadradoHash(point, convertHashFromDiscToCont(p));
-		}
-
-		@Override
-		public int compare(HashMap<String, dataStructure> o1, HashMap<String, dataStructure> o2) {
-			double a = distancia(o1);
-			double b = distancia(o2);
-			return Double.compare(a, b);
-		}
-
-	}
+	
+		
+	
 
 }
+
+
+

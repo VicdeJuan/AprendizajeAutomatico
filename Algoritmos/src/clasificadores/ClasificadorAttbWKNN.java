@@ -52,11 +52,12 @@ public class ClasificadorAttbWKNN extends Clasificador {
 		for (int i=0; i<pesos.length ; i++){
 			w[i] = randomgenerator.nextDouble();  // Esto da valores entre -1.0 y 1.0 excluido el 1.0
 		}
-		System.out.println("antes de épocas."+numDatos);
+		//System.out.println("antes de épocas."+numDatos);
 		ArrayList<ArrayList<String>> newd =new ArrayList<ArrayList<String>>(1);
 		for (int j=0; j<epocas; j++){
 			for (int i=0; i<numDatos;i++){
-				System.out.print(i+",");
+				//DEBUG
+                                //System.out.print(i+",");
 				
 				//Inicializamos el vector x_i:
 				x[0] = 1;
@@ -92,13 +93,13 @@ public class ClasificadorAttbWKNN extends Clasificador {
 		
 		
 		//DEBUG
-		System.out.println("");
-		System.out.println("Despues de épocas.");
+		//System.out.println("");
+		//System.out.println("Despues de épocas.");
 	
-		System.out.println("Pesos");
-		for (double p : pesos){
-			System.out.print(p+",");
-		}
+		//System.out.println("Pesos");
+		//for (double p : pesos){
+		//	System.out.print(p+",");
+		//}
 	}
 
 	@Override

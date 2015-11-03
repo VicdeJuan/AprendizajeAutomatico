@@ -14,7 +14,7 @@ public class ComparadorMinkowski implements Comparator<ArrayList<String>> {
 			this.datos = datos;
 		}
 
-		private double distancia(ArrayList<String> p) {
+		public double distancia(ArrayList<String> p) {
 			double dist=0;
 			//DEBUG
 			//System.out.println("Funcion distancia: point: "+point+" - p: "+p);

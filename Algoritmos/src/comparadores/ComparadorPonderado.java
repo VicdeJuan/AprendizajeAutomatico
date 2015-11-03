@@ -15,7 +15,7 @@ import Datos.Datos;
 			this.datos = datos;
 			this.pesos = pesos;
 			//DEBUG:
-			if (pesos.length != point.size()){
+			if (pesos.length +1 != point.size()){
 				System.err.println("Problemon... las dimensiones de pesos y del punto no coinciden");
 			}
 		}

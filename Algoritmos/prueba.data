@@ -1,0 +1,9 @@
+5
+1,2,3,4,Class
+Nominal,Nominal,Nominal,Nominal,Nominal
+a,c,e,g,positivo
+b,c,f,g,negativo
+a,d,e,h,positivo
+a,c,f,g,positivo
+a,d,f,h,negativo
+

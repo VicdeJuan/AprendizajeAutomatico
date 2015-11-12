@@ -128,7 +128,7 @@ public static void main(String []args) {
 		
 	 
 	 Datos d = Datos.cargaDeFichero("wdbc.data");
-	 Clasificador c = new ClasificadorAttbWKNN(7);
+	 Clasificador c = new ClasificadorKNN(7);
 	 EstrategiaParticionado part;
 	 int porc;
 	 boolean laplace;

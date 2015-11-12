@@ -13,7 +13,7 @@
 \definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
 \definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
 \definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
- 
+
 \lstset{language=Java,
 basicstyle=\ttfamily,
 keywordstyle=\color{javapurple}\bfseries,
@@ -49,13 +49,13 @@ Formas de reemplazo
 - Hijos sustituyen a padres// Hijos sustituyen a los peores// aleatorio // lo que sea
 
 
-La memoria tiene que incluir medidas de todos las diversas formas de reemplazo y evolución. 
+La memoria tiene que incluir medidas de todos las diversas formas de reemplazo y evolución.
 
 Todos los datos serán siempre nominales.
 
 \subsection{Proceso de Train}
 
-Genero una población aleatoria. Para cada individuo clasifico los datos de train y obtengo el \% de aciertos (fitness). 
+Genero una población aleatoria. Para cada individuo clasifico los datos de train y obtengo el \% de aciertos (fitness).
 
 Recorridos todos los individuos de mi población, empezamos la \textbf{evolución} $\to$ muto/cruzo - reemplazo y vuelta a empezar a recorrer todos los individuos. (El orden puede ser algo distinto. Podemos ir mutando a la vez que vamos recorriendo, y tal vez sería más eficiente pero se pierde en modularidad).
 
@@ -80,9 +80,9 @@ individuo  = (rojo, si, clase = par) donde los atributos son: (rojo/verde/amaril
 
 \subsection{Para la práctica}
 
-Utilizamos el conjunto de datos "crx.data" en el que todos son nominales. En este caso, la codificación en bits es más sencilla.
+Utilizamos el conjunto de datos "tic-tac-toe.data" en el que todos son nominales. En este caso, la codificación en bits es más sencilla.
 
-Como tenemos 7 atributos de 3 posibles valores, tendremos 21 reglas aprox. Habría que tener cuidado con reglas que no se cotradigan... Aunque si hay contradictorias y elegimos siempre la primera que nos encontremos dan igual las contradicciones. 
+Como tenemos 7 atributos de 3 posibles valores, tendremos 21 reglas aprox. Habría que tener cuidado con reglas que no se cotradigan... Aunque si hay contradictorias y elegimos siempre la primera que nos encontremos dan igual las contradicciones.
 
 
 
@@ -93,7 +93,7 @@ Propongo dividir el código en 4 clases de la siguiente manera.
 \subsection{Regla}
 Implementada como \textit{array de booleans} o como un \textit{long} para poder trabajar con las operaciones con bits. Como esta práctica es lenta de ejecución, yo tiraría con el long, aunque esta propuesta está hecha con array de booleanos, que es más fácil de hacer.
 
-\textbf{Problema:} La regla tiene que llevar una clase asociada, y dependiendo del fichero, puede tomar sólo 2 valores o mas. Como el plan es que todo sea modular, creamos la clase regla para el fichero crx. Si cambiamos de fichero, habría que redefinir una clase regla para ese fichero. La idea es que por arriba, nada dependa de la implementación de regla.java
+\textbf{Problema:} La regla tiene que llevar una clase asociada, y dependiendo del fichero, puede tomar sólo 2 valores o mas. Como el plan es que todo sea modular, creamos la clase regla para el fichero que nos piden. Si cambiamos de fichero, habría que redefinir una clase regla para ese fichero. La idea es que por arriba, nada dependa de la implementación de regla.java
 
 \begin{lstlisting}[language=Java]
 Class Regla.java
@@ -121,7 +121,7 @@ public regla convert(ArrayList<String> row){
 }
 
 public String match(Regla rule){
-	/*dada una regla devuelve la clase si las reglas coinciden. 
+	/*dada una regla devuelve la clase si las reglas coinciden.
 	En caso de no coincidir, null*/
 }
 
@@ -140,7 +140,7 @@ Regla []rules;
 
 public String clasifica(ArrayList<String> row){
 	/*recorre las reglas y devuelve la clase asignada
-	 por la regla que corresponda. 
+	 por la regla que corresponda.
 	 En caso de no haber ninguna, se devuelve una por defecto.*/
 }
 
@@ -159,9 +159,9 @@ Class Poblacion.java
 List<Individuo> Poblacion;
 Int size; //fijo para todas las poblaciones. Lo dijo en clase
 Method reemplazo; // Un metodo como variable, para modular a tope.
-double elitismo; /*Porcentaje de individuos que no mutan. 
+double elitismo; /*Porcentaje de individuos que no mutan.
 		Se hace con los mejores.*/
-Int cruce; /* cruce = 0 es mutacion aleatoria. 
+Int cruce; /* cruce = 0 es mutacion aleatoria.
 			cruce = n es cruce en n puntos. */
 
 Public List<Individuo> newPoblacionAleat(Int n){
@@ -171,7 +171,7 @@ Public List<Individuo> newPoblacionAleat(Int n){
 public Poblacion evolucionar (){
 	/* crea una nueva poblacion a partir de this
 	 segun el reemplazo, elitismo y cruce elegidos.
-	 Se le pueden parametros para que no sean fijos de la 
+	 Se le pueden parametros para que no sean fijos de la
 	 instancia el cruce,elitismo, etc
 	 */
 }
@@ -203,7 +203,7 @@ public Poblacion reemplazo_i (Poblacion Padres, Poblacion Hijos){
 
 \subsection{Clasificador}
 
-\paragraph{Dificultades} 
+\paragraph{Dificultades}
 
 \begin{itemize}
 	\item Definir la condición
@@ -212,7 +212,7 @@ public Poblacion reemplazo_i (Poblacion Padres, Poblacion Hijos){
 \end{itemize}
 
 \begin{lstlisting}[language=Java]
-Class Clasificador.java 
+Class Clasificador.java
 
 Individuo train_result;
 Int tamano_poblacion;
@@ -226,14 +226,14 @@ public double[] clasifica(Datos datosTest){
 
 public void entrenamiento(Datos datosTrain){
 	P = new Poblacion(tamano_poblacion); //aleatoria
-	while (condicion){ //hay que definir la condicion 
+	while (condicion){ //hay que definir la condicion
 		/**
-		1 - Ordenamos la poblacion en cuanto a fitness 
+		1 - Ordenamos la poblacion en cuanto a fitness
 			(utilizando un comparador, como KNN).
-			El comparador DEBE almacenar en 
+			El comparador DEBE almacenar en
 				el individuo su porcentaje de fitness)
 		2 - Evolucionamos la poblacion
-		3 - Reemplazamos individuos de la poblacion 
+		3 - Reemplazamos individuos de la poblacion
 		de acuerdo a los parametros de la poblacion
 		*/
 	}

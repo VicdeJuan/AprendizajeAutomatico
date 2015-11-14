@@ -21,6 +21,7 @@ public class Regla {
 	private static final HashMap<String,Long> nominal_to_bit = new HashMap<> (3);;
 	Random r = new Random();
 	
+	
 	/**
 	 * Constructor. 
 	 * Crea una regla ALEATORIA de tamaño n. Los bits que estén más a la 
@@ -35,12 +36,30 @@ public class Regla {
 		
 		size = n;
 		long y = Long.MAX_VALUE;
-		long bitmask = 0;
-		//	long bitmask = 0...n...011111...
+		long bitmask = buildTicTacMask(n);
 		regla = bitmask & ((long)(r.nextDouble()*y));	
 		
-	}
+	}	
 
+	private Regla(int n, long rule) {
+		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
+		nominal_to_bit.put("c", 1L);
+		nominal_to_bit.put("r", 2L);
+		
+		nominal_to_bit.put("x", 0L);
+		
+		size = n;
+		long y = Long.MAX_VALUE;
+		long bitmask = buildTicTacMask(n);
+		regla = bitmask & ((long)(r.nextDouble()*y));	
+	
+	}
+	
+// la máscara es 0...d...011111... donde 
+	// 	d = 2*n-1, ya que cada atributo necesita 2 bits, salvo la clase que solo 1
+	private long buildTicTacMask(Integer n){
+		return Long.MAX_VALUE >>(2*n-1);
+	}
 
 	/**
 	 * Devuelve un long con todos sus bits 0's, salvo el bit dado por index,
@@ -115,11 +134,21 @@ public class Regla {
 		long rule = 0L;
 		for (int i=0; i<fila.size();i++){
 			val = fila.get(i);
-			rule |=	nominal_to_bit.get(val)<<2;
+			if (nominal_to_bit.containsKey(val))
+				rule = rule << 2 | nominal_to_bit.get(val);
+			else{
+				if (fila.get(fila.size()-1) == clases[1] && val == clases[1]){
+					rule = rule << 1 | 1;
+				}else if (fila.get(fila.size()-1) == clases[0] && val == clases[0]){
+					rule = rule << 1;
+				} else {
+					System.out.println("Esto no debería ocurrir nunca!!");
+				}
+			}
 			// La clase no está en el hash!
 		}
 		
-		return null;
+		return new Regla(n,rule);
 	}
 
 	

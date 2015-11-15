@@ -7,6 +7,7 @@ package clasificadores.genetica;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -18,10 +19,18 @@ public class Regla {
 	int size;
 	long regla;
 	private static final String clases[] = new String[]{"+", "-"};;
-	private static final HashMap<String,Long> nominal_to_bit = new HashMap<> (3);;
+	private static final HashMap<String,Long> nominal_to_bit = createNominal();
 	Random r = new Random();
 	
-
+	private static HashMap<String,Long> createNominal(){
+		HashMap<String,Long> nomin = new HashMap<>();
+		
+		nomin.put("c", 1L);
+		nomin.put("r", 2L);
+		nomin.put("x", 0L);
+		return nomin;
+	}
+	
 	/**
 	 * Return the number of bits from a given number of attributes.
 	 * @param n
@@ -39,9 +48,6 @@ public class Regla {
 	 */
 	public Regla(Integer n){
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
-		nominal_to_bit.put("c", 1L);
-		nominal_to_bit.put("r", 2L);
-		nominal_to_bit.put("x", 0L);
 		
 		size = n;
 		regla = ((long)(r.nextDouble()*(Math.pow(2,n)))-1);	
@@ -50,9 +56,6 @@ public class Regla {
 
 	public Regla(int n, long rule) {
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
-		nominal_to_bit.put("c", 1L);
-		nominal_to_bit.put("r", 2L);
-		nominal_to_bit.put("x", 0L);
 		
 		size = n;
 		this.regla = rule; 

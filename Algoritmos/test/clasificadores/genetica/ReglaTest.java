@@ -45,7 +45,7 @@ public class ReglaTest {
 	public void testMatch() {
 		System.out.println("match");
 		Regla rule = new Regla(10,27L);
-		Regla instance = new Regla(10,26L);
+		Regla instance = new Regla(10,24L);
 		
 		String result = instance.match(rule);
 		assertNull(result);

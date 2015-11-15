@@ -119,12 +119,15 @@ public class Regla {
 	}	
 
 	/**
-	 * Comprueba si la regla dada como argumento coincide con la dada.
+	 * Comprueba si la regla dada como argumento es clasificable. Esto es,
+	 * 	si coinciden todos los cromosomas, salvo la clase.
 	 * @param rule regla para comprobar coincidencia.
 	 * @return La clase asignada en caso de coincidencia. Null en caso de no coincidencia.
 	 */
 	public String match(Regla rule){
-		return rule.getRegla() == this.getRegla() ? this.get_class() : null;
+		// Desplazamos 1 bit para ignorar las clases de cada regla, ya que queremos ver si 
+		//	coinciden el resto de cromosomas.
+		return rule.getRegla() >> 1 == this.getRegla()>>1 ? this.get_class() : null;
 	}
 	
 	/**

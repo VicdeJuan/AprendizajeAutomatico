@@ -17,6 +17,18 @@ public class Individuo {
 	int numReglas;
 	public static final String DEFAULT_CLASS = "-";
 
+	/**
+	 * Crea un individuo con los parámetros dados.
+	 * @param rules		Reglas del individuo.
+	 * @param nAtrib	Número de atrubutos.
+	 * @param nReglas 	Número de reglas.
+	 */
+	public Individuo(Regla[] rules, int nAtrib, int nReglas){
+		reglas = rules;
+		numAtributos = nAtrib;
+		numReglas = nReglas;
+	}
+	
 	public int getNumAtributos() {
 		return numAtributos;
 	}

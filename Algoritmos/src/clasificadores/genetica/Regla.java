@@ -21,6 +21,15 @@ public class Regla {
 	private static final HashMap<String,Long> nominal_to_bit = new HashMap<> (3);;
 	Random r = new Random();
 	
+
+	/**
+	 * Return the number of bits from a given number of attributes.
+	 * @param n
+	 * @return 
+	 */
+	public int getBitsFromSize(int n){
+		return n*2-1;
+	}
 	
 	/**
 	 * Constructor. 
@@ -35,30 +44,25 @@ public class Regla {
 		nominal_to_bit.put("x", 0L);
 		
 		size = n;
-		long y = Long.MAX_VALUE;
-		long bitmask = buildTicTacMask(n);
-		regla = bitmask & ((long)(r.nextDouble()*y));	
+		regla = ((long)(r.nextDouble()*(Math.pow(2,n)))-1);	
 		
 	}	
 
-	private Regla(int n, long rule) {
+	public Regla(int n, long rule) {
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
 		nominal_to_bit.put("c", 1L);
 		nominal_to_bit.put("r", 2L);
-		
 		nominal_to_bit.put("x", 0L);
 		
 		size = n;
-		long y = Long.MAX_VALUE;
-		long bitmask = buildTicTacMask(n);
-		regla = bitmask & ((long)(r.nextDouble()*y));	
+		this.regla = rule; 
 	
 	}
 	
 // la máscara es 0...d...011111... donde 
 	// 	d = 2*n-1, ya que cada atributo necesita 2 bits, salvo la clase que solo 1
 	private long buildTicTacMask(Integer n){
-		return Long.MAX_VALUE >>(2*n-1);
+		return (long) Math.pow(2, getBitsFromSize(n)+1)-1;
 	}
 
 	/**
@@ -86,7 +90,7 @@ public class Regla {
 	 */
 	public void set(int index, boolean value){
 		// revisar el >> (ha sido triplazo)
-		if (value) {
+		if (!value) {
 			regla |= just1at(index);
 		} else {
 			regla &= just0at(index);	
@@ -109,7 +113,8 @@ public class Regla {
 	 * @return Devuelve la clase que asigna esta regla.
 	 */
 	public String get_class(){
-		int idx = (int) (regla & just1at(size))>>size;
+		//int idx = (int) (regla & just1at(size))>>size;
+		int idx = (int) regla % 2;
 		return clases[idx];
 	}	
 
@@ -130,7 +135,7 @@ public class Regla {
 	 */
 	public static Regla convert(ArrayList<String> fila){
 		String val;
-		int n = fila.size()*2-1;
+		int n = fila.size();
 		long rule = 0L;
 		for (int i=0; i<fila.size();i++){
 			val = fila.get(i);
@@ -145,7 +150,6 @@ public class Regla {
 					System.out.println("Esto no debería ocurrir nunca!!");
 				}
 			}
-			// La clase no está en el hash!
 		}
 		
 		return new Regla(n,rule);

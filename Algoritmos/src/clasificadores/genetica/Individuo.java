@@ -6,6 +6,8 @@
 package clasificadores.genetica;
 
 import java.util.ArrayList;
+import java.util.Random;
+import static particionado.EstrategiaParticionado.SEED;
 
 /**
  *
@@ -48,7 +50,7 @@ public class Individuo {
 
 	
 	/**
-	 * Constructor
+	 * Constructor con reglas aleatorias.
 	 * @param numReglas Número de reglas para el individuo.
 	 * @param numAtributos Número de atributos (no de bits) que tienen las reglas.
 	 */	
@@ -94,4 +96,11 @@ public class Individuo {
 		}
 		return acum/n;
 	}
+
+    void mutar() {
+        int idx = (int) Math.round(Math.random()*numReglas);
+        
+        reglas[idx].mutar();
+        
+    }
 }

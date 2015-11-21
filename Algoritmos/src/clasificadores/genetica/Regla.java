@@ -110,6 +110,10 @@ public class Regla {
 		Si la regla tiene un 0, la comparación será falsa y llamamos a set con False*/
 		set(index,(regla & (just1at(index))) == just1at(index));
 	}
+        
+        public void mutar(){
+            mutar((int) Math.round(Math.random()*getBitsFromSize(size)));
+        }
 
 	/**
 	 * La clase se almacena en el último bit válido de la regla.

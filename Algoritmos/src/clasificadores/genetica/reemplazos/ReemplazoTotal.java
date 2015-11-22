@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clasificadores.genetica;
+package clasificadores.genetica.reemplazos;
+
+import clasificadores.genetica.Poblacion;
 
 /**
  *
  * @author victo
  */
-public class ReemplazoTotal extends Reemplazo{
+public class ReemplazoTotal extends ReemplazoAbstract{
 
 	public ReemplazoTotal(double elitis) {
 		this.elitismo = elitis;
@@ -18,8 +20,8 @@ public class ReemplazoTotal extends Reemplazo{
 	
 	@Override
 	public Poblacion Reemplazar(Poblacion progenitores, Poblacion vastagos) {
-		Poblacion p1 = this.getElitistParents(false, progenitores,elitismo);
-		Poblacion p2 = this.getElitistParents(false, vastagos,1-elitismo);
+		Poblacion p1 = ReemplazoTotal.getElitistParents(progenitores,elitismo);
+		Poblacion p2 = ReemplazoTotal.getElitistParents(vastagos,1-elitismo);
 		return Poblacion.join(p1,p2);
 	}
 

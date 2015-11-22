@@ -3,27 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clasificadores.genetica;
+package clasificadores.genetica.reemplazos;
 
+import clasificadores.genetica.Individuo;
+import clasificadores.genetica.Poblacion;
 import java.util.ArrayList;
-import static particionado.EstrategiaParticionado.SEED;
 
 /**
  *
- * @author vicdejuan
+ * @author victo
  */
-public abstract class Reemplazo {
-
-	
+public abstract class ReemplazoAbstract implements Reemplazo{
 	double elitismo = 0;
-
-	/**
-	 *
-	 * @param progenitores
-	 * @param vastagos
-	 * @return
-	 */
-	public abstract Poblacion Reemplazar (Poblacion progenitores, Poblacion vastagos);
 	
 	/**
 	 * Devuelve un subconjunto de la población p1 de acuerdo al porcentaje de 
@@ -39,13 +30,14 @@ public abstract class Reemplazo {
 	 * @param elitismo	Porcentaje de progenitores que sobreviven.
 	 * @return 	El subconjunto de la población de tamaño n*elitismo (aprox)
 	 */
-	protected static Poblacion getElitistParents(boolean ordered,Poblacion p1,double elitismo){
-		Poblacion toret = new Poblacion(p1.size, p1.getNumReglas(), p1.getNumAtributos(), p1.getProbMutacion(), p1.getProbCruce());
+	
+	protected static Poblacion getElitistParents(Poblacion p1,double elitismo){
+		Poblacion toret = new Poblacion(p1.getSize(), p1.getNumReglas(), p1.getNumAtributos(), p1.getProbMutacion(), p1.getProbCruce(),p1.getEstrategiaReemplazo(),p1.isOrdered());
  
-		int n = (int) Math.round(p1.size * elitismo);
+		int n = (int) Math.round(p1.getSize() * elitismo);
 		ArrayList<Individuo> toadd = new ArrayList<>();
 		ArrayList<Individuo> individuos = p1.getIndividuos();
-		if (ordered){
+		if (p1.isOrdered()){
 			for (int i=0;i<n;i++)
 				toadd.add(individuos.get(i));
 			toret.setIndividuos(toadd);
@@ -53,7 +45,8 @@ public abstract class Reemplazo {
 		}else{
 			int j = 1;
 			for (Individuo i : individuos){
-				if (Math.random() <= elitismo && j < n){
+				if (j>n) break;
+				if (Math.random() <= elitismo ){
 					j++;
 					toadd.add(i);
 				}
@@ -61,7 +54,8 @@ public abstract class Reemplazo {
 			toret.setIndividuos(toadd);
 			toret.setSize(n);
 		}
-		return p1;
+		return toret;
 	}
+
 
 }

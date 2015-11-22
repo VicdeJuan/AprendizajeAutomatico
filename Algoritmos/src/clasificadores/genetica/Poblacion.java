@@ -171,4 +171,9 @@ public class Poblacion {
                 i.mutar();
     }
     
+    public void cruceNPuntos(){
+        Random r = new Random(SEED);
+
+	
+    }
 }

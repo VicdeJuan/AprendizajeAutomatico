@@ -117,4 +117,25 @@ public class Individuo {
         reglas[idx].mutar();
         
     }
+
+/**
+ * Rehacer el cruce en n puntos bien hecho.
+ * @param i1
+ * @param i2
+ * @return 
+ */
+    static Individuo Cruce1Punto(Individuo i1, Individuo i2){
+	Individuo toret = new Individuo(i1.getNumReglas(),i1.getNumAtributos());
+	int idx = (int) Math.round(Math.random()*i1.getNumReglas());
+
+	Regla[] reglaNueva = new Regla[i1.getNumReglas()];
+	int i = 0;
+	for (;i<idx;i++)
+		reglaNueva[i] = i1.reglas[i];
+	for (;i<i2.getNumReglas();i++)
+		reglaNueva[i] = i2.reglas[i];
+	
+	toret.setReglas(reglaNueva);
+	return toret;
+    }
 }

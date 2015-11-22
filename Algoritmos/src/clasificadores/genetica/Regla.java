@@ -6,9 +6,11 @@
 package clasificadores.genetica;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Random;
+import static particionado.EstrategiaParticionado.SEED;
 
 /**
  *
@@ -169,6 +171,61 @@ public class Regla {
 	private long getRegla() {
 		return regla;
 	}
-	
+	public static int[] generateIdxAddLast(int n,int lim,int last){
+		int [] toret = new int[n+1];
+		Random r = new Random(SEED);
+		int i;
+		for (i=0; i<n;i++){
+			toret[i] = r.nextInt(lim);
+		}
+		toret[i] = last;
+		Arrays.sort(toret);
+		return toret;
+		
+	}
+	/**
+	 * Función auxiliar para el cruce en n puntos. Como hay que devolver 2 
+	 * 	hijos en un único return, devolvemos todo en el mismo array, pero
+	 * 	a partir de un cierto valor (el devuelto por esta función) empieza
+	 * 	el segundo hijo.
+	 * @param r1
+	 * @param r2
+	 * @param nPuntos
+	 * @return 
+	 */
+	public static int getDivisor(Regla[]r1,Regla[]r2,int nPuntos){
+		if (nPuntos%2 == 0) return r1.length;
+		else return r2.length;
+	}
+	public static Regla[] CruceNPuntos (Regla[] r1 , Regla[] r2, int nPuntos){
+		Regla[] toret = new Regla[r1.length + r2.length];
+		/**
+		 * El array de índices en los que cruzar.
+		 * Queremos que caiga dentro de las 2 reglas, por eso ponemos 
+		 * 	que los índices aleatorios (ordenados) estén entre 
+		 * 	0 y el mínimo.
+		 */
+		int [] idx = generateIdxAddLast(nPuntos,Math.min(r1.length, r2.length),Math.max(r1.length, r2.length));
+		int j=0,i=0;
+		int n = getDivisor(r1, r2, nPuntos);
+		/**
+		 * Si hay un número par de cortes, entonces la línea divisoria 
+		 * 	entre el hijo 1 y el hijo 2 devuelto será el tamaño de 
+		 * 	la regla 2. Para entenderlo, sugiero hacer un dibujo
+		 * 	con los cromosomas, etc
+		 */
+		for(;j<nPuntos; j++){
+			for(;i<idx[j];i++){
+				if (j%2 == 0){
+					if (i< r1.length) toret[i] = r1[i];
+					if (i< r2.length) toret[i+n] = r2[i];
+				}else{
+					if (i< r2.length) toret[i] = r2[i];
+					if (i< r1.length) toret[i+n] = r1[i];
+				}
+			}	
+		}
 
+		return toret;
+	}
 }

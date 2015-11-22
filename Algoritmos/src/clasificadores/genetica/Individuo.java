@@ -18,7 +18,18 @@ public class Individuo {
 	int numAtributos;
 	int numReglas;
 	public static final String DEFAULT_CLASS = "-";
+	double fitness;
 
+	public double getFitness() {
+		return fitness;
+	}
+
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
+	}
+
+
+	
 	/**
 	 * Crea un individuo con los parámetros dados.
 	 * @param rules		Reglas del individuo.
@@ -29,6 +40,7 @@ public class Individuo {
 		reglas = rules;
 		numAtributos = nAtrib;
 		numReglas = nReglas;
+		fitness = 0.0;
 	}
 	
 	public int getNumAtributos() {
@@ -60,6 +72,7 @@ public class Individuo {
 			reglas[i] = new Regla(numAtributos);
 		this.numAtributos = numAtributos;
 		this.numReglas = numReglas;
+		fitness = 0.0;
 	}
 	
 	/**
@@ -94,6 +107,7 @@ public class Individuo {
 			}
 			n++;
 		}
+		fitness = acum/n;
 		return acum/n;
 	}
 

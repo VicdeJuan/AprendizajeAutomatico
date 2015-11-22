@@ -20,6 +20,10 @@ public class Individuo {
 	public static final String DEFAULT_CLASS = "-";
 	double fitness;
 
+	public Regla[] getReglas() {
+		return reglas;
+	}
+
 	public double getFitness() {
 		return fitness;
 	}

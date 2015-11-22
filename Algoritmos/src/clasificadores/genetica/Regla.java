@@ -214,7 +214,7 @@ public class Regla {
 		 * 	la regla 2. Para entenderlo, sugiero hacer un dibujo
 		 * 	con los cromosomas, etc
 		 */
-		for(;j<nPuntos; j++){
+		for(;j<=nPuntos; j++){
 			for(;i<idx[j];i++){
 				if (j%2 == 0){
 					if (i< r1.length) toret[i] = r1[i];

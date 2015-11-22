@@ -74,13 +74,20 @@ public class ReglaTest {
 		int n = 4;
 		Regla[] r1 = new Regla[12];
 		Regla[] r2 = new Regla[14];
+		for (int i = 0;i<12;i++){
+			r1[i] = new Regla(5);
+			r2[i] = new Regla(5);
+		}
+		r2[12] = new Regla(5);
+		r2[13] = new Regla(5);
+		
 		Regla[] expected = new Regla[26];
 		int[] idx = Regla.generateIdxAddLast(n, 12,14);
 		System.arraycopy(r1, 0, expected, 0, idx[0]);
 		System.arraycopy(r2, idx[0], expected, idx[0], idx[1]-idx[0]);
 		System.arraycopy(r1, idx[1], expected, idx[1], idx[2]-idx[1]);
 		System.arraycopy(r2, idx[2], expected, idx[2], idx[3]-idx[2]);
-		System.arraycopy(r1, idx[3], expected, idx[3], 12-idx[3]-1);
+		System.arraycopy(r1, idx[3], expected, idx[3], 12-idx[3]);
 		
 		int offset = 12;
 		System.arraycopy(r2, 0, expected, offset, idx[0]);
@@ -102,20 +109,23 @@ public class ReglaTest {
 		int n = 1;
 		Regla[] r1 = new Regla[12];
 		Regla[] r2 = new Regla[14];
+		for (int i = 0;i<12;i++){
+			r1[i] = new Regla(5);
+			r2[i] = new Regla(5);
+		}
 		Regla[] expected = new Regla[26];
 		int[] idx = Regla.generateIdxAddLast(n, 12,14);
 		System.arraycopy(r1, 0, expected, 0, idx[0]);
-		System.arraycopy(r2, idx[0], expected, idx[0], 12-idx[0]);
+		System.arraycopy(r2, idx[0], expected, idx[0], 14-idx[0]);
 		
-		Regla[] result = Regla.CruceNPuntos(r1, r2, n);
-		Assert.assertArrayEquals(expected, result);
 		
-		int offset = 12;
+		int offset = 14;
 		System.arraycopy(r2, 0, expected, offset, idx[0]);
 		int a = idx[1];
 		System.arraycopy(r1, idx[0], expected, offset+idx[0], 12-idx[0]);
 		
-		result = Regla.CruceNPuntos(r1, r2, n);
+		
+		Regla[] result = Regla.CruceNPuntos(r1, r2, n);
 		
 		Assert.assertArrayEquals(expected, result);
 		

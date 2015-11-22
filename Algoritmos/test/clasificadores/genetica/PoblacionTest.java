@@ -10,6 +10,7 @@ import clasificadores.genetica.reemplazos.ReemplazoTotal;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,6 +42,27 @@ public class PoblacionTest {
 		assertEquals(expected.getIndividuos(),result.getIndividuos());
 		assertEquals(expected.getEstrategiaReemplazo().getClass(), result.getEstrategiaReemplazo().getClass());
 	
+	}
+	
+	@Test
+	public void testCruceNPuntos(){
+
+		System.out.println("Cruce en 1 punto");
+		int n = 1;
+		Regla[] r1 = new Regla[12];
+		Regla[] r2 = new Regla[14];
+		for (int i = 0;i<12;i++){
+			r1[i] = new Regla(5);
+			r2[i] = new Regla(5);
+		}
+		Regla[] expected = new Regla[26];
+		Regla[] result = Regla.CruceNPuntos(r1, r2, n);
+		
+		
+		/**
+		 * TODO: 
+		 */	
+
 	}
 
 }

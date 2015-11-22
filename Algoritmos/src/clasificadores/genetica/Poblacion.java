@@ -171,9 +171,28 @@ public class Poblacion {
                 i.mutar();
     }
     
-    public void cruceNPuntos(){
+    /**
+     * TODO: Vaya chapuza de método.
+     * @param nPuntos 
+     */
+    public void cruceNPuntos(int nPuntos){
         Random r = new Random(SEED);
-
+	Individuo i1,i2;
+	for (int i=0; i<size-size%2; i+=2){
+		i1 = this.getIndividuos().get(i);
+		i2 = this.getIndividuos().get(i+1);
+		int n = Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos);
+		
+		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos);
+		
+		Regla dst[] = new Regla[i1.getNumReglas()];
+		System.arraycopy(hijos, 0, dst,0, n);
+		i1.setReglas(dst);
+		
+		dst = new Regla[i2.getNumReglas()];
+		System.arraycopy(hijos,n , dst,0, i2.getNumReglas());
+		i2.setReglas(dst);
+	}
 	
     }
 }

@@ -6,7 +6,10 @@
 package clasificadores.genetica;
 
 import clasificadores.genetica.reemplazos.Reemplazo;
+import comparadores.ComparadorFitness;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
@@ -139,6 +142,10 @@ public class Poblacion {
      * 		null.
      */
     public static Poblacion join (Poblacion p1,Poblacion p2){
+	if (p1 == null && p2 != null) 
+		return p2;
+	if (p2 == null && p1 != null)
+		return p1;
 	if ( !((p1.getNumAtributos() == p2.getNumAtributos()) && (p1.getNumReglas() == p2.getNumReglas()) && (p1.probCruce == p2.probCruce) &&	 (p1.probMutacion == p2.probMutacion))) {
 		return null;
 	}
@@ -151,6 +158,12 @@ public class Poblacion {
 	return toret;
     }
     
+    public void OrdenarPorFitness(){
+	    if (!this.ordered) {
+		    Collections.sort(this.individuos, (Comparator) new ComparadorFitness());
+		    this.setOrdered(true);
+	    }
+    }
     public void mutacion(){
         Random r = new Random(SEED);
         for (Individuo i: individuos)

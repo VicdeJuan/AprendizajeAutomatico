@@ -1,9 +1,0 @@
-S: Conjunto de puntos p1 .. pn
-xi: Vector d-dimensional de características
-ci: Clase de pi
-
-Para cada p'=(x',c')
-    Comprobar la distancia d(x', xi) entre p' y todos los pi pertenecientes a S
-    Ordenar los pi de acuerdo a la clave d(x', xi)
-    Seleccionar los primeros k puntos de la lista ordenada
-    Asignar la clase de p' basandose en la mayoría de las ci de los k puntos

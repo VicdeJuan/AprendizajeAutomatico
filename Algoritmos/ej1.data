@@ -1,9 +1,0 @@
-6
-A,C,D,Class
-Nominal,Nominal,Nominal,Nominal
-1,c,4,pos
-a,3,d,pos
-1,3,4,neg
-a,c,4,neg
-a,c,d,pos
-1,c,4,pos

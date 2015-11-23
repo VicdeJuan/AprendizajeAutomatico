@@ -178,7 +178,6 @@ public class Poblacion {
      * @param nPuntos 
      */
     public void cruceNPuntos(int nPuntos){
-        Random r = new Random(SEED);
 	Individuo i1,i2;
 	for (int i=0; i<size-size%2; i+=2){
 		i1 = this.getIndividuos().get(i);

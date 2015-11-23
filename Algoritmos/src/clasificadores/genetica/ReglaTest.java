@@ -121,7 +121,7 @@ public class ReglaTest {
 		
 		int offset = 14;
 		System.arraycopy(r2, 0, expected, offset, idx[0]);
-		int a = idx[1];
+		
 		System.arraycopy(r1, idx[0], expected, offset+idx[0], 12-idx[0]);
 		
 		

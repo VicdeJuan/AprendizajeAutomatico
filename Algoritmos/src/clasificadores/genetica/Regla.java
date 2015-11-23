@@ -8,7 +8,6 @@ package clasificadores.genetica;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Collections;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
@@ -64,13 +63,7 @@ public class Regla {
 	
 	}
 	
-// la máscara es 0...d...011111... donde 
-	// 	d = 2*n-1, ya que cada atributo necesita 2 bits, salvo la clase que solo 1
-	private long buildTicTacMask(Integer n){
-		return (long) Math.pow(2, getBitsFromSize(n)+1)-1;
-	}
-
-	/**
+/**
 	 * Devuelve un long con todos sus bits 0's, salvo el bit dado por index,
 	 * 	que será un 1.
 	 * @param index	índice del bit para cambiar.
@@ -114,7 +107,7 @@ public class Regla {
 	}
         
         public void mutar(){
-            mutar((int) Math.round(Math.random()*getBitsFromSize(size)));
+            mutar(r.nextInt(getBitsFromSize(size)));
         }
 
 	/**

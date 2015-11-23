@@ -6,8 +6,11 @@
 package clasificadores.genetica.reemplazos;
 
 import clasificadores.genetica.Individuo;
+import static particionado.EstrategiaParticionado.SEED;
 import clasificadores.genetica.Poblacion;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -32,6 +35,7 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 	 */
 	
 	protected static Poblacion getElitistParents(Poblacion p1,double elitismo){
+		
 		Poblacion toret = new Poblacion(p1.getSize(), p1.getNumReglas(), p1.getNumAtributos(), p1.getProbMutacion(), p1.getProbCruce(),p1.getEstrategiaReemplazo(),p1.isOrdered(),p1.getNumReglasAleat());
  
 		int n = (int) Math.round(p1.getSize() * elitismo);
@@ -43,10 +47,11 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 			toret.setIndividuos(toadd);
 			toret.setSize(n);
 		}else{
+			Random r = new Random(SEED);
 			int j = 1;
 			for (Individuo i : individuos){
 				if (j>n) break;
-				if (Math.random() <= elitismo ){
+				if (r.nextDouble() <= elitismo ){
 					j++;
 					toadd.add(i);
 				}

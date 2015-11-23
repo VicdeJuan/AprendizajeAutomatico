@@ -80,13 +80,13 @@ public class IndividuoTest {
 		Regla[] rules = new Regla[1];
 		
 		rules[0] = r4;
-		Individuo instance = new Individuo(rules, 4, 1);
+		Individuo instance = new Individuo(rules, 4, 1,false);
 		
 		String result = instance.clasifica(row);
 		assertEquals("-", result);
 		
 		rules[0] = r5;
-		instance = new Individuo(rules, 4, 1);
+		instance = new Individuo(rules, 4, 1,false);
 		result = instance.clasifica(row);
 		assertEquals("+", result);
 		
@@ -105,13 +105,13 @@ public class IndividuoTest {
 		rules[1] = r2;
 		rules[2] = r3;
 		rules[3] = r4;
-		Individuo instance = new Individuo(rules, 4, 4);
+		Individuo instance = new Individuo(rules, 4, 4,false);
 		double result = instance.fitness(datos);
 		assertEquals(1, result, 0.0);
 
 	
 		rules[3] = r5;
-		instance = new Individuo(rules, 4, 4);
+		instance = new Individuo(rules, 4, 4,false);
 		result = instance.fitness(datos);
 		assertEquals(0.75, result, 0.0);
 	}

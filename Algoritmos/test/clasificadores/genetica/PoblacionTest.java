@@ -29,7 +29,7 @@ public class PoblacionTest {
 	public void testJoin() {
 		System.out.println("join");
 		Poblacion p1 = null;
-		Poblacion p2 = new Poblacion(0, 1, 2, 0.5, 0.5, new ReemplazoTotal(0.0), false);
+		Poblacion p2 = new Poblacion(0, 1, 2, 0.5, 0.5, new ReemplazoTotal(0.0), false,false);
 		Poblacion expected = p2;
 		
 		Poblacion result = Poblacion.join(p1, p2);

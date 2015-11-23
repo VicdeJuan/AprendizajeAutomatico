@@ -17,6 +17,7 @@ public class Individuo {
 	Regla[] reglas;
 	int numAtributos;
 	int numReglas;
+        boolean numReglasAleat;
 	public static final String DEFAULT_CLASS = "-";
 	double fitness;
 
@@ -40,11 +41,12 @@ public class Individuo {
 	 * @param nAtrib	Número de atrubutos.
 	 * @param nReglas 	Número de reglas.
 	 */
-	public Individuo(Regla[] rules, int nAtrib, int nReglas){
+	public Individuo(Regla[] rules, int nAtrib, int nReglas,boolean numReglasRandom){
 		reglas = rules;
 		numAtributos = nAtrib;
 		numReglas = nReglas;
 		fitness = 0.0;
+                numReglasAleat = numReglasRandom;
 	}
 	
 	public int getNumAtributos() {
@@ -70,13 +72,20 @@ public class Individuo {
 	 * @param numReglas Número de reglas para el individuo.
 	 * @param numAtributos Número de atributos (no de bits) que tienen las reglas.
 	 */	
-	public Individuo(int numReglas,int numAtributos){
-		reglas = new Regla[numReglas];
-		for (int i = 0; i < numReglas; i++)
+	public Individuo(int numReglas,int numAtributos,boolean numReglasRandom){
+            int nReglas;    
+            if (numReglasRandom){
+                nReglas = (int) Math.round(Math.random()*numReglas+1);
+            }else{
+                nReglas = numReglas;
+            }
+		reglas = new Regla[nReglas];
+		for (int i = 0; i < nReglas; i++)
 			reglas[i] = new Regla(numAtributos);
 		this.numAtributos = numAtributos;
 		this.numReglas = numReglas;
 		fitness = 0.0;
+                numReglasAleat = numReglasRandom;
 	}
 	
 	/**
@@ -122,24 +131,5 @@ public class Individuo {
         
     }
 
-/**
- * Rehacer el cruce en n puntos bien hecho.
- * @param i1
- * @param i2
- * @return 
- */
-    static Individuo Cruce1Punto(Individuo i1, Individuo i2){
-	Individuo toret = new Individuo(i1.getNumReglas(),i1.getNumAtributos());
-	int idx = (int) Math.round(Math.random()*i1.getNumReglas());
 
-	Regla[] reglaNueva = new Regla[i1.getNumReglas()];
-	int i = 0;
-	for (;i<idx;i++)
-		reglaNueva[i] = i1.reglas[i];
-	for (;i<i2.getNumReglas();i++)
-		reglaNueva[i] = i2.reglas[i];
-	
-	toret.setReglas(reglaNueva);
-	return toret;
-    }
 }

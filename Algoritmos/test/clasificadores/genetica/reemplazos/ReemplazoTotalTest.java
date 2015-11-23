@@ -22,8 +22,8 @@ public class ReemplazoTotalTest {
 	@Test
 	public void testReemplazar() {
 		System.out.println("Reemplazar");
-		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false);
-		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false);
+		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false);
+		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false);
 	
 			
 		/** Si el porcentaje de elitismo es 0, TODOS los vastagos 

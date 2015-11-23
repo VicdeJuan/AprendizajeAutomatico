@@ -29,6 +29,7 @@ public class Poblacion {
     int numAtributos;
     Reemplazo estrategiaReemplazo;
     boolean ordered;
+    boolean numReglasAleat;
 
 	public void setNumReglas(int numReglas) {
 		this.numReglas = numReglas;
@@ -120,15 +121,16 @@ public class Poblacion {
     * @param pCruc
     * @param reemplazoStrategy 	Objeto ya creado con una estrategia de reemplazo.
     */ 
-    public Poblacion(int n, int numReglas, int numAtrib,double pMut,double pCruc, Reemplazo reemplazoStrategy,boolean order){
+    public Poblacion(int n, int numReglas, int numAtrib,double pMut,double pCruc, Reemplazo reemplazoStrategy,boolean order,boolean sameNumReglas){
         individuos = new ArrayList<>(n);
         for (int i=0;i<n;i++)
-            individuos.add(new Individuo(numReglas, numAtrib));
+            individuos.add(new Individuo(numReglas, numAtrib,sameNumReglas));
         size = n;
         probMutacion=pMut;
         probCruce=pCruc;
 	estrategiaReemplazo = reemplazoStrategy;
 	ordered = order;
+        numReglasAleat = sameNumReglas;
     }
 
     /**
@@ -150,7 +152,7 @@ public class Poblacion {
 		return null;
 	}
 	    
-	Poblacion toret = new Poblacion(p1.size + p2.size, p1.getNumReglas() , p1.getNumAtributos(), p1.probMutacion, p1.probCruce,p1.getEstrategiaReemplazo(),false);
+	Poblacion toret = new Poblacion(p1.size + p2.size, p1.getNumReglas() , p1.getNumAtributos(), p1.probMutacion, p1.probCruce,p1.getEstrategiaReemplazo(),false,p1.getNumReglasAleat() || p1.getNumReglasAleat());
 	ArrayList<Individuo> toadd = new ArrayList<>();
 	toadd.addAll(p1.getIndividuos());
 	toadd.addAll(p2.getIndividuos());
@@ -194,5 +196,11 @@ public class Poblacion {
 		i2.setReglas(dst);
 	}
 	
+    }
+
+    public boolean getNumReglasAleat() {
+        
+        return this.numReglasAleat;
+        
     }
 }

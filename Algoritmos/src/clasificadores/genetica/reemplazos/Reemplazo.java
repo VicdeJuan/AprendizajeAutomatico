@@ -19,7 +19,7 @@ public interface Reemplazo {
 	 *
 	 * @param progenitores
 	 * @param vastagos
-	 * @return
+	 * @return	Una nueva Población acorde con lo implementado.
 	 */
 	public abstract Poblacion Reemplazar (Poblacion progenitores, Poblacion vastagos);
 	

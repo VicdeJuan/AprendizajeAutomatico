@@ -106,6 +106,7 @@ public class Individuo {
 		for (Regla regla : reglas) {
 			if (null != regla.match(Regla.convert(row))) {
 				retval = regla.get_class();
+				return retval;
 			}
 		}
 		return retval;
@@ -128,6 +129,7 @@ public class Individuo {
 			n++;
 		}
 		fitness = acum / n;
+		setFitness(fitness);
 		return acum / n;
 	}
 

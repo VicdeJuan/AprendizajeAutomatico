@@ -6,6 +6,8 @@
 package clasificadores.genetica.reemplazos;
 
 import clasificadores.genetica.Poblacion;
+import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,8 +24,8 @@ public class ReemplazoTotalTest {
 	@Test
 	public void testReemplazar() {
 		System.out.println("Reemplazar");
-		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false);
-		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false);
+		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false,new SeleccionProporcionalFitness());
+		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false,new SeleccionProporcionalFitness());
 	
 			
 		/** Si el porcentaje de elitismo es 0, TODOS los vastagos 

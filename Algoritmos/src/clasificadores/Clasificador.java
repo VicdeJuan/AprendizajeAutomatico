@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Datos.Datos;
+import clasificadores.genetica.reemplazos.ReemplazoTotal;
+import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
+
 import java.util.Random;
 import particionado.EstrategiaParticionado;
 import particionado.Particion;
@@ -127,8 +130,8 @@ abstract public class Clasificador {
 public static void main(String []args) {
 		
 	 
-	 Datos d = Datos.cargaDeFichero("wdbc.data");
-	 Clasificador c = new ClasificadorKNN(7);
+	 Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
+	 Clasificador c = new ClasificadorGenetico(10, 15, false, 0.8, 0.2, 0, new ReemplazoTotal(0), new SeleccionProporcionalFitness());
 	 EstrategiaParticionado part;
 	 int porc;
 	 boolean laplace;

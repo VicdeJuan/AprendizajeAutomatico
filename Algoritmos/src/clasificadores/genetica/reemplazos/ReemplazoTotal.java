@@ -22,7 +22,9 @@ public class ReemplazoTotal extends ReemplazoAbstract{
 	public Poblacion Reemplazar(Poblacion progenitores, Poblacion vastagos) {
 		Poblacion p1 = ReemplazoTotal.getElitistParents(progenitores,elitismo);
 		Poblacion p2 = ReemplazoTotal.getElitistParents(vastagos,1-elitismo);
-		return Poblacion.join(p1,p2);
+		Poblacion toret = Poblacion.join(p1,p2);
+
+		return toret;
 	}
 
 	public double getElitismo() {

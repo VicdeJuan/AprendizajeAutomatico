@@ -19,15 +19,15 @@ public class Regla {
 	
 	int size;
 	long regla;
-	private static final String clases[] = new String[]{"+", "-"};;
+	private static final String clases[] = new String[]{"negative","positive"};;
 	private static final HashMap<String,Long> nominal_to_bit = createNominal();
 	Random r = new Random();
 	
 	private static HashMap<String,Long> createNominal(){
 		HashMap<String,Long> nomin = new HashMap<>();
 		
-		nomin.put("c", 1L);
-		nomin.put("r", 2L);
+		nomin.put("o", 1L);
+		nomin.put("b", 2L);
 		nomin.put("x", 0L);
 		return nomin;
 	}
@@ -147,12 +147,12 @@ public class Regla {
 			if (nominal_to_bit.containsKey(val))
 				rule = rule << 2 | nominal_to_bit.get(val);
 			else{
-				if (fila.get(fila.size()-1) == clases[1] && val == clases[1]){
+				if ((fila.get(fila.size()-1).equals(clases[1])) && (val.equals(clases[1]))){
 					rule = rule << 1 | 1;
-				}else if (fila.get(fila.size()-1) == clases[0] && val == clases[0]){
+				}else if ((fila.get(fila.size()-1).equals(clases[0])) && (val.equals(clases[0]))){
 					rule = rule << 1;
 				} else {
-					System.out.println("Esto no deberÃ­a ocurrir nunca!!");
+					System.out.println("Esto no debería ocurrir nunca!!");
 				}
 			}
 		}
@@ -220,5 +220,10 @@ public class Regla {
 		}
 
 		return toret;
+	}
+
+	public static String[] getClases() {
+		
+		return clases;
 	}
 }

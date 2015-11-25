@@ -35,14 +35,24 @@ public class Poblacion {
     Seleccion estrategiaSeleccion;
     boolean ordered;
     boolean numReglasAleat;
-
+    boolean fitnessSetted;
+    
     /**
      * Getters y setters
      */
     
     
+    
 	public void setNumReglas(int numReglas) {
 		this.numReglas = numReglas;
+	}
+
+	public boolean isFitnessSetted() {
+		return fitnessSetted;
+	}
+
+	public void setFitnessSetted(boolean fitnessSetted) {
+		this.fitnessSetted = fitnessSetted;
 	}
 
 	public void setNumAtributos(int numAtributos) {
@@ -132,6 +142,7 @@ public class Poblacion {
 	public void setOrdered(boolean ordered) {
 		this.ordered = ordered;
 	}
+	
 
 	
     
@@ -158,6 +169,7 @@ public class Poblacion {
         ordered = order;
         numReglasAleat = numReglasRandom;
         estrategiaSeleccion = seleccionStrategy;
+        setFitnessSetted(false);
     }
     
     /**
@@ -175,6 +187,7 @@ public class Poblacion {
 		elitismo = p.elitismo;
 		numAtributos = p.numAtributos;
 		estrategiaSeleccion  = p.estrategiaSeleccion;
+		setFitnessSetted(p.isFitnessSetted());
     }
 
 	/**
@@ -200,7 +213,12 @@ public class Poblacion {
 	ArrayList<Individuo> toadd = new ArrayList<>();
 	toadd.addAll(p1.getIndividuos());
 	toadd.addAll(p2.getIndividuos());
+	toret.setFitnessSetted(true);
 	toret.setIndividuos(toadd);
+	if (p1.isOrdered() || p2.isOrdered()){
+		toret.setOrdered(false);
+		toret.OrdenarPorFitness();
+	}
 	return toret;
     }
     
@@ -215,16 +233,15 @@ public class Poblacion {
     	for (Individuo i : individuos){
     		i.fitness(datos.getDatos());
     	}
-    	if (this.isOrdered()){
-    		OrdenarPorFitness();
-    	}
+    	
+    	OrdenarPorFitness();
+    	
     }
 
 	public void OrdenarPorFitness(){
-	    if (!this.ordered) {
-		    Collections.sort(this.individuos, new ComparadorFitness());
-		    this.setOrdered(true);
-	    }
+		System.out.print("pre_ind: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
+	    Collections.sort(this.individuos, new ComparadorFitness());
+	    System.out.println(" - post_id: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
     }
     public void mutacion(){
         Random r = new Random(SEED);

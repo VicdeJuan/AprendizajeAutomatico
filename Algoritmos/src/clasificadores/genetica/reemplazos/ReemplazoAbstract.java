@@ -37,7 +37,7 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 	protected static Poblacion getElitistParents(Poblacion p1,double elitismo){
 		
 		Poblacion toret = new Poblacion(p1);
- 
+	
 		int n = (int) Math.round(p1.getSize() * elitismo);
 		ArrayList<Individuo> toadd = new ArrayList<>();
 		ArrayList<Individuo> individuos = p1.getIndividuos();
@@ -45,7 +45,7 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 			for (int i=0;i<n;i++)
 				toadd.add(individuos.get(i));
 			toret.setIndividuos(toadd);
-			toret.setSize(n);
+			toret.setSize(toadd.size());
 		}else{
 			Random r = new Random(SEED);
 			int j = 1;
@@ -57,7 +57,7 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 				}
 			}
 			toret.setIndividuos(toadd);
-			toret.setSize(n);
+			toret.setSize(toadd.size());
 		}
 		return toret;
 	}

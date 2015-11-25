@@ -13,6 +13,8 @@ public class SeleccionProporcionalFitness implements Seleccion {
 
 	@Override
 	public Poblacion seleccionar(Poblacion P) {
+		if (!P.isFitnessSetted())
+			return P;
 		Poblacion toret = new Poblacion(P);
 
 		double[] fitnesses = new double[P.getSize()];
@@ -27,16 +29,26 @@ public class SeleccionProporcionalFitness implements Seleccion {
 			acum += fitnesses[i];
 			randoms[i] = r.nextDouble();
 		}
+		randoms[P.getSize()-1] = 1;
+		
+		if(acum == 0)
+			return P;
 		
 		// Ordenamos por eficiencia de lo siguiente
 		Arrays.sort(randoms);
 		// Normalizamos, ya que random sólo devuelve entre 0 y 1.
-		for (int i = 0; i < P.getSize();i++)
-			fitnesses[i] = fitnesses[i] / acum;
+		for (int i = 0; i < P.getSize();i++){
+				fitnesses[i] = fitnesses[i] / acum;
+				if (i>0)
+					fitnesses[i] += fitnesses[i-1];
+		}
+		fitnesses[P.getSize()-1] = 1;
 		
 		// binarySearch busca binariamente y si no lo encuentra, devuelve el índice donde debería haber estado.
 		for(int i1=0;i1<P.getSize();i1++){
 			int idx = Arrays.binarySearch(fitnesses, randoms[i1]);
+			if (idx < 0)
+				idx = -(idx+1);
 			toretList.add(individuos.get(idx));
 		}
 		

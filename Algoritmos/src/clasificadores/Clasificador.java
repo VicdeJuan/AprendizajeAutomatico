@@ -131,30 +131,30 @@ public static void main(String []args) {
 		
 	 
 	 Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-	 Clasificador c = new ClasificadorGenetico(10, 15, false, 0.8, 0.2, 0, new ReemplazoTotal(0), new SeleccionProporcionalFitness());
+	 Clasificador c = new ClasificadorGenetico(100, 45, false, 1, 1, 0.1, new ReemplazoTotal(0.1), new SeleccionProporcionalFitness());
 	 EstrategiaParticionado part;
 	 int porc;
 	 boolean laplace;
 	 ArrayList<Double> errores;
      
-	 Scanner sc = new Scanner(System.in);
+	 //Scanner sc = new Scanner(System.in);
      System.out.println("Introduzca el tipo de validacion, S(simple) o C(cruzada)");
-	 String val = sc.nextLine();
+	 //String val = sc.nextLine();
+     String val = "S";
 	 if(val.equals("S")){
 		 part =  new ValidacionSimple ();
 		 System.out.println("Introduzca el porcentaje de train (entre cero y cien)");
-		  porc = sc.nextInt();
+		  //porc = sc.nextInt();
+		  porc = 15;
 		  System.out.println("El porcentaje de error en la única partición es:");
 	 }else{
 		 part =  new ValidacionCruzada ();
 		 System.out.println("Introduzca el numero k de particiones");
-		 porc = sc.nextInt();
-		 System.out.println("Para WKNN por atributos con 10 particiones y 7 vecinos");
-		 System.out.println("El porcentaje de errores por particion es el siguiente:");
+		 porc = 3;
 	 }
 	 errores = Clasificador.validacion(part, d, c,porc,true);
 
-	 sc.close();
+	 //sc.close();
 	 
 	 for(Double err : errores)
 		 System.out.println(err);

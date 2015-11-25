@@ -18,7 +18,7 @@ public class Individuo {
 	int numAtributos;
 	int numReglas;
 	boolean numReglasAleat;
-	public static final String DEFAULT_CLASS = "-";
+	public static final String DEFAULT_CLASS = "negative";
 	double fitness;
 
 	public Regla[] getReglas() {
@@ -102,7 +102,7 @@ public class Individuo {
 	 * @return
 	 */
 	public String clasifica(ArrayList<String> row) {
-		String retval = DEFAULT_CLASS;
+		String retval = Regla.getClases()[(int)Math.round(Math.random())];
 		for (Regla regla : reglas) {
 			if (null != regla.match(Regla.convert(row))) {
 				retval = regla.get_class();
@@ -123,14 +123,15 @@ public class Individuo {
 		double acum = 0;
 		int n = 0;
 		for (ArrayList<String> row : datos) {
-			if (this.clasifica(row) == row.get(row.size() - 1)) {
+			String a = row.get(row.size() - 1);
+			if (this.clasifica(row).equals(row.get(row.size() - 1))) {
 				acum++;
 			}
 			n++;
 		}
 		fitness = acum / n;
 		setFitness(fitness);
-		return acum / n;
+		return fitness;
 	}
 
 	void mutar() {
@@ -139,6 +140,19 @@ public class Individuo {
 
 		reglas[idx].mutar();
 
+	}
+	
+	@Override
+	public String toString() {
+		String toret = "{";
+		
+		toret +=  String.format("[número de reglas: %d] , ",this.numReglas);
+		toret +=  String.format("[número de Atributos %d] , ",this.numAtributos);
+		toret +=  String.format("[fitness %f] ,  ",this.fitness);
+		toret +=  "[default class: "+Individuo.getDEFAULT_CLASS() + "] ";
+		toret += "}";
+		
+		return toret;
 	}
 
 }

@@ -73,7 +73,8 @@ public class Datos {
 		
 	}
 	
-
+	
+	
 	public Datos extraeDatosTrain(Particion idx) {
 		
 		Datos datos = new Datos(idx.getIndicesTrain().size(),this.getTipoAtributos());

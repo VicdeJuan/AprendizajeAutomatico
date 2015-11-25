@@ -30,29 +30,36 @@ public class IndividuoTest {
 	Regla r5;
 	
 	private void testConstructor(){
+		/**
+		 * 	
+		nomin.put("o", 1L);
+		nomin.put("b", 2L);
+		nomin.put("x", 0L);
+
+		 */
+		datos1.add("o");
 		datos1.add("x");
-		datos1.add("x");
-		datos1.add("x");
-		datos1.add("+");
+		datos1.add("b");
+		datos1.add("positive");
 		r1 = Regla.convert(datos1);
+		datos2.add("b");
 		datos2.add("x");
-		datos2.add("x");
-		datos2.add("c");
-		datos2.add("+");
+		datos2.add("o");
+		datos2.add("negative");
 		
 		r2 = Regla.convert(datos2);
 		datos3.add("x");
-		datos3.add("c");
-		datos3.add("c");
-		datos3.add("-");
+		datos3.add("o");
+		datos3.add("b");
+		datos3.add("negative");
 		
 		r3 = Regla.convert(datos3);
-		datos4.add("c");
-		datos4.add("c");
-		datos4.add("c");
+		datos4.add("b");
+		datos4.add("o");
+		datos4.add("b");
 		datos5.addAll(datos4);
-		datos4.add("-");
-		datos5.add("+");
+		datos4.add("negative");
+		datos5.add("positive");
 		
 		r4 = Regla.convert(datos4);
 		r5 = Regla.convert(datos5);
@@ -79,12 +86,12 @@ public class IndividuoTest {
 		Individuo instance = new Individuo(rules, 4, 1,false);
 		
 		String result = instance.clasifica(row);
-		assertEquals("-", result);
+		assertEquals("negative", result);
 		
 		rules[0] = r5;
 		instance = new Individuo(rules, 4, 1,false);
 		result = instance.clasifica(row);
-		assertEquals("+", result);
+		assertEquals("positive", result);
 		
 	}
 

@@ -30,6 +30,12 @@ public class ReemplazoTotal extends ReemplazoAbstract{
 	public double getElitismo() {
 		return this.elitismo;
 	}
+	
+	@Override
+	public String toString() {
+		
+		return "Reemplazo Total";
+	}
 
 	
 }

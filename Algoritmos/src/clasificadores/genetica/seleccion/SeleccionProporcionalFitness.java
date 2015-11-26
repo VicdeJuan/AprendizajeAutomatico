@@ -36,7 +36,7 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		
 		// Ordenamos por eficiencia de lo siguiente
 		Arrays.sort(randoms);
-		// Normalizamos, ya que random sólo devuelve entre 0 y 1.
+		// Normalizamos, ya que random sï¿½lo devuelve entre 0 y 1.
 		for (int i = 0; i < P.getSize();i++){
 				fitnesses[i] = fitnesses[i] / acum;
 				if (i>0)
@@ -44,7 +44,7 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		}
 		fitnesses[P.getSize()-1] = 1;
 		
-		// binarySearch busca binariamente y si no lo encuentra, devuelve el índice donde debería haber estado.
+		// binarySearch busca binariamente y si no lo encuentra, devuelve el ï¿½ndice donde deberï¿½a haber estado.
 		for(int i1=0;i1<P.getSize();i1++){
 			int idx = Arrays.binarySearch(fitnesses, randoms[i1]);
 			if (idx < 0)
@@ -55,5 +55,10 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		toret.setIndividuos(toretList);
 		return toret;
 	
+	}
+	
+	@Override
+	public String toString() {
+		return "SelecciÃ³n proporcional al fitness";
 	}
 }

@@ -16,14 +16,15 @@ import comparadores.ComparadorFitness;
 public class ClasificadorGenetico extends Clasificador {
 
 	Individuo train_result;
-	int sizePoblacion,numReglas,numAtributos;
+	int sizePoblacion,numReglas,numAtributos,generaciones;
 	double pCruce,pMut,elit;
 	boolean numReglasAleat,ordered;
 	Reemplazo estrategiaReemplazo;
 	Seleccion estrategiaSeleccion;
 	
 	
-	public ClasificadorGenetico(int nPoblacion,int numReglas,boolean numReglasAleat, double pCruce, double pMut,double elit,Reemplazo reemplazoStrategy,Seleccion seleccionStrategy){
+	public ClasificadorGenetico(int generaciones,int nPoblacion,int numReglas, boolean numReglasAleat, double pCruce, double pMut,double elit,Reemplazo reemplazoStrategy,Seleccion seleccionStrategy){
+		this.generaciones = generaciones;
 		sizePoblacion = nPoblacion;
 		this.numReglas = numReglas;
 		this.numReglasAleat = numReglasAleat;
@@ -44,10 +45,10 @@ public class ClasificadorGenetico extends Clasificador {
 		Poblacion Pprime;
 		int i=0;
 		boolean debug = false;
-		while(i < 30){
+		while(i < this.generaciones){
 			if (debug) System.out.print(String.format("Ronda %d ->",i));
 			P.calcularFitness(datosTrain);
-			// Aquí ya está ordenado.
+			// Aquï¿½ ya estï¿½ ordenado.
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
 			Pprime.mutacion();
 			Pprime.cruceNPuntos(1);

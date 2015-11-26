@@ -93,6 +93,14 @@ public class Individuo {
 		numReglasAleat = numReglasRandom;
 	}
 
+	public Individuo(Individuo individuo) {
+		this.fitness = individuo.fitness;
+		this.numReglas = individuo.numReglas;
+		this.numAtributos = individuo.numAtributos;
+		setFitness(individuo.fitness);
+		setReglas(individuo.getReglas());
+	}
+
 	/**
 	 * Devuelve una clase para la fila dada. En caso de no matchear con ninguna
 	 * regla de las del individuo, se devolverá la clase dada por DEFAULT_CLASS

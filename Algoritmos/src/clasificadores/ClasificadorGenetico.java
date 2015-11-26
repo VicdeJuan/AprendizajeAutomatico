@@ -60,12 +60,11 @@ public class ClasificadorGenetico extends Clasificador {
 			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()) == P.getIndividuos().get(0));
 
 			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness());
+			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get(0).getFitness());
 		}
-		if (P.isOrdered())
-			train_result = P.getIndividuos().get(0);
-		else
-			train_result = Collections.max(P.getIndividuos(),new ComparadorFitness());
-		
+
+		train_result = P.getIndividuos().get(0);
+			
 		print_end_train();
 		
 	}

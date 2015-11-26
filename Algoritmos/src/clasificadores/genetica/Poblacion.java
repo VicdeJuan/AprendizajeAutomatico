@@ -33,7 +33,6 @@ public class Poblacion {
     int numAtributos;
     Reemplazo estrategiaReemplazo;
     Seleccion estrategiaSeleccion;
-    boolean ordered;
     boolean numReglasAleat;
     boolean fitnessSetted;
     
@@ -135,14 +134,7 @@ public class Poblacion {
 		this.estrategiaReemplazo = estrategiaReemplazo;
 	}
 
-	public boolean isOrdered() {
-		return ordered;
-	}
-	
-	public void setOrdered(boolean ordered) {
-		this.ordered = ordered;
-	}
-	
+
 
 	
     
@@ -166,7 +158,7 @@ public class Poblacion {
         probMutacion=pMut;
         probCruce=pCruc;
         estrategiaReemplazo = reemplazoStrategy;
-        ordered = order;
+
         numReglasAleat = numReglasRandom;
         estrategiaSeleccion = seleccionStrategy;
         setFitnessSetted(false);
@@ -182,7 +174,6 @@ public class Poblacion {
     	probMutacion = p.probMutacion;
 		probCruce = p.probCruce;
 		estrategiaReemplazo = p.estrategiaReemplazo;
-		ordered = p.ordered;
 		numReglasAleat = p.numReglasAleat;
 		elitismo = p.elitismo;
 		numAtributos = p.numAtributos;
@@ -211,14 +202,13 @@ public class Poblacion {
 	    
 	Poblacion toret = new Poblacion(p1.size + p2.size, p1.getNumReglas() , p1.getNumAtributos(), p1.probMutacion, p1.probCruce,p1.getEstrategiaReemplazo(),false,p1.getNumReglasAleat() || p1.getNumReglasAleat(),p1.getEstrategiaSeleccion());
 	ArrayList<Individuo> toadd = new ArrayList<>();
-	toadd.addAll(p1.getIndividuos());
-	toadd.addAll(p2.getIndividuos());
+	
+	toadd.addAll((ArrayList<Individuo>) p1.getIndividuos().clone());
+	toadd.addAll((ArrayList<Individuo>) p2.getIndividuos().clone());
 	toret.setFitnessSetted(true);
 	toret.setIndividuos(toadd);
-	if (p1.isOrdered() || p2.isOrdered()){
-		toret.setOrdered(false);
-		toret.OrdenarPorFitness();
-	}
+	toret.OrdenarPorFitness();
+
 	return toret;
     }
     
@@ -239,9 +229,20 @@ public class Poblacion {
     }
 
 	public void OrdenarPorFitness(){
-		System.out.print("pre_ind: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
-	    Collections.sort(this.individuos, new ComparadorFitness());
-	    System.out.println(" - post_id: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
+		//System.out.println("pre_ind: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
+		//Individuo imax = Collections.max(this.individuos,new ComparadorFitness());
+		//System.out.println(" - Is repeated? "+(individuos.indexOf(imax) == individuos.lastIndexOf(imax)));
+	    Collections.sort(this.individuos, new Comparator<Individuo>(){
+	    	@Override
+	    	public int compare (Individuo i1,Individuo i2){
+	    		return Double.compare(i2.getFitness(), i1.getFitness());
+	    	}	
+	    });
+	    
+	    //System.out.println(" - post_id: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
+	    //imax = Collections.max(this.individuos,new ComparadorFitness());
+		//System.out.println(" - Is repeated? "+(individuos.indexOf(imax) == individuos.lastIndexOf(imax)));
+	   
     }
     public void mutacion(){
         Random r = new Random(SEED);

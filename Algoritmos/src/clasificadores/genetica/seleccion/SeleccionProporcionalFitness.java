@@ -49,7 +49,7 @@ public class SeleccionProporcionalFitness implements Seleccion {
 			int idx = Arrays.binarySearch(fitnesses, randoms[i1]);
 			if (idx < 0)
 				idx = -(idx+1);
-			toretList.add(individuos.get(idx));
+			toretList.add(new Individuo(individuos.get(idx)));
 		}
 		
 		toret.setIndividuos(toretList);

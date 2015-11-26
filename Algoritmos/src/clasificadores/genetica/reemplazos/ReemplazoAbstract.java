@@ -41,24 +41,14 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 		int n = (int) Math.round(p1.getSize() * elitismo);
 		ArrayList<Individuo> toadd = new ArrayList<>();
 		ArrayList<Individuo> individuos = p1.getIndividuos();
-		if (p1.isOrdered()){
-			for (int i=0;i<n;i++)
-				toadd.add(individuos.get(i));
-			toret.setIndividuos(toadd);
-			toret.setSize(toadd.size());
-		}else{
-			Random r = new Random(SEED);
-			int j = 1;
-			for (Individuo i : individuos){
-				if (j>n) break;
-				if (r.nextDouble() <= elitismo ){
-					j++;
-					toadd.add(i);
-				}
-			}
-			toret.setIndividuos(toadd);
-			toret.setSize(toadd.size());
-		}
+		for (int i=0;i<n;i++)
+			toadd.add(new Individuo(individuos.get(i)));
+		toret.setIndividuos(toadd);
+		toret.setSize(toadd.size());
+					
+		toret.setIndividuos(toadd);
+		toret.setSize(toadd.size());
+		
 		return toret;
 	}
 

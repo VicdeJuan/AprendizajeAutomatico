@@ -131,7 +131,7 @@ public static void main(String []args) {
 		
 	 
 	 Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-	 Clasificador c = new ClasificadorGenetico(10,100, 45, false, 1, 1, 0.1, new ReemplazoTotal(0.1), new SeleccionProporcionalFitness());
+	 Clasificador c = new ClasificadorGenetico(5,100, 45, false, 1, 1, 0.1, new ReemplazoTotal(0.1), new SeleccionProporcionalFitness());
 	 EstrategiaParticionado part;
 	 int porc;
 	 boolean laplace;

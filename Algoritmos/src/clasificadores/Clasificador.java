@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Datos.Datos;
+import clasificadores.genetica.reemplazos.MejoresPorPeores;
 import clasificadores.genetica.reemplazos.ReemplazoTotal;
 import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
+import clasificadores.genetica.seleccion.SeleccionSimple;
 
 import java.util.Random;
 import particionado.EstrategiaParticionado;
@@ -131,7 +133,7 @@ public static void main(String []args) {
 		
 	 
 	 Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-	 Clasificador c = new ClasificadorGenetico(100, 45, false, 1, 1, 0.1, new ReemplazoTotal(0.1), new SeleccionProporcionalFitness());
+	 Clasificador c = new ClasificadorGenetico(4, 45, false, 1, 1, 0.1, new MejoresPorPeores(), new SeleccionSimple());
 	 EstrategiaParticionado part;
 	 int porc;
 	 boolean laplace;

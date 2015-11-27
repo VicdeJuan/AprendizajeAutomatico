@@ -51,7 +51,7 @@ public class Regla {
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
 		
 		size = n;
-		regla = ((long)(r.nextDouble()*(Math.pow(2,n)))-1);	
+		regla = ((long)Math.round((r.nextDouble()*(Math.pow(2,2*n)))-1));	
 		
 	}	
 

@@ -6,16 +6,9 @@
 package clasificadores.genetica.reemplazos;
 
 import clasificadores.genetica.Individuo;
-import static particionado.EstrategiaParticionado.SEED;
 import clasificadores.genetica.Poblacion;
-
 import java.util.ArrayList;
-import java.util.Random;
 
-/**
- *
- * @author victo
- */
 public abstract class ReemplazoAbstract implements Reemplazo{
 	double elitismo = 0;
 	
@@ -42,7 +35,7 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 		ArrayList<Individuo> toadd = new ArrayList<>();
 		ArrayList<Individuo> individuos = p1.getIndividuos();
 		for (int i=0;i<n;i++)
-			toadd.add(new Individuo(individuos.get(i)));
+			toadd.add(individuos.get(i));
 		toret.setIndividuos(toadd);
 		toret.setSize(toadd.size());
 					

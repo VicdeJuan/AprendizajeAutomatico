@@ -110,9 +110,10 @@ public class Individuo {
 	 * @return
 	 */
 	public String clasifica(ArrayList<String> row) {
-		String retval = Regla.getClases()[(int)Math.round(Math.random())];
+		String retval = getDEFAULT_CLASS();
+		Regla rule = Regla.convert(row);
 		for (Regla regla : reglas) {
-			if (null != regla.match(Regla.convert(row))) {
+			if (null != regla.match(rule)) {
 				retval = regla.get_class();
 				return retval;
 			}

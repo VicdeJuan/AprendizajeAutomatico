@@ -11,10 +11,7 @@ import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author victo
- */
+
 public class ReemplazoTotalTest {
 
 	
@@ -24,14 +21,16 @@ public class ReemplazoTotalTest {
 	@Test
 	public void testReemplazar() {
 		System.out.println("Reemplazar");
-		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false,new SeleccionProporcionalFitness());
-		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(0.0),false,false,new SeleccionProporcionalFitness());
+		Poblacion progenitores = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(),false,false,new SeleccionProporcionalFitness());
+		Poblacion vastagos = new Poblacion(2, 1, 1, 0.0, 0.0, new ReemplazoTotal(),false,false,new SeleccionProporcionalFitness());
 	
 			
 		/** Si el porcentaje de elitismo es 0, TODOS los vastagos 
 		 * 	sustituirán a todos los progenitores.
 		 */
-		ReemplazoTotal instance = new ReemplazoTotal(0.0);
+		ReemplazoTotal instance = new ReemplazoTotal();
+		progenitores.setElitismo(0);
+		vastagos.setElitismo(0);
 		Poblacion result = instance.Reemplazar(progenitores, vastagos);
 		Poblacion expected = vastagos;
 		// Sólo comparamos estos 3 campos porque todos los demás se comparan dentro de Poblacion.join
@@ -42,7 +41,9 @@ public class ReemplazoTotalTest {
 		/** Si el porcentaje de elitismo es 1, NINGÚN vastago 
 		 * 	sustituirán a ningún progenitor.
 		 */
-		instance = new ReemplazoTotal(1.0);
+		progenitores.setElitismo(1);
+		vastagos.setElitismo(1);
+		
 		result = instance.Reemplazar(progenitores, vastagos);
 		expected = progenitores;
 		assertEquals(expected.getSize(), result.getSize());

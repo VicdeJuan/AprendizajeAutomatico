@@ -7,10 +7,6 @@ package clasificadores.genetica.reemplazos;
 
 import clasificadores.genetica.Poblacion;
 
-/**
- *
- * @author vicdejuan
- */
 public interface Reemplazo {
 
 	

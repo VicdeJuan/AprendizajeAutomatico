@@ -91,6 +91,9 @@ public class Poblacion {
 	}
 
 	public void setElitismo(double elitismo) {
+		if (elitismo > 1){
+			System.err.println("Elitismo no puede ser mayor que 1");
+		}
 		this.elitismo = elitismo;
 	}
 
@@ -280,4 +283,15 @@ public class Poblacion {
         return this.numReglasAleat;
         
     }
+
+	public void crop(int newSize) {
+		if (this.individuos.size() < newSize)
+			return;
+		else{
+			for (int i = newSize;i<this.individuos.size();i++){
+				this.individuos.remove(i);
+			}
+			this.setSize(newSize);
+		}		
+	}
 }

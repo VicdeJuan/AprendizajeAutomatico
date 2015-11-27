@@ -11,7 +11,7 @@ public class MejoresPorPeores extends ReemplazoAbstract {
 
 		toret = Poblacion.join(vastagos, progenitores);
 		toret.crop(progenitores.getSize());
-		
+		toret.setElitismo(progenitores.getElitismo());
 		return toret;
 	}
 

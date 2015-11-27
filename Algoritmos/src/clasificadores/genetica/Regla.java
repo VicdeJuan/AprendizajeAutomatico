@@ -106,8 +106,11 @@ public class Regla {
 		set(index,(regla & (just1at(index))) == just1at(index));
 	}
         
-        public void mutar(){
-            mutar(r.nextInt(getBitsFromSize(size)));
+        public void mutar(double prob){
+        	for (int i=0;i<getBitsFromSize(this.size);i++){
+        		if (r.nextDouble() <= prob)
+        			mutar(i);
+        	}
         }
 
 	/**
@@ -158,6 +161,23 @@ public class Regla {
 		}
 		
 		return new Regla(n,rule);
+	}
+	
+	
+	public static Long getBitsFromStr(String val){
+		if (nominal_to_bit.containsKey(val))
+			return nominal_to_bit.get(val);
+		else{
+			if (val.equals(clases[1])){
+				return 1L;
+			}else if (val.equals(clases[0])){
+				return 0L;
+			} else {
+				System.err.println("Esto no debería ocurrir nunca!!");
+				return 0L;
+			}
+		}
+		
 	}
 
 	

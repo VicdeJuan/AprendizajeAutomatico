@@ -27,7 +27,7 @@ public class ReglaTest {
 		System.out.println("mutar");
 		int index = 0;
 		Regla instance = new Regla(2);
-		assertTrue(instance.regla <= 4);
+		assertTrue(instance.regla <= 16-1);
 		long val = instance.regla % 2;
 		instance.mutar(index);
 		// La paridad cambia al mutar 1 bit.

@@ -13,8 +13,7 @@ public class SeleccionProporcionalFitness implements Seleccion {
 
 	@Override
 	public Poblacion seleccionar(Poblacion P) {
-		if (!P.isFitnessSetted())
-			return P;
+
 		Poblacion toret = new Poblacion(P);
 
 		double[] fitnesses = new double[P.getSize()];

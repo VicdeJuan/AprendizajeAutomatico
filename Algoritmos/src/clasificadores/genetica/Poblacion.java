@@ -26,7 +26,7 @@ public class Poblacion {
     double elitismo;
     int size;
     ArrayList<Individuo> individuos;
-    int cruce;
+ 
     double probCruce;
     double probMutacion;
     int numReglas;
@@ -34,7 +34,7 @@ public class Poblacion {
     Reemplazo estrategiaReemplazo;
     Seleccion estrategiaSeleccion;
     boolean numReglasAleat;
-    boolean fitnessSetted;
+
     
     /**
      * Getters y setters
@@ -46,13 +46,6 @@ public class Poblacion {
 		this.numReglas = numReglas;
 	}
 
-	public boolean isFitnessSetted() {
-		return fitnessSetted;
-	}
-
-	public void setFitnessSetted(boolean fitnessSetted) {
-		this.fitnessSetted = fitnessSetted;
-	}
 
 	public void setNumAtributos(int numAtributos) {
 		this.numAtributos = numAtributos;
@@ -78,9 +71,6 @@ public class Poblacion {
 		return individuos;
 	}
 
-	public int getCruce() {
-		return cruce;
-	}
 
 	public double getProbCruce() {
 		return probCruce;
@@ -105,9 +95,7 @@ public class Poblacion {
 		this.individuos = individuos;
 	}
 
-	public void setCruce(int cruce) {
-		this.cruce = cruce;
-	}
+
 
 	public void setProbCruce(double probCruce) {
 		this.probCruce = probCruce;
@@ -164,7 +152,6 @@ public class Poblacion {
 
         numReglasAleat = numReglasRandom;
         estrategiaSeleccion = seleccionStrategy;
-        setFitnessSetted(false);
     }
     
     /**
@@ -181,7 +168,6 @@ public class Poblacion {
 		elitismo = p.elitismo;
 		numAtributos = p.numAtributos;
 		estrategiaSeleccion  = p.estrategiaSeleccion;
-		setFitnessSetted(p.isFitnessSetted());
     }
 
 	/**
@@ -208,8 +194,9 @@ public class Poblacion {
 	
 	toadd.addAll((ArrayList<Individuo>) p1.getIndividuos().clone());
 	toadd.addAll((ArrayList<Individuo>) p2.getIndividuos().clone());
-	toret.setFitnessSetted(true);
 	toret.setIndividuos(toadd);
+	toret.setSize(toadd.size());
+	toret.setElitismo(p1.getElitismo());
 	toret.OrdenarPorFitness();
 
 	return toret;
@@ -250,8 +237,7 @@ public class Poblacion {
     public void mutacion(){
         Random r = new Random(SEED);
         for (Individuo i: individuos)
-            if (r.nextDouble() >= probMutacion)
-                i.mutar();
+                i.mutar(probMutacion);
     }
     
     /**

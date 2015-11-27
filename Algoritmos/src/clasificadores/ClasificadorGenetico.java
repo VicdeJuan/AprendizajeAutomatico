@@ -46,21 +46,25 @@ public class ClasificadorGenetico extends Clasificador {
 		boolean debug = false;
 		while(i < 30){
 			if (debug) System.out.print(String.format("Ronda %d ->",i));
+			//System.out.println("\tMax_prev: " + P.getIndividuos().get(0).getFitness());
 			P.calcularFitness(datosTrain);
+			//System.out.println("\tMax_post: " + P.getIndividuos().get(0).getFitness());
 			// Aquí ya está ordenado.
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
+
 			Pprime.mutacion();
 			Pprime.cruceNPuntos(1);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
-			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get((int) Math.round(Math.random()*(P.getSize()-2))).getFitness());
+			
 			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
 			P.OrdenarPorFitness();
 			i++;
+			
 			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()) == P.getIndividuos().get(0));
-
+			if (debug) System.out.println("elit: " + P.getElitismo() + "\t elit'" + Pprime.getElitismo());
 			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness());
-			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get(0).getFitness());
+			if(debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get(0).getFitness());
 		}
 
 		train_result = P.getIndividuos().get(0);
@@ -76,6 +80,7 @@ public class ClasificadorGenetico extends Clasificador {
 		toprint += train_result.toString();
 		
 		System.out.println(toprint);
+		System.out.println("SEED: " + SEED);
 		
 	}
 

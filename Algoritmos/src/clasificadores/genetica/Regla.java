@@ -28,7 +28,7 @@ public class Regla {
 		
 		nomin.put("o", 1L);
 		nomin.put("b", 2L);
-		nomin.put("x", 0L);
+		nomin.put("x", 4L);
 		return nomin;
 	}
 	
@@ -38,7 +38,7 @@ public class Regla {
 	 * @return 
 	 */
 	public int getBitsFromSize(int n){
-		return n*2-1;
+		return n*3-2;
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class Regla {
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
 		
 		size = n;
-		regla = ((long)(r.nextDouble()*(Math.pow(2,n)))-1);	
+		regla = ((long)(r.nextDouble()*(Math.pow(2,3*n)))-1);	
 		
 	}	
 
@@ -87,7 +87,6 @@ public class Regla {
 	 * @param value valor binario que asignar.
 	 */
 	public void set(int index, boolean value){
-		// revisar el >> (ha sido triplazo)
 		if (!value) {
 			regla |= just1at(index);
 		} else {
@@ -145,14 +144,14 @@ public class Regla {
 		for (int i=0; i<fila.size();i++){
 			val = fila.get(i);
 			if (nominal_to_bit.containsKey(val))
-				rule = rule << 2 | nominal_to_bit.get(val);
+				rule = (rule << 3) | nominal_to_bit.get(val);
 			else{
 				if ((fila.get(fila.size()-1).equals(clases[1])) && (val.equals(clases[1]))){
-					rule = rule << 1 | 1;
+					rule = (rule << 1) | 1;
 				}else if ((fila.get(fila.size()-1).equals(clases[0])) && (val.equals(clases[0]))){
 					rule = rule << 1;
 				} else {
-					System.out.println("Esto no deber�a ocurrir nunca!!");
+					System.out.println("Esto no deber�a ocurrir nunca!!");
 				}
 			}
 		}

@@ -27,12 +27,11 @@ public class ReglaTest {
 		System.out.println("mutar");
 		int index = 0;
 		Regla instance = new Regla(2);
-		assertTrue(instance.regla <= 4);
+		assertTrue(instance.regla <= 32-1);
 		long val = instance.regla % 2;
 		instance.mutar(index);
 		// La paridad cambia al mutar 1 bit.
 		assertTrue((val +1) %2 == instance.regla%2);
-		// TODO review the generated test code and remove the default call to fail.
 	}
 
 	/**
@@ -58,11 +57,11 @@ public class ReglaTest {
 	public void testConvert() {
 		System.out.println("convert");
 		ArrayList<String> fila = new ArrayList<>();
-		fila.add("b"); //Corresponde a 10 (que será desplazado 3 veces)
-		fila.add("x"); //Corresponde a 00 (que será desplazado 2 veces)
-		fila.add("o"); //Corresponde a 01 (que será desplazado 1 vez)
+		fila.add("b"); //Corresponde a 010 (que será desplazado 3 veces)
+		fila.add("x"); //Corresponde a 100 (que será desplazado 2 veces)
+		fila.add("o"); //Corresponde a 001 (que será desplazado 1 vez)
 		fila.add("negative"); //Corresponde a 0 (que no será desplazado)
-		Regla expResult = new Regla(4,2+64);
+		Regla expResult = new Regla(4,(long) (2+Math.pow(2,6)+Math.pow(2, 8)));
 		Regla result = Regla.convert(fila);
 		assertEquals(expResult.regla, result.regla);
 		assertEquals(expResult.size, result.size);

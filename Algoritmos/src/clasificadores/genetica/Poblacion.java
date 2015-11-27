@@ -34,7 +34,7 @@ public class Poblacion {
     Reemplazo estrategiaReemplazo;
     Seleccion estrategiaSeleccion;
     boolean numReglasAleat;
-    boolean fitnessSetted;
+
     
     /**
      * Getters y setters
@@ -44,14 +44,6 @@ public class Poblacion {
     
 	public void setNumReglas(int numReglas) {
 		this.numReglas = numReglas;
-	}
-
-	public boolean isFitnessSetted() {
-		return fitnessSetted;
-	}
-
-	public void setFitnessSetted(boolean fitnessSetted) {
-		this.fitnessSetted = fitnessSetted;
 	}
 
 	public void setNumAtributos(int numAtributos) {
@@ -161,7 +153,7 @@ public class Poblacion {
 
         numReglasAleat = numReglasRandom;
         estrategiaSeleccion = seleccionStrategy;
-        setFitnessSetted(false);
+
     }
     
     /**
@@ -178,7 +170,7 @@ public class Poblacion {
 		elitismo = p.elitismo;
 		numAtributos = p.numAtributos;
 		estrategiaSeleccion  = p.estrategiaSeleccion;
-		setFitnessSetted(p.isFitnessSetted());
+
     }
 
 	/**
@@ -205,8 +197,9 @@ public class Poblacion {
 	
 	toadd.addAll((ArrayList<Individuo>) p1.getIndividuos().clone());
 	toadd.addAll((ArrayList<Individuo>) p2.getIndividuos().clone());
-	toret.setFitnessSetted(true);
+
 	toret.setIndividuos(toadd);
+	toret.setElitismo(p1.getElitismo());
 	toret.OrdenarPorFitness();
 
 	return toret;

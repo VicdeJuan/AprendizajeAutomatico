@@ -154,8 +154,8 @@ public class Individuo {
 	public String toString() {
 		String toret = "{";
 		
-		toret +=  String.format("[número de reglas: %d] , ",this.numReglas);
-		toret +=  String.format("[número de Atributos %d] , ",this.numAtributos);
+		toret +=  String.format("[numero de reglas: %d] , ",this.numReglas);
+		toret +=  String.format("[numero de Atributos %d] , ",this.numAtributos);
 		toret +=  String.format("[fitness %f] ,  ",this.fitness);
 		toret +=  "[default class: "+Individuo.getDEFAULT_CLASS() + "] ";
 		toret += "}";

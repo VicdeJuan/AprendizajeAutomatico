@@ -39,15 +39,17 @@ public abstract class ReemplazoAbstract implements Reemplazo{
 		Poblacion toret = new Poblacion(p1);
 	
 		int n = (int) Math.round(p1.getSize() * elitismo);
+		if (n == 0)
+			System.out.println("Error3");
 		ArrayList<Individuo> toadd = new ArrayList<>();
 		ArrayList<Individuo> individuos = p1.getIndividuos();
 		for (int i=0;i<n;i++)
 			toadd.add(new Individuo(individuos.get(i)));
+		
 		toret.setIndividuos(toadd);
+		toret.setElitismo(elitismo);
 		toret.setSize(toadd.size());
 					
-		toret.setIndividuos(toadd);
-		toret.setSize(toadd.size());
 		
 		return toret;
 	}

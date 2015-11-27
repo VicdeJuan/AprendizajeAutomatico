@@ -56,9 +56,12 @@ public class ClasificadorGenetico extends Clasificador {
 		}
 		
 		
-		
+
 		Poblacion P = new Poblacion(sizePoblacion, numReglas, numAtributos, pMut, pCruce, estrategiaReemplazo, ordered, numReglasAleat,estrategiaSeleccion);
 		P.setElitismo(elit);
+
+		if (P.getElitismo() == 0)
+			System.out.println("Error8");
 		Poblacion Pprime;
 		int i=0;
 		boolean debug = false;
@@ -66,21 +69,36 @@ public class ClasificadorGenetico extends Clasificador {
 		while(i < this.generaciones){
 			if (debug) System.out.print(String.format("Ronda %d ->",i));
 			P.calcularFitness(datosTrain);
+
+			if (P.getElitismo() == 0)
+				System.out.println("Error7");
 			// Aqu� ya est� ordenado.
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
+			if (Pprime.getIndividuos().get(0).getFitness() != P.getIndividuos().get(0).getFitness())
+				System.out.println("Error1");
 			Pprime.mutacion();
-			Pprime.cruceNPuntos(1);
+			Pprime.cruceNPuntos(2);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
-			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get((int) Math.round(Math.random()*(P.getSize()-2))).getFitness());
+
+			if (Pprime.getElitismo() == 0)
+				System.out.println("Error6");
+			max = P.getIndividuos().get(0).getFitness();
+			double maxP = Pprime.getIndividuos().get(0).getFitness();
+		
 			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
 			P.OrdenarPorFitness();
+			if (P.getElitismo() == 0)
+				System.out.println("Error5");
 			i++;
-			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()) == P.getIndividuos().get(0));
-			max = P.getIndividuos().get(0).getFitness();
+			double maxPP = Pprime.getIndividuos().get(0).getFitness();
+			if (maxPP != maxP && maxPP != max)
+				System.out.println("Error2");
+			
 			min = P.getIndividuos().get(P.getSize()-1).getFitness();
 			media = P.getMedia();
 			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f",i,max,media,min));
+
 			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness());
 			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get(0).getFitness());
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import junit.framework.Assert;
 import clasificadores.genetica.Individuo;
 import clasificadores.genetica.Poblacion;
 import static particionado.EstrategiaParticionado.SEED;
@@ -13,23 +14,29 @@ public class SeleccionProporcionalFitness implements Seleccion {
 
 	@Override
 	public Poblacion seleccionar(Poblacion P) {
-		if (!P.isFitnessSetted())
-			return P;
+
 		Poblacion toret = new Poblacion(P);
 
-		double[] fitnesses = new double[P.getSize()];
-		double[] randoms = new double[P.getSize()];
 		ArrayList<Individuo> individuos = P.getIndividuos();
 		ArrayList<Individuo> toretList = new ArrayList<>(P.getSize());
+		
+		int n = (int) Math.round(P.getElitismo()*P.getSize());
+		if (n == 0)
+			System.out.println("Error4");
+		int N = P.getSize()-n;
+		double[] fitnesses = new double[N];
+		double[] randoms = new double[N];
+		
+		
 		double acum = 0;
 		Random r = new Random(SEED);
 		// Creamos las variables necesarias;
-		for (int i = 0; i < P.getSize();i++){
+		for (int i = 0; i < N;i++){
 			fitnesses[i] = individuos.get(i).getFitness();
 			acum += fitnesses[i];
 			randoms[i] = r.nextDouble();
 		}
-		randoms[P.getSize()-1] = 1;
+		randoms[N-1] = 1;
 		
 		if(acum == 0)
 			return P;
@@ -37,15 +44,19 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		// Ordenamos por eficiencia de lo siguiente
 		Arrays.sort(randoms);
 		// Normalizamos, ya que random s�lo devuelve entre 0 y 1.
-		for (int i = 0; i < P.getSize();i++){
+		for (int i = 0; i < N;i++){
 				fitnesses[i] = fitnesses[i] / acum;
 				if (i>0)
 					fitnesses[i] += fitnesses[i-1];
 		}
-		fitnesses[P.getSize()-1] = 1;
+		fitnesses[N-1] = 1;
+		
+		// Añadimos los élites:
+		for(int i = 0; i<n;i++)
+			toretList.add(new Individuo(individuos.get(i)));
 		
 		// binarySearch busca binariamente y si no lo encuentra, devuelve el �ndice donde deber�a haber estado.
-		for(int i1=0;i1<P.getSize();i1++){
+		for(int i1=0;i1<N;i1++){
 			int idx = Arrays.binarySearch(fitnesses, randoms[i1]);
 			if (idx < 0)
 				idx = -(idx+1);
@@ -53,6 +64,8 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		}
 		
 		toret.setIndividuos(toretList);
+		toret.setSize(toretList.size());
+		toret.OrdenarPorFitness();
 		return toret;
 	
 	}

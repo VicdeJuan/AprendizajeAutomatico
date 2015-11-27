@@ -21,7 +21,7 @@ public class Individuo {
 	int numAtributos;
 	int numReglas;
 	boolean numReglasAleat;
-	public static String DEFAULT_CLASS = "";
+	public static String DEFAULT_CLASS = "positive";
 	double fitness;
 
 	public void setDefault(String def){

@@ -94,7 +94,7 @@ public class ClasificadorGenetico extends Clasificador {
 
 		train_result = P.getIndividuos().get(0);
 			
-		train_result.setDefault("negative");
+
 		print_end_train();
 		
 	}

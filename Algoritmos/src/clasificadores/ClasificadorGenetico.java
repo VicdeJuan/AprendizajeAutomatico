@@ -44,31 +44,57 @@ public class ClasificadorGenetico extends Clasificador {
 		Poblacion Pprime;
 		int i=0;
 		boolean debug = false;
-		while(i < 30){
-			if (debug) System.out.print(String.format("Ronda %d ->",i));
-			//System.out.println("\tMax_prev: " + P.getIndividuos().get(0).getFitness());
+		while(i < 100){
+			System.out.print(String.format("Ronda %d ->",i));
+			
+			double preFit = P.getIndividuos().get(0).getFitness();
 			P.calcularFitness(datosTrain);
-			//System.out.println("\tMax_post: " + P.getIndividuos().get(0).getFitness());
+			double postFit= P.getIndividuos().get(0).getFitness();
+			if (preFit > postFit)
+				System.out.println("Error Fit");
 			// Aquí ya está ordenado.
+			
+			
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
-
-			Pprime.mutacion();
+					preFit = P.getIndividuos().get(0).getFitness();
+					P.calcularFitness(datosTrain);
+					postFit= P.getIndividuos().get(0).getFitness();
+					if (preFit > postFit)
+						System.out.println("Error Fit 2");
+			
+			Pprime.mutacion();	
+					preFit = P.getIndividuos().get(0).getFitness();
+					P.calcularFitness(datosTrain);
+					postFit= P.getIndividuos().get(0).getFitness();
+					if (preFit > postFit)
+						System.out.println("Error Fit 3");
+			
 			Pprime.cruceNPuntos(1);
+			Pprime.cruceNPuntos(2);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
 			
-			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
-			P.OrdenarPorFitness();
-			i++;
+		
+					double preReemplazo = P.getIndividuos().get(0).getFitness();
+					P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
+					P.OrdenarPorFitness();
+					double postReemplazo = P.getIndividuos().get(0).getFitness();
+
+			
+			
+					if (preReemplazo > postReemplazo)
+							System.out.println("Error Reemp");
 			
 			if (debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()) == P.getIndividuos().get(0));
 			if (debug) System.out.println("elit: " + P.getElitismo() + "\t elit'" + Pprime.getElitismo());
 			System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness());
 			if(debug) System.out.println(Collections.max(P.getIndividuos(),new ComparadorFitness()).getFitness() == P.getIndividuos().get(0).getFitness());
+			i++;
 		}
 
 		train_result = P.getIndividuos().get(0);
 			
+		train_result.setDefault("negative");
 		print_end_train();
 		
 	}

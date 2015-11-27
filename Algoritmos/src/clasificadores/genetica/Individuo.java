@@ -21,9 +21,12 @@ public class Individuo {
 	int numAtributos;
 	int numReglas;
 	boolean numReglasAleat;
-	public static final String DEFAULT_CLASS = "negative";
+	public static String DEFAULT_CLASS = "";
 	double fitness;
 
+	public void setDefault(String def){
+		DEFAULT_CLASS = def;
+	}
 	public Regla[] getReglas() {
 		return reglas;
 	}
@@ -97,12 +100,14 @@ public class Individuo {
 		numReglasAleat = numReglasRandom;
 	}
 
-	public Individuo(Individuo individuo) {
-		this.fitness = individuo.fitness;
-		this.numReglas = individuo.numReglas;
-		this.numAtributos = individuo.numAtributos;
-		setFitness(individuo.fitness);
-		setReglas(individuo.getReglas());
+	public Individuo(Individuo individuo){
+		this(individuo.numReglas,individuo.numAtributos,individuo.numReglasAleat);
+		this.setFitness(individuo.fitness);
+		reglas = new Regla[individuo.numReglas];
+		for (int i = 0; i < individuo.numReglas; i++)
+			reglas[i] = new Regla(numAtributos,individuo.getReglas()[i].regla);
+		this.setReglas(reglas);
+		this.ContruirRmasRmenos();
 	}
 	/**
 	 *
@@ -208,7 +213,7 @@ public class Individuo {
 		return fitness;
 	}
 
-	void mutar(double prob) {
+	public void mutar(double prob) {
 
 		for (int idx = 0; idx<numReglas;idx++)
 			reglas[idx].mutar(prob);

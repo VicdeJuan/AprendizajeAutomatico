@@ -154,21 +154,8 @@ public class Poblacion {
         estrategiaSeleccion = seleccionStrategy;
     }
     
-    /**
-     * Crea una nueva población SIN INDIVIDUOS manteniendo los atributos de la dada como argumento.
-     * @param p	Población con los datos que tomar como base.
-     */
 
-    public Poblacion(Poblacion p) {
-    	size = p.size;
-    	probMutacion = p.probMutacion;
-		probCruce = p.probCruce;
-		estrategiaReemplazo = p.estrategiaReemplazo;
-		numReglasAleat = p.numReglasAleat;
-		elitismo = p.elitismo;
-		numAtributos = p.numAtributos;
-		estrategiaSeleccion  = p.estrategiaSeleccion;
-    }
+
 
 	/**
      * Devuelve la combinación de 2 poblaciones. La nueva población NO estará
@@ -235,7 +222,6 @@ public class Poblacion {
 	   
     }
     public void mutacion(){
-        Random r = new Random(SEED);
         for (Individuo i: individuos)
                 i.mutar(probMutacion);
     }

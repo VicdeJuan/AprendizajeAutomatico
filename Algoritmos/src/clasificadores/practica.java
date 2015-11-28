@@ -24,7 +24,7 @@ public class practica {
 	public static void main(String[] args) {
 			
 
-		String filename ="eikase";
+		String filename ="Resultados";
 		
 		PrintWriter writer;
 		try {
@@ -46,7 +46,7 @@ public class practica {
 		String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
-			msg += getMsgFromClasificar(100,100,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(100,100,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
 		}
 		
 		msg += "\nApartado 2:\n";

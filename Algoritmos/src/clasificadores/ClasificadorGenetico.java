@@ -39,7 +39,7 @@ public class ClasificadorGenetico extends Clasificador {
 		estrategiaReemplazo = reemplazoStrategy;
 		estrategiaSeleccion = seleccionStrategy;
 		train_result = null;
-		filename = String.format("g%d_p%d_%s_%s.res",generaciones,sizePoblacion,estrategiaReemplazo,estrategiaSeleccion);
+		filename = String.format("g%d_p%d_%s_%s_reg%d.res",generaciones,sizePoblacion,estrategiaReemplazo,estrategiaSeleccion,numReglas);
 
 	}
 	

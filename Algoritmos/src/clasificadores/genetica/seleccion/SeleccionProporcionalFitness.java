@@ -67,6 +67,7 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		
 		toret.setIndividuos(toretList);
 		toret.setSize(toretList.size());
+		toret.setElitismo(P.getElitismo());
 		toret.OrdenarPorFitness();
 		return toret;
 	

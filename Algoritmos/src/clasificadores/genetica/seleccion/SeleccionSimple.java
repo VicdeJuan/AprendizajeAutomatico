@@ -29,5 +29,10 @@ public class SeleccionSimple implements Seleccion {
 		
 		return toret;
 	}
+	
+	@Override
+	public String toString() {
+		return "Selección simple";
+	}
 
 }

@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 import Datos.Datos;
 import clasificadores.genetica.reemplazos.MejoresPorPeores;
+import clasificadores.genetica.reemplazos.ReemplazoTotal;
 import clasificadores.genetica.seleccion.SeleccionGreedy;
+import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
 import clasificadores.genetica.seleccion.SeleccionSimple;
 import particionado.EstrategiaParticionado;
 import particionado.Particion;
@@ -138,8 +140,8 @@ abstract public class Clasificador {
 	public static void main(String[] args) {
 
 		Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-		Clasificador c = new ClasificadorGenetico(75,50, 8, false, 0.1, 0.6, 0.2, new MejoresPorPeores(),
-				new SeleccionGreedy());
+		Clasificador c = new ClasificadorGenetico(1000,500, 16, false, 0.01, 0.6, 0.05, new MejoresPorPeores(),
+				new SeleccionProporcionalFitness());
 		EstrategiaParticionado part;
 		int porc;
 
@@ -148,7 +150,7 @@ abstract public class Clasificador {
 	 //Scanner sc = new Scanner(System.in);
      System.out.println("Introduzca el tipo de validacion, S(simple) o C(cruzada)");
 	 //String val = sc.nextLine();
-     String val = "S";
+     String val = "C";
 	 if(val.equals("S")){
 		 part =  new ValidacionSimple ();
 		 System.out.println("Introduzca el porcentaje de train (entre cero y cien)");
@@ -158,7 +160,7 @@ abstract public class Clasificador {
 	 }else{
 		 part =  new ValidacionCruzada ();
 		 System.out.println("Introduzca el numero k de particiones");
-		 porc = 3;
+		 porc = 5;
 	 }
 	 errores = Clasificador.validacion(part, d, c,porc,true);
 

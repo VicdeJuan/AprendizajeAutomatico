@@ -18,4 +18,8 @@ public class MejoresPorPeores extends ReemplazoAbstract {
 		return toret;
 	}
 
+	@Override
+	public String toString() {
+		return "Mejores por peores";
+	}
 }

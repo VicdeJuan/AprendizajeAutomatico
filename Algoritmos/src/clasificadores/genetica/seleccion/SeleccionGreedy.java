@@ -24,5 +24,10 @@ public class SeleccionGreedy implements Seleccion {
 		
 		return toret;
 	}
+	
+	@Override
+	public String toString() {
+		return "Selección avariciosa";
+	}
 
 }

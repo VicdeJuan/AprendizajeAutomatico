@@ -10,10 +10,7 @@ import java.util.Arrays;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
-/**
- *
- * @author vicdejuan
- */
+
 public class Individuo {
 	Regla[] reglas;
 	Regla[] rmas;

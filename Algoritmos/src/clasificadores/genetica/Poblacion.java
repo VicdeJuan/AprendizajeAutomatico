@@ -17,10 +17,7 @@ import Datos.Datos;
 
 import static particionado.EstrategiaParticionado.SEED;
 
-/**
- *
- * @author vicdejuan
- */
+
 public class Poblacion {
 
     double elitismo;
@@ -129,16 +126,16 @@ public class Poblacion {
 	
     
    /**
-    * Crea una nueva poblaciï¿½n con los parï¿½metros definidos.
-    * @param n					Tamaï¿½o de la poblaciï¿½n.
-    * @param numReglas			Nï¿½mero de reglas de cada individuo.
-    * @param numAtrib			Nï¿½mero de atributos de los datos con los que trabajamos.
-    * @param pMut				Probabilidad de mutaciï¿½n.
+    * Crea una nueva población con los parámetros definidos.
+    * @param n					Tamaño de la poblaciún.
+    * @param numReglas			Número de reglas de cada individuo.
+    * @param numAtrib			Número de atributos de los datos con los que trabajamos.
+    * @param pMut				Probabilidad de mutaciún.
     * @param pCruc				Probabilidad de cruce.
     * @param reemplazoStrategy 	Objeto ya creado con una estrategia de reemplazo.
-    * @param order				Si la Poblaciï¿½n debe estar ordenada de acuerdo al fitness o no.
-    * @param NumReglasRandom	False si cada regla puede tener un nï¿½mero distinto de reglas.
-    * @param seleccionStraregy	Objeto ya creado con una estrategia de selecciï¿½n.
+    * @param order				Si la Población debe estar ordenada de acuerdo al fitness o no.
+    * @param NumReglasRandom	False si cada regla puede tener un número distinto de reglas.
+    * @param seleccionStraregy	Objeto ya creado con una estrategia de selección.
     */ 
     public Poblacion(int n, int numReglas, int numAtrib,double pMut,double pCruc, Reemplazo reemplazoStrategy,boolean order,boolean numReglasRandom, Seleccion seleccionStrategy){
         individuos = new ArrayList<>(n);
@@ -156,13 +153,12 @@ public class Poblacion {
 
 
 	/**
-     * Devuelve la combinaciï¿½n de 2 poblaciones. La nueva poblaciï¿½n NO estarï¿½
-     * 	ordenada. 
-     * @param p1	poblaciÃ³n 1 a combinar
-     * @param p2	PoblaciÃ³n 2 a combinar.
-     * @return La uniï¿½n de las poblaciones SI Y SOLO SI el nï¿½mero de reglas, 
+     * Devuelve la combinación de 2 poblaciones. La nueva población se ordena. 
+     * @param p1	población 1 a combinar
+     * @param p2	Población 2 a combinar.
+     * @return La unión de las poblaciones SI Y SOLO SI el número de reglas, 
      * 		de atributos, la probabilidad de cruce y la probabilidad de 
-     * 		mutaciï¿½n coindicen. En caso de que alguna difiera, se devuelve 
+     * 		mutación coindicen. En caso de que alguna difiera, se devuelve 
      * 		null.
      */
     public static Poblacion join (Poblacion p1,Poblacion p2){
@@ -190,7 +186,7 @@ public class Poblacion {
     }
     
     /**
-     * Calcula el fitness de cada individuo de la poblaciï¿½n y almacena su fitness. 
+     * Calcula el fitness de cada individuo de la población y almacena su fitness. 
      * 		
      * 		(si isOrdered == true) entonces ordena la lista de individuos por fitness.
      * 
@@ -206,20 +202,14 @@ public class Poblacion {
     }
 
 	public void OrdenarPorFitness(){
-		//System.out.println("pre_ind: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
-		//Individuo imax = Collections.max(this.individuos,new ComparadorFitness());
-		//System.out.println(" - Is repeated? "+(individuos.indexOf(imax) == individuos.lastIndexOf(imax)));
+
 	    Collections.sort(this.individuos, new Comparator<Individuo>(){
 	    	@Override
 	    	public int compare (Individuo i1,Individuo i2){
 	    		return Double.compare(i2.getFitness(), i1.getFitness());
 	    	}	
 	    });
-	    
-	    //System.out.println(" - post_id: "+this.getIndividuos().indexOf(Collections.max(this.getIndividuos(),new ComparadorFitness())));
-	    //imax = Collections.max(this.individuos,new ComparadorFitness());
-		//System.out.println(" - Is repeated? "+(individuos.indexOf(imax) == individuos.lastIndexOf(imax)));
-	   
+
     }
     public void mutacion(){
         for (Individuo i: individuos)
@@ -227,25 +217,30 @@ public class Poblacion {
     }
     
     /**
-     * TODO: Vaya chapuza de mï¿½todo.
+     * TODO: Vaya chapuza de método.
      * @param nPuntos 
      */
     public void cruceNPuntos(int nPuntos){
 	Individuo i1,i2;
+	Random r = new Random(SEED);
+	
 	for (int i=0; i<size-size%2; i+=2){
 		i1 = this.getIndividuos().get(i);
 		i2 = this.getIndividuos().get(i+1);
+		
 		int n = Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos);
 		
 		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos);
 		
 		Regla dst[] = new Regla[i1.getNumReglas()];
 		System.arraycopy(hijos, 0, dst,0, n);
-		i1.setReglas(dst);
+		if (r.nextDouble() < this.getProbCruce())
+			i1.setReglas(dst);
 		
 		dst = new Regla[i2.getNumReglas()];
 		System.arraycopy(hijos,n , dst,0, i2.getNumReglas());
-		i2.setReglas(dst);
+		if (r.nextDouble() < this.getProbCruce())
+			i2.setReglas(dst);
 	}
 	
     }

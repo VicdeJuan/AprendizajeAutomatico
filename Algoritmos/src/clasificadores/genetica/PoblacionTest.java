@@ -11,10 +11,6 @@ import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author victo
- */
 public class PoblacionTest {
 	
 	/**

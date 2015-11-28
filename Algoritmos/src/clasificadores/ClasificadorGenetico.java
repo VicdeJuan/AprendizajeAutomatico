@@ -24,7 +24,7 @@ public class ClasificadorGenetico extends Clasificador {
 	boolean numReglasAleat,ordered;
 	Reemplazo estrategiaReemplazo;
 	Seleccion estrategiaSeleccion;
-	
+	String filename;
 	
 	public ClasificadorGenetico(int generaciones,int nPoblacion,int numReglas, boolean numReglasAleat, double pCruce, double pMut,double elit,Reemplazo reemplazoStrategy,Seleccion seleccionStrategy){
 		this.generaciones = generaciones;
@@ -39,12 +39,13 @@ public class ClasificadorGenetico extends Clasificador {
 		estrategiaReemplazo = reemplazoStrategy;
 		estrategiaSeleccion = seleccionStrategy;
 		train_result = null;
+		filename = String.format("g%d_p%d_%s_%s.res",generaciones,sizePoblacion,estrategiaReemplazo,estrategiaSeleccion);
+
 	}
 	
 	@Override
 	public void entrenamiento(Datos datosTrain) {
 		PrintWriter writer;
-		String filename = String.format("g%d_p%d_%s_%s.res",generaciones,sizePoblacion,estrategiaReemplazo,estrategiaSeleccion);
 		try {
 			writer = new PrintWriter(filename, "UTF-8");
 		} catch (FileNotFoundException e) {
@@ -64,11 +65,11 @@ public class ClasificadorGenetico extends Clasificador {
 			System.out.println("Error8");
 		Poblacion Pprime;
 		int i=0;
-		boolean debug = false;
+
 
 		double min,media,max;
 		while(i < this.generaciones){
-			if (debug) System.out.print(String.format("Ronda %d ->",i));
+			System.out.print(String.format("Ronda %d -> ",i));
 			P.calcularFitness(datosTrain);
 
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
@@ -82,6 +83,7 @@ public class ClasificadorGenetico extends Clasificador {
 			min = P.getIndividuos().get(P.getSize()-1).getFitness();
 			media = P.getMedia();
 			max =  P.getIndividuos().get(0).getFitness();
+			System.out.println(max);
 			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f",i,max,media,min));
 
 			i++;
@@ -97,12 +99,24 @@ public class ClasificadorGenetico extends Clasificador {
 	
 	
 	private void print_end_train(){
-		String toprint = "Finalizado proceso de train.\n";
-		toprint += train_result.toString();
+		String toprint = "Finalizado proceso de train.\n   Fitness: ";
+		toprint += train_result.getFitness();
 		
 		System.out.println(toprint);
-		System.out.println("SEED: " + SEED);
 		
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(filename, "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		writer.println(toprint);
+		writer.close();
 	}
 
 	@Override
@@ -110,7 +124,7 @@ public class ClasificadorGenetico extends Clasificador {
 		ArrayList<String> toret = new ArrayList<>(datosTest.getNumDatos());
 		for (ArrayList<String> row : datosTest.getDatos())
 			toret.add(train_result.clasifica(row));
-		
+
 		return toret;
 	}
 

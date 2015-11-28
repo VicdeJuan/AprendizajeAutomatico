@@ -1,13 +1,19 @@
 package clasificadores;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import clasificadores.genetica.reemplazos.MejoresPorPeores;
 import clasificadores.genetica.reemplazos.Reemplazo;
 import clasificadores.genetica.reemplazos.ReemplazoTotal;
 import clasificadores.genetica.seleccion.Seleccion;
+import clasificadores.genetica.seleccion.SeleccionGreedy;
 import clasificadores.genetica.seleccion.SeleccionProporcionalFitness;
+import clasificadores.genetica.seleccion.SeleccionSimple;
 import Datos.Datos;
 import particionado.EstrategiaParticionado;
 import particionado.ValidacionCruzada;
@@ -17,53 +23,72 @@ public class practica {
 
 	public static void main(String[] args) {
 			
+
+		String filename ="eikase";
+		
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(filename, "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		Integer[] Poblaciones = {10,100,500};
+		Integer[] generaciones = {100,1000};
+		Reemplazo[] reemStrategies = {new ReemplazoTotal(),new MejoresPorPeores()};
+		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
+		Integer[] reglas = {5,11,16,25};
+		
+		String msg = "Analisis importancia de reglas:\n";
+		
+		for (int nr : reglas){
+			msg += getMsgFromClasificar(100,100,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+		}
+		
+		msg += "\nApartado 2:\n";
+		for (Reemplazo reemp:reemStrategies)
+			for (Seleccion selec:selecStrategies)
+				for (int np : Poblaciones)
+					for (int ng : generaciones)
+						msg += getMsgFromClasificar(ng, np, 11, selec, reemp);
+		
+				
+		writer.write(msg);
+		System.out.print(msg);
+		
+		
+		
+		writer.close();
+		}
+	
+	private static String getMsgFromClasificar(int gen,int pob,int nReglas,Seleccion selecStrategy,Reemplazo reempStrategy){
+		boolean numReglasAleat = false;
+		double pCruce = 0.6,pMut = 0.01,elit = 0.05;
+		ArrayList<Double> errores = new ArrayList<>();
 		Datos d;
 		EstrategiaParticionado part;
 		Clasificador c;
 		int porc = 66;
-		ArrayList<Double> errores = new ArrayList<>();
-		
-		int nPoblacion,nReglas,generaciones;
-		boolean numReglasAleat;
-		double pCruce,pMut,elit;
-		Reemplazo reempStrategy;
-		Seleccion selecStrategy;
 		
 		d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-		
 		part =  new ValidacionSimple();
-		//___________________ Apartado 2 ________________________
-		/*
-		a) Tama帽o de poblaci贸n = 10 ; Generaciones = 100
-		b) Tama帽o de poblaci贸n = 10 ; Generaciones = 1000
-		c) Tama帽o de poblaci贸n = 100 ; Generaciones = 100
-		d) Tama帽o de poblaci贸n = 100 ; Generaciones = 1000
-		e) Tama帽o de poblaci贸n = 500 ; Generaciones = 100
-		f) Tama帽o de poblaci贸n = 500 ; Generaciones = 1000*/
-
-		System.out.println("__________________Apartado 2_________________");
-		System.out.println("---------------------------------------------");
-		nPoblacion = 10;
-		generaciones = 100;
-		nReglas = 30;
-		numReglasAleat = true;
-		pCruce = 0.6;
-		pMut = 0.001;
-		elit = 0.05;
-		reempStrategy = new ReemplazoTotal();
-		selecStrategy = new SeleccionProporcionalFitness();
-		c = new ClasificadorGenetico(generaciones,nPoblacion,nReglas,numReglasAleat,pCruce,pMut,elit,reempStrategy,selecStrategy);
+		
+		c = new ClasificadorGenetico(gen,pob,nReglas,numReglasAleat,pCruce,pMut,elit,reempStrategy,selecStrategy);
 		errores = Clasificador.validacion(part, d, c,porc,true);
-		String msg = String.format("Valores: \n\t Poblaci贸n: %d \t Generaciones: %d \n\t Mismo n煤mero de reglas: %b \n\t Probabilidades:\n\t\t cruce: %.2f%%\t mutaci贸n: %.2f%%\n\t Elitismo %.2f %%\n\t Selecci贸n: %s\n\t Reemplazo: %s",nPoblacion,generaciones,numReglasAleat,pCruce*100,pMut*100,elit*100,reempStrategy,selecStrategy);
-		System.out.println(msg);
-		System.out.println("Errores obtenidos: " + errores);
+		String msg = String.format("\nValores: \n\t Poblaci髇: %d \t Generaciones: %d \n\t Probabilidades:\n\t\t cruce: %.2f%%\t mutaci髇: %.2f%%\n\t Elitismo %.2f %%\n\t Selecci髇: %s\n\t Reemplazo: %s",pob,gen,numReglasAleat,pCruce*100,pMut*100,elit*100,reempStrategy,selecStrategy);
+		msg  += "Errores obtenidos: " + errores;
 		double media = 0;
 		for (double e : errores)
 			media += e;
 		media /= errores.size();
-		System.out.println(String.format("Min: %f.2 \t Max: %f.2 \t Media: %f.2",Collections.max(errores),Collections.min(errores),media));
+		msg += String.format("\nMin: %f.3 \t Max: %f.3 \t Media: %f.3\n\n",Collections.max(errores),Collections.min(errores),media);
+		return msg;
 		
-		
-		}
+
+	}
 
 }

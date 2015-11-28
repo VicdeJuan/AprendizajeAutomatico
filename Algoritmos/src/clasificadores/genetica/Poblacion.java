@@ -26,7 +26,7 @@ public class Poblacion {
     double elitismo;
     int size;
     ArrayList<Individuo> individuos;
-    int cruce;
+ 
     double probCruce;
     double probMutacion;
     int numReglas;
@@ -70,9 +70,6 @@ public class Poblacion {
 		return individuos;
 	}
 
-	public int getCruce() {
-		return cruce;
-	}
 
 	public double getProbCruce() {
 		return probCruce;
@@ -83,6 +80,9 @@ public class Poblacion {
 	}
 
 	public void setElitismo(double elitismo) {
+		if (elitismo > 1){
+			System.err.println("Elitismo no puede ser mayor que 1");
+		}
 		this.elitismo = elitismo;
 	}
 
@@ -94,9 +94,7 @@ public class Poblacion {
 		this.individuos = individuos;
 	}
 
-	public void setCruce(int cruce) {
-		this.cruce = cruce;
-	}
+
 
 	public void setProbCruce(double probCruce) {
 		this.probCruce = probCruce;
@@ -155,23 +153,7 @@ public class Poblacion {
         estrategiaSeleccion = seleccionStrategy;
 
     }
-    
-    /**
-     * Crea una nueva poblaci�n SIN INDIVIDUOS manteniendo los atributos de la dada como argumento.
-     * @param p	Poblaci�n con los datos que tomar como base.
-     */
 
-    public Poblacion(Poblacion p) {
-    	size = p.size;
-    	probMutacion = p.probMutacion;
-		probCruce = p.probCruce;
-		estrategiaReemplazo = p.estrategiaReemplazo;
-		numReglasAleat = p.numReglasAleat;
-		elitismo = p.elitismo;
-		numAtributos = p.numAtributos;
-		estrategiaSeleccion  = p.estrategiaSeleccion;
-
-    }
 
 	/**
      * Devuelve la combinaci�n de 2 poblaciones. La nueva poblaci�n NO estar�
@@ -199,6 +181,8 @@ public class Poblacion {
 	toadd.addAll((ArrayList<Individuo>) p2.getIndividuos().clone());
 
 	toret.setIndividuos(toadd);
+	toret.setSize(toadd.size());
+
 	toret.setElitismo(p1.getElitismo());
 	toret.OrdenarPorFitness();
 
@@ -238,10 +222,8 @@ public class Poblacion {
 	   
     }
     public void mutacion(){
-        Random r = new Random(SEED);
         for (Individuo i: individuos)
-            if (r.nextDouble() >= probMutacion)
-                i.mutar();
+                i.mutar(probMutacion);
     }
     
     /**
@@ -274,6 +256,7 @@ public class Poblacion {
         
     }
 
+
 	public double getMedia() {
 		double mu = 0;
 		for (Individuo i : individuos){
@@ -281,5 +264,17 @@ public class Poblacion {
 		}
 		
 		return mu/individuos.size();
+	}
+
+	public void crop(int newSize) {
+		if (this.individuos.size() < newSize)
+			return;
+		else{
+			for (int i = newSize;i<this.individuos.size();i++){
+				this.individuos.remove(i);
+			}
+			this.setSize(newSize);
+		}		
+
 	}
 }

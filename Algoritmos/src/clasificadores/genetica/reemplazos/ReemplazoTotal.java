@@ -13,13 +13,14 @@ import clasificadores.genetica.Poblacion;
  */
 public class ReemplazoTotal extends ReemplazoAbstract{
 
-	public ReemplazoTotal(double elitis) {
-		this.elitismo = elitis;
-	}
 
-	
+		
 	@Override
 	public Poblacion Reemplazar(Poblacion progenitores, Poblacion vastagos) {
+		
+		elitismo = progenitores.getElitismo();
+		if (progenitores.getElitismo() != vastagos.getElitismo())
+			System.out.print("Error en ReemplazoTotal (1)");
 		
 		Poblacion p1 = ReemplazoTotal.getElitistParents(progenitores,elitismo);
 		Poblacion p2 = ReemplazoTotal.getElitistParents(vastagos,1-elitismo);

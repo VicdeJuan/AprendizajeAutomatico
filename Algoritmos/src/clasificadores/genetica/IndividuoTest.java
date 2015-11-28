@@ -84,12 +84,13 @@ public class IndividuoTest {
 		
 		rules[0] = r4;
 		Individuo instance = new Individuo(rules, 4, 1,false);
-		
+		instance.ContruirRmasRmenos();
 		String result = instance.clasifica(row);
 		assertEquals("negative", result);
 		
 		rules[0] = r5;
 		instance = new Individuo(rules, 4, 1,false);
+		instance.ContruirRmasRmenos();
 		result = instance.clasifica(row);
 		assertEquals("positive", result);
 		
@@ -116,7 +117,7 @@ public class IndividuoTest {
 		rules[3] = r5;
 		instance = new Individuo(rules, 4, 4,false);
 		result = instance.fitness(datos);
-		assertEquals(0.75, result, 0.0);
+		assertEquals(0.5, result, 0.0);
 	}
 	
 }

@@ -6,6 +6,7 @@
 package clasificadores.genetica;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
@@ -15,12 +16,17 @@ import static particionado.EstrategiaParticionado.SEED;
  */
 public class Individuo {
 	Regla[] reglas;
+	Regla[] rmas;
+	Regla[] rmenos;
 	int numAtributos;
 	int numReglas;
 	boolean numReglasAleat;
-	public static final String DEFAULT_CLASS = "negative";
+	public static String DEFAULT_CLASS = "positive";
 	double fitness;
 
+	public void setDefault(String def){
+		DEFAULT_CLASS = def;
+	}
 	public Regla[] getReglas() {
 		return reglas;
 	}
@@ -52,6 +58,7 @@ public class Individuo {
 		numReglasAleat = numReglasRandom;
 	}
 
+	
 	public int getNumAtributos() {
 		return numAtributos;
 	}
@@ -93,12 +100,38 @@ public class Individuo {
 		numReglasAleat = numReglasRandom;
 	}
 
-	public Individuo(Individuo individuo) {
-		this.fitness = individuo.fitness;
-		this.numReglas = individuo.numReglas;
-		this.numAtributos = individuo.numAtributos;
-		setFitness(individuo.fitness);
-		setReglas(individuo.getReglas());
+	public Individuo(Individuo individuo){
+		this(individuo.numReglas,individuo.numAtributos,individuo.numReglasAleat);
+		this.setFitness(individuo.fitness);
+		reglas = new Regla[individuo.numReglas];
+		for (int i = 0; i < individuo.numReglas; i++)
+			reglas[i] = new Regla(numAtributos,individuo.getReglas()[i].regla);
+		this.setReglas(reglas);
+		this.ContruirRmasRmenos();
+	}
+	/**
+	 *
+	 *	Construimos los arrays de reglas que clasifican como + 
+	 *		y el array de reglas que clasifican como - 
+	 */
+	public void ContruirRmasRmenos(){
+		int masSize = 0;
+		for (int i=0; i<this.reglas.length;i++){
+			masSize += (this.reglas[i].regla % 2 == 1) ? 1 : 0;
+		}
+		rmas = new Regla[masSize];
+		rmenos = new Regla[this.reglas.length - masSize];
+		int ms=0,mn=0;
+		for (int i=0; i<this.reglas.length;i++){
+			if (this.reglas[i].regla % 2 == 1){
+				rmas[ms] = this.reglas[i];
+				ms++;
+			}
+			else{
+				rmenos[mn] = this.reglas[i];
+				mn++;
+			}
+		}
 	}
 
 	/**
@@ -110,13 +143,49 @@ public class Individuo {
 	 * @return
 	 */
 	public String clasifica(ArrayList<String> row) {
-		String retval = Regla.getClases()[(int)Math.round(Math.random())];
-		for (Regla regla : reglas) {
-			if (null != regla.match(Regla.convert(row))) {
-				retval = regla.get_class();
-				return retval;
+		//this.ContruirRmasRmenos();
+
+		String retval = getDEFAULT_CLASS();
+	
+		boolean aux,esmas = true,esmenos = true;
+		int desplazamiento;
+		long bitsAtributoEnRegla;
+		String atrb;
+		
+		// size-1 porque excluimos la regla de la fila para clasificar.
+		for (int i = 0; i<row.size()-1;i++) {
+			atrb = row.get(i);
+			aux = false;
+			for (Regla r : rmenos){
+				if (aux) break;
+				desplazamiento = (3*(row.size()-(i+1)-1)+1);
+				bitsAtributoEnRegla = (r.regla >> desplazamiento) & 7L;
+				if ((bitsAtributoEnRegla & Regla.getBitsFromStr(atrb)) == Regla.getBitsFromStr(atrb)){
+					aux = true;
+				}
 			}
+			esmenos &= aux;
 		}
+		if (esmenos)
+			return Regla.getClases()[0];
+		for (int i = 0; i<row.size()-1;i++) {
+			atrb = row.get(i);
+			aux = false;
+			for (Regla r : rmas){
+				if (aux) break;
+				desplazamiento = (3*(row.size()-(i+1)-1)+1);
+				bitsAtributoEnRegla = r.regla >> desplazamiento & 7L;
+				if ((bitsAtributoEnRegla & Regla.getBitsFromStr(atrb)) == Regla.getBitsFromStr(atrb)){
+					aux = true;
+				}
+			}
+			esmas &= aux;
+		}
+		
+		if (esmas)
+			return Regla.getClases()[1];
+
+		
 		return retval;
 	}
 
@@ -128,6 +197,7 @@ public class Individuo {
 	 * @return el porcentaje de aciertos cometidos
 	 */
 	public double fitness(ArrayList<ArrayList<String>> datos) {
+		this.ContruirRmasRmenos();
 		double acum = 0;
 		int n = 0;
 		for (ArrayList<String> row : datos) {
@@ -138,15 +208,15 @@ public class Individuo {
 			n++;
 		}
 		fitness = acum / n;
+		//System.out.println("\tf: " + fitness);
 		setFitness(fitness);
 		return fitness;
 	}
 
-	void mutar() {
-		Random r = new Random(SEED);
-		int idx = (int) Math.round(r.nextDouble() * numReglas);
+	public void mutar(double prob) {
 
-		reglas[idx].mutar();
+		for (int idx = 0; idx<numReglas;idx++)
+			reglas[idx].mutar(prob);
 
 	}
 	

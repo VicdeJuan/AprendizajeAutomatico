@@ -50,7 +50,7 @@ public class practica {
 		pCruce = 0.6;
 		pMut = 0.001;
 		elit = 0.05;
-		reempStrategy = new ReemplazoTotal(elit);
+		reempStrategy = new ReemplazoTotal();
 		selecStrategy = new SeleccionProporcionalFitness();
 		c = new ClasificadorGenetico(generaciones,nPoblacion,nReglas,numReglasAleat,pCruce,pMut,elit,reempStrategy,selecStrategy);
 		errores = Clasificador.validacion(part, d, c,porc,true);

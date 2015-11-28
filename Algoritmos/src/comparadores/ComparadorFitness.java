@@ -9,10 +9,7 @@ import clasificadores.genetica.Individuo;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/**
- *
- * @author victo
- */
+
 public class ComparadorFitness implements Comparator<Individuo>{
 
 	@Override

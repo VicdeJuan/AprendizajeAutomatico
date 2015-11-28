@@ -21,13 +21,14 @@ public class SeleccionGreedy implements Seleccion {
 			toadd.add(new Individuo(best));
 		toret.setIndividuos(toadd);
 		toret.setSize(toadd.size());
+		toret.setElitismo(P.getElitismo());
 		
 		return toret;
 	}
 	
 	@Override
 	public String toString() {
-		return "Selección avariciosa";
+		return "SeleccionAvariciosa";
 	}
 
 }

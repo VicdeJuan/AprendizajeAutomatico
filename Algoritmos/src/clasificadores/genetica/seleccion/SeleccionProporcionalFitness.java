@@ -22,9 +22,8 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		ArrayList<Individuo> individuos = P.getIndividuos();
 		ArrayList<Individuo> toretList = new ArrayList<>(P.getSize());
 		
-		int n = (int) Math.round(P.getElitismo()*P.getSize());
-		if (n == 0)
-			System.out.println("Error4");
+		int n = (int) Math.round(P.getElitismo()*P.getSize())+1;
+
 		int N = P.getSize()-n;
 		double[] fitnesses = new double[N];
 		double[] randoms = new double[N];
@@ -75,6 +74,6 @@ public class SeleccionProporcionalFitness implements Seleccion {
 	
 	@Override
 	public String toString() {
-		return "Selección proporcional al fitness";
+		return "SeleccionProporcionalAlFitness";
 	}
 }

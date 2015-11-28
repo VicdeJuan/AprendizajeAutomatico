@@ -32,7 +32,7 @@ public class SeleccionSimple implements Seleccion {
 	
 	@Override
 	public String toString() {
-		return "Selección simple";
+		return "SeleccionSimple";
 	}
 
 }

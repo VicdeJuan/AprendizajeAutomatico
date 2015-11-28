@@ -37,8 +37,8 @@ public class practica {
 			return;
 		}
 		
-		Integer[] Poblaciones = {10,100,500};
-		Integer[] generaciones = {100,1000};
+		Integer[] Poblaciones = {5};
+		Integer[] generaciones = {5,10};
 		Reemplazo[] reemStrategies = {new ReemplazoTotal(),new MejoresPorPeores()};
 		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
 		Integer[] reglas = {5,11,16,25};
@@ -46,7 +46,7 @@ public class practica {
 		String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
-			msg += getMsgFromClasificar(100,100,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+			msg += getMsgFromClasificar(5,5,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
 		}
 		
 		msg += "\nApartado 2:\n";
@@ -79,8 +79,8 @@ public class practica {
 		
 		c = new ClasificadorGenetico(gen,pob,nReglas,numReglasAleat,pCruce,pMut,elit,reempStrategy,selecStrategy);
 		errores = Clasificador.validacion(part, d, c,porc,true);
-		String msg = String.format("\nValores: \n\t Población: %d \t Generaciones: %d \n\t Probabilidades:\n\t\t cruce: %.2f%%\t mutación: %.2f%%\n\t Elitismo %.2f %%\n\t Selección: %s\n\t Reemplazo: %s",pob,gen,numReglasAleat,pCruce*100,pMut*100,elit*100,reempStrategy,selecStrategy);
-		msg  += "Errores obtenidos: " + errores;
+		String msg = String.format("\nValores: \n\t Población: %d \t Generaciones: %d \n\t Probabilidades:\n\t\t cruce: %.2f%%\t mutación: %.2f%%\n\t Elitismo %.2f %%\n\t Selección: %s\n\t Reemplazo: %s",pob,gen,pCruce*100,pMut*100,elit*100,reempStrategy,selecStrategy);
+		msg  += "\nErrores obtenidos: " + errores;
 		double media = 0;
 		for (double e : errores)
 			media += e;

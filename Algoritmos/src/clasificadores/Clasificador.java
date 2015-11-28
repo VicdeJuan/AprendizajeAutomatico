@@ -140,7 +140,7 @@ abstract public class Clasificador {
 	public static void main(String[] args) {
 
 		Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-		Clasificador c = new ClasificadorGenetico(1000,500, 16, false, 0.01, 0.6, 0.05, new MejoresPorPeores(),
+		Clasificador c = new ClasificadorGenetico(5,5, 16, false, 0.01, 0.6, 0.05, new MejoresPorPeores(),
 				new SeleccionProporcionalFitness());
 		EstrategiaParticionado part;
 		int porc;

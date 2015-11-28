@@ -61,8 +61,6 @@ public class ClasificadorGenetico extends Clasificador {
 		Poblacion P = new Poblacion(sizePoblacion, numReglas, numAtributos, pMut, pCruce, estrategiaReemplazo, ordered, numReglasAleat,estrategiaSeleccion);
 		P.setElitismo(elit);
 
-		if (P.getElitismo() == 0)
-			System.out.println("Error8");
 		Poblacion Pprime;
 		int i=0;
 
@@ -100,7 +98,9 @@ public class ClasificadorGenetico extends Clasificador {
 	
 	private void print_end_train(){
 		String toprint = "Finalizado proceso de train.\n   Fitness: ";
-		toprint += train_result.getFitness();
+		toprint += train_result;
+		toprint += String.format("\nGen: %d  - Pob: %d\n",this.generaciones,this.sizePoblacion);
+		toprint += this.estrategiaReemplazo.toString() + this.estrategiaSeleccion.toString();
 		
 		System.out.println(toprint);
 		

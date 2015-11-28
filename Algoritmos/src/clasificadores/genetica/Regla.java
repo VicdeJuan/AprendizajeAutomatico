@@ -11,10 +11,7 @@ import java.util.HashMap;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
-/**
- *
- * @author vicdejuan
- */
+
 public class Regla {
 	
 	int size;

@@ -31,6 +31,7 @@ public class Poblacion {
     Reemplazo estrategiaReemplazo;
     Seleccion estrategiaSeleccion;
     boolean numReglasAleat;
+    Random r = new Random(SEED);
 
     
     /**
@@ -145,7 +146,8 @@ public class Poblacion {
         probMutacion=pMut;
         probCruce=pCruc;
         estrategiaReemplazo = reemplazoStrategy;
-
+        this.numAtributos = numAtrib;
+        this.numReglas = numReglas;
         numReglasAleat = numReglasRandom;
         estrategiaSeleccion = seleccionStrategy;
 
@@ -212,14 +214,13 @@ public class Poblacion {
 
     }
     public void mutacion(){
-        for (Individuo i: individuos)
-                i.mutar(probMutacion);
+        for (Individuo i: individuos){
+            i.mutar(probMutacion);
+        }
+            
     }
     
-    /**
-     * TODO: Vaya chapuza de método.
-     * @param nPuntos 
-     */
+
     public void cruceNPuntos(int nPuntos){
 	Individuo i1,i2;
 	Random r = new Random(SEED);
@@ -228,17 +229,21 @@ public class Poblacion {
 		i1 = this.getIndividuos().get(i);
 		i2 = this.getIndividuos().get(i+1);
 		
-		int n = Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos);
+		int n = (2*r.nextInt(Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos)));
+		if (n==0)
+			n++;
+		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos,false);
 		
-		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos);
+		if (hijos.length <= n )
+			continue;
 		
-		Regla dst[] = new Regla[i1.getNumReglas()];
+		Regla dst[] = new Regla[n];
 		System.arraycopy(hijos, 0, dst,0, n);
 		if (r.nextDouble() < this.getProbCruce())
 			i1.setReglas(dst);
 		
-		dst = new Regla[i2.getNumReglas()];
-		System.arraycopy(hijos,n , dst,0, i2.getNumReglas());
+		dst = new Regla[hijos.length-n];
+		System.arraycopy(hijos,n , dst,0, hijos.length-n);
 		if (r.nextDouble() < this.getProbCruce())
 			i2.setReglas(dst);
 	}

@@ -55,12 +55,13 @@ public class ClasificadorGenetico extends Clasificador {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		
 
 		Poblacion P = new Poblacion(sizePoblacion, numReglas, numAtributos, pMut, pCruce, estrategiaReemplazo, ordered, numReglasAleat,estrategiaSeleccion);
 		P.setElitismo(elit);
 
+	
 		Poblacion Pprime;
 		int i=0;
 
@@ -71,23 +72,27 @@ public class ClasificadorGenetico extends Clasificador {
 			P.calcularFitness(datosTrain);
 
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
+								
 			Pprime.mutacion();
-			Pprime.cruceNPuntos(2);
+			Pprime.calcularFitness(datosTrain);
+			Pprime.cruceNPuntos(1);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
 			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
-		
+			P.OrdenarPorFitness();
 
-			min = P.getIndividuos().get(P.getSize()-1).getFitness();
+			min = Collections.min(P.getIndividuos(),new ComparadorFitness()).getFitness();
 			media = P.getMedia();
-			max =  P.getIndividuos().get(0).getFitness();
-			System.out.println(max);
-			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f",i,max,media,min));
+			train_result = Collections.max(P.getIndividuos(),new ComparadorFitness());
+			max = train_result.getFitness();
+
+			System.out.println(String.format("%.3f - %d", max,P.getIndividuos().get(0).getNumReglas()));
+			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f \n\tNum Reglas: %d",i,max,media,min,P.getIndividuos().get(0).getNumReglas()));
 
 			i++;
 		}
 
-		train_result = P.getIndividuos().get(0);
+	
 			
 
 		print_end_train();

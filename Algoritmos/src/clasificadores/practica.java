@@ -46,7 +46,7 @@ public class practica {
 		String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
-			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(100,100,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
 		}
 		
 		msg += "\nApartado 2:\n";
@@ -55,7 +55,7 @@ public class practica {
 				for (int np : Poblaciones)
 					for (int ng : generaciones)
 
-						msg += getMsgFromClasificar(ng, np, 11, selec, reemp);
+						msg += getMsgFromClasificar(false,ng, np, 11, selec, reemp);
 		
 				
 		writer.write(msg);
@@ -66,8 +66,8 @@ public class practica {
 		writer.close();
 		}
 	
-	private static String getMsgFromClasificar(int gen,int pob,int nReglas,Seleccion selecStrategy,Reemplazo reempStrategy){
-		boolean numReglasAleat = false;
+	private static String getMsgFromClasificar(boolean numRegAleat,int gen,int pob,int nReglas,Seleccion selecStrategy,Reemplazo reempStrategy){
+		boolean numReglasAleat = numRegAleat;
 		double pCruce = 0.6,pMut = 0.01,elit = 0.05;
 		ArrayList<Double> errores = new ArrayList<>();
 		Datos d;
@@ -81,12 +81,12 @@ public class practica {
 		c = new ClasificadorGenetico(gen,pob,nReglas,numReglasAleat,pCruce,pMut,elit,reempStrategy,selecStrategy);
 		errores = Clasificador.validacion(part, d, c,porc,true);
 		String msg = String.format("\nValores: \n\t Poblacion: %d \t Generaciones: %d \n\t Probabilidades:\n\t\t cruce: %.2f%%\t mutacion: %.2f%%\n\t Elitismo %.2f %%\n\t Seleccion: %s\n\t Reemplazo: %s",pob,gen,pCruce*100,pMut*100,elit*100,reempStrategy,selecStrategy);
-		msg  += "Errores obtenidos: " + errores;
+		msg  += "\nErrores obtenidos: " + errores;
 		double media = 0;
 		for (double e : errores)
 			media += e;
 		media /= errores.size();
-		msg += String.format("\nMin: %f.3 \t Max: %f.3 \t Media: %f.3\n\n",Collections.max(errores),Collections.min(errores),media);
+		msg += String.format("\nMin: %f.3 \t Max: %f.3 \t Media: %f.3\n\n",Collections.min(errores),Collections.max(errores),media);
 		return msg;
 		
 

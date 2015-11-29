@@ -18,7 +18,7 @@ public class Regla {
 	long regla;
 	private static final String clases[] = new String[]{"negative","positive"};;
 	private static final HashMap<String,Long> nominal_to_bit = createNominal();
-	Random r = new Random();
+	
 	
 	private static HashMap<String,Long> createNominal(){
 		HashMap<String,Long> nomin = new HashMap<>();
@@ -48,7 +48,7 @@ public class Regla {
 		// Asignación arbitraria de valores nominal es a números. Como sólo hay 3 posibles valores, necesitamos 2 bits, de ahí valores entre 0 y 3
 		
 		size = n;
-		regla = ((long)(r.nextDouble()*(Math.pow(2,3*n)))-1);	
+		regla = ((long)(Math.random()*(Math.pow(2,3*n)))-1);	
 		
 	}	
 
@@ -104,7 +104,7 @@ public class Regla {
         
         public void mutar(double prob){
         	for (int i=0;i<getBitsFromSize(this.size);i++){
-        		if (r.nextDouble() <= prob)
+        		if (Math.random() <= prob)
         			mutar(i);
         	}
         }
@@ -206,7 +206,7 @@ public class Regla {
 		if (nPuntos%2 == 0) return r1.length;
 		else return r2.length;
 	}
-	public static Regla[] CruceNPuntos (Regla[] r1 , Regla[] r2, int nPuntos){
+	public static Regla[] CruceNPuntos (Regla[] r1 , Regla[] r2, int nPuntos, boolean samePoints){
 		Regla[] toret = new Regla[r1.length + r2.length];
 		/**
 		 * El array de índices en los que cruzar.
@@ -214,25 +214,49 @@ public class Regla {
 		 * 	que los índices aleatorios (ordenados) estén entre 
 		 * 	0 y el mínimo.
 		 */
-		int [] idx = generateIdxAddLast(nPuntos,Math.min(r1.length, r2.length),Math.max(r1.length, r2.length));
-		int j=0,i=0;
-		int n = getDivisor(r1, r2, nPuntos);
-		/**
-		 * Si hay un número par de cortes, entonces la línea divisoria 
-		 * 	entre el hijo 1 y el hijo 2 devuelto será el tamaño de 
-		 * 	la regla 2. Para entenderlo, sugiero hacer un dibujo
-		 * 	con los cromosomas, etc
-		 */
-		for(;j<=nPuntos; j++){
-			for(;i<idx[j];i++){
-				if (j%2 == 0){
-					if (i< r1.length) toret[i] = r1[i];
-					if (i< r2.length) toret[i+n] = r2[i];
-				}else{
-					if (i< r2.length) toret[i] = r2[i];
-					if (i< r1.length) toret[i+n] = r1[i];
-				}
-			}	
+		if (samePoints || nPuntos != 1){
+			
+			
+			int [] idx = generateIdxAddLast(nPuntos,Math.min(r1.length, r2.length),Math.max(r1.length, r2.length));
+			int j=0,i=0;
+			int n = getDivisor(r1, r2, nPuntos);
+			/**
+			 * Si hay un número par de cortes, entonces la línea divisoria 
+			 * 	entre el hijo 1 y el hijo 2 devuelto será el tamaño de 
+			 * 	la regla 2. Para entenderlo, sugiero hacer un dibujo
+			 * 	con los cromosomas, etc
+			 */
+			for(;j<=nPuntos; j++){
+				for(;i<idx[j];i++){
+					if (j%2 == 0){
+						if (i< r1.length) toret[i] = r1[i];
+						if (i< r2.length) toret[i+n] = r2[i];
+					}else{
+						if (i< r2.length) toret[i] = r2[i];
+						if (i< r1.length) toret[i+n] = r1[i];
+					}
+				}	
+			}
+		}else{
+			
+			int idx1 = (int) Math.round(Math.random()*r1.length);
+			while (idx1 >= r2.length)
+				idx1 -= r2.length;
+			
+			int idx2 = (int) Math.round(Math.random()*r2.length);
+			while (idx2 >= r1.length)
+				idx2 -= r1.length;
+	
+			int n = r2.length;
+			for (int i = 0; i<idx1;i++)
+				toret[i] = r1[i];
+			for (int i = idx1; i<r2.length;i++)
+				toret[i] = r2[i];
+			for (int i = 0; i<idx2;i++)
+				toret[i+n] = r2[i];
+			for (int i = idx2; i<r1.length;i++)
+				toret[i+n] = r1[i];
+			
 		}
 
 		return toret;

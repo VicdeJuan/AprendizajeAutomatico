@@ -142,8 +142,50 @@ Vemos que es un factor influyente. Por estos resultados es por los que hemos ele
 
 Aun así, hemos preferido un número variable de reglas. 
 
+
 \section{Evolución del fitness}
 
+
+
+\appendix
+
+\chapter{Gráficas}
+\section{Evolución del fitness para reglas fijas}
+
+Primero mostramos las gráficas y a continuación un breve análisis.
+\paragraph{Evolución del fitness para un número fijo de $5$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg5.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $11$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg11.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $16$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg16.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $25$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg25.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $50$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg50.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $150$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg150.png}
+\end{center}
+
+Se puede ver cómo el fitness medio (en verde) es más cercano al máximo cuantas menos reglas tenemos. Esto se debe a que el fitness mínimo es, en general, mayor cuantas menos reglas tienen los individuos. Pero lo más interesante de ver es cómo para 25 reglas, la convergencia es mucho más lenta, empieza en un valor mucho menor, con un fitness medio muy cercano al mínimo, para al final acabar llegando a valores similares.
+
+Por otro lado, al aumentar demasiado el número de reglas (y mantenerlo fijo), el fitness mínimo, medio y máximo se mantienen constantes para todas las generaciones.
+
+
+\section{Evolución del fitness para el resto de ejecuciones}
+
+Incluimos algunas gráficas más generadas del estudio de resultados que hemos preferido incluir como apéndice en vez de en el análisis anterior. De esta manera, incluimos toda la información que hemos obtenido, sin saturar las conclusiones importantes en cuanto al análisis.
 
 
 \end{document}

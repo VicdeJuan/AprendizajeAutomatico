@@ -1,0 +1,202 @@
+
+Apartado 2:
+
+Valores: 
+	 Poblacion: 10 	 Generaciones: 100 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.3476923076923077]
+Min: 0,347692.3 	 Max: 0,347692.3 	 Media: 0,347692.3
+
+
+Valores: 
+	 Poblacion: 10 	 Generaciones: 500 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.21846153846153846]
+Min: 0,218462.3 	 Max: 0,218462.3 	 Media: 0,218462.3
+
+
+Valores: 
+	 Poblacion: 100 	 Generaciones: 100 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.31076923076923074]
+Min: 0,310769.3 	 Max: 0,310769.3 	 Media: 0,310769.3
+
+
+Valores: 
+	 Poblacion: 100 	 Generaciones: 500 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.27692307692307694]
+Min: 0,276923.3 	 Max: 0,276923.3 	 Media: 0,276923.3
+
+
+Valores: 
+	 Poblacion: 500 	 Generaciones: 100 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.24615384615384617]
+Min: 0,246154.3 	 Max: 0,246154.3 	 Media: 0,246154.3
+
+
+Valores: 
+	 Poblacion: 500 	 Generaciones: 500 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.26153846153846155]
+Min: 0,261538.3 	 Max: 0,261538.3 	 Media: 0,261538.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.31076923076923074]
+Min: 0,310769.3 	 Max: 0,310769.3 	 Media: 0,310769.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.3384615384615385]
+Min: 0,338462.3 	 Max: 0,338462.3 	 Media: 0,338462.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.2523076923076923]
+Min: 0,252308.3 	 Max: 0,252308.3 	 Media: 0,252308.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.26461538461538464]
+Min: 0,264615.3 	 Max: 0,264615.3 	 Media: 0,264615.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.2276923076923077]
+Min: 0,227692.3 	 Max: 0,227692.3 	 Media: 0,227692.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.25846153846153846]
+Min: 0,258462.3 	 Max: 0,258462.3 	 Media: 0,258462.3
+
+
+Apartado 2:
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.2676923076923077]
+Min: 0,267692.3 	 Max: 0,267692.3 	 Media: 0,267692.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionAvariciosa
+Errores obtenidos: [0.29846153846153844]
+Min: 0,298462.3 	 Max: 0,298462.3 	 Media: 0,298462.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: ReemplazoTotal
+	 Reemplazo: SeleccionSimple
+Errores obtenidos: [0.3169230769230769]
+Min: 0,316923.3 	 Max: 0,316923.3 	 Media: 0,316923.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: MejoresPorPeores
+	 Reemplazo: SeleccionProporcionalAlFitness
+Errores obtenidos: [0.31384615384615383]
+Min: 0,313846.3 	 Max: 0,313846.3 	 Media: 0,313846.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: MejoresPorPeores
+	 Reemplazo: SeleccionAvariciosa
+Errores obtenidos: [0.31076923076923074]
+Min: 0,310769.3 	 Max: 0,310769.3 	 Media: 0,310769.3
+
+
+Valores: 
+	 Poblacion: 73 	 Generaciones: 73 
+	 Probabilidades:
+		 cruce: 60,00%	 mutacion: 1,00%
+	 Elitismo 5,00 %
+	 Seleccion: MejoresPorPeores
+	 Reemplazo: SeleccionSimple
+Errores obtenidos: [0.26153846153846155]
+Min: 0,261538.3 	 Max: 0,261538.3 	 Media: 0,261538.3
+

@@ -127,16 +127,16 @@ public class Poblacion {
 	
     
    /**
-    * Crea una nueva población con los parámetros definidos.
-    * @param n					Tamaño de la poblaciún.
-    * @param numReglas			Número de reglas de cada individuo.
-    * @param numAtrib			Número de atributos de los datos con los que trabajamos.
-    * @param pMut				Probabilidad de mutaciún.
+    * Crea una nueva poblaciï¿½n con los parï¿½metros definidos.
+    * @param n					Tamaï¿½o de la poblaciï¿½n.
+    * @param numReglas			Nï¿½mero de reglas de cada individuo.
+    * @param numAtrib			Nï¿½mero de atributos de los datos con los que trabajamos.
+    * @param pMut				Probabilidad de mutaciï¿½n.
     * @param pCruc				Probabilidad de cruce.
     * @param reemplazoStrategy 	Objeto ya creado con una estrategia de reemplazo.
-    * @param order				Si la Población debe estar ordenada de acuerdo al fitness o no.
-    * @param NumReglasRandom	False si cada regla puede tener un número distinto de reglas.
-    * @param seleccionStraregy	Objeto ya creado con una estrategia de selección.
+    * @param order				Si la Poblaciï¿½n debe estar ordenada de acuerdo al fitness o no.
+    * @param NumReglasRandom	False si cada regla puede tener un nï¿½mero distinto de reglas.
+    * @param seleccionStraregy	Objeto ya creado con una estrategia de selecciï¿½n.
     */ 
     public Poblacion(int n, int numReglas, int numAtrib,double pMut,double pCruc, Reemplazo reemplazoStrategy,boolean order,boolean numReglasRandom, Seleccion seleccionStrategy){
         individuos = new ArrayList<>(n);
@@ -155,12 +155,12 @@ public class Poblacion {
 
 
 	/**
-     * Devuelve la combinación de 2 poblaciones. La nueva población se ordena. 
-     * @param p1	población 1 a combinar
-     * @param p2	Población 2 a combinar.
-     * @return La unión de las poblaciones SI Y SOLO SI el número de reglas, 
+     * Devuelve la combinaciï¿½n de 2 poblaciones. La nueva poblaciï¿½n se ordena. 
+     * @param p1	poblaciï¿½n 1 a combinar
+     * @param p2	Poblaciï¿½n 2 a combinar.
+     * @return La uniï¿½n de las poblaciones SI Y SOLO SI el nï¿½mero de reglas, 
      * 		de atributos, la probabilidad de cruce y la probabilidad de 
-     * 		mutación coindicen. En caso de que alguna difiera, se devuelve 
+     * 		mutaciï¿½n coindicen. En caso de que alguna difiera, se devuelve 
      * 		null.
      */
     public static Poblacion join (Poblacion p1,Poblacion p2){
@@ -188,7 +188,7 @@ public class Poblacion {
     }
     
     /**
-     * Calcula el fitness de cada individuo de la población y almacena su fitness. 
+     * Calcula el fitness de cada individuo de la poblaciï¿½n y almacena su fitness. 
      * 		
      * 		(si isOrdered == true) entonces ordena la lista de individuos por fitness.
      * 
@@ -228,11 +228,16 @@ public class Poblacion {
 	for (int i=0; i<size-size%2; i+=2){
 		i1 = this.getIndividuos().get(i);
 		i2 = this.getIndividuos().get(i+1);
+		int n;
+		if (this.numReglasAleat)
+			n = (2*r.nextInt(Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos)));
+		else 
+			n = Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos);
 		
-		int n = (2*r.nextInt(Regla.getDivisor(i1.getReglas(), i2.getReglas(), nPuntos)));
 		if (n==0)
 			n++;
-		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos,false);
+		
+		Regla[] hijos = Regla.CruceNPuntos(i1.getReglas(), i2.getReglas(), nPuntos,this.numReglasAleat);
 		
 		if (hijos.length <= n )
 			continue;

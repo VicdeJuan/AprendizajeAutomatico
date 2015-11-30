@@ -75,7 +75,7 @@ public class ClasificadorGenetico extends Clasificador {
 								
 			Pprime.mutacion();
 			Pprime.calcularFitness(datosTrain);
-			Pprime.cruceNPuntos(1);
+			Pprime.cruceNPuntos(2);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
 			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
@@ -86,7 +86,7 @@ public class ClasificadorGenetico extends Clasificador {
 			train_result = Collections.max(P.getIndividuos(),new ComparadorFitness());
 			max = train_result.getFitness();
 
-			System.out.println(String.format("%.3f - %d", max,P.getIndividuos().get(0).getNumReglas()));
+			System.out.println(String.format("%.3f - %d", max,P.getIndividuos().get(0).getReglas().length));
 			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f \n\tNum Reglas: %d",i,max,media,min,P.getIndividuos().get(0).getNumReglas()));
 
 			i++;

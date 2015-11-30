@@ -37,18 +37,20 @@ public class practica {
 			return;
 		}
 		
-		Integer[] Poblaciones = {10,100,500};
-		Integer[] generaciones = {100,1000};
+		Integer[] Poblaciones = {1,1,1};
+		Integer[] generaciones = {1,1};
 		Reemplazo[] reemStrategies = {new ReemplazoTotal(),new MejoresPorPeores()};
 		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
-		Integer[] reglas = {5,11,16,25};
+		Integer[] reglas = {5,11,16,25,50,150};
 		
 		String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
-			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(false,75,75,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
 		}
-		
+		writer.write(msg);
+		System.out.print(msg);
+		/*
 		msg += "\nApartado 2:\n";
 		for (Reemplazo reemp:reemStrategies)
 			for (Seleccion selec:selecStrategies)
@@ -60,7 +62,7 @@ public class practica {
 				
 		writer.write(msg);
 		System.out.print(msg);
-		
+		*/
 		
 		
 		writer.close();

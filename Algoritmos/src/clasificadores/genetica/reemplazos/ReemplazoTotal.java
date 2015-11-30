@@ -23,6 +23,7 @@ public class ReemplazoTotal extends ReemplazoAbstract{
 		Poblacion toret = Poblacion.join(p1,p2);
 		toret.OrdenarPorFitness();
 		toret.setElitismo(p1.getElitismo());
+		toret.setNumReglasAleat(p1.getNumReglasAleat());
 
 		return toret;
 	}

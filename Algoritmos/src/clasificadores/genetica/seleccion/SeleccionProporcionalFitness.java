@@ -18,7 +18,8 @@ public class SeleccionProporcionalFitness implements Seleccion {
 		//Copy & Paste
 		Poblacion p1 = P;
 		Poblacion toret = new Poblacion(p1.getSize(),p1.getNumReglas(),p1.getNumAtributos(),p1.getProbMutacion(),p1.getProbCruce(),p1.getEstrategiaReemplazo(),true,p1.getNumReglasAleat(),p1.getEstrategiaSeleccion());
-
+		toret.setNumReglasAleat(P.getNumReglasAleat());
+		
 		ArrayList<Individuo> individuos = P.getIndividuos();
 		ArrayList<Individuo> toretList = new ArrayList<>(P.getSize());
 		

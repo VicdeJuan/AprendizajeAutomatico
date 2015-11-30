@@ -38,28 +38,34 @@ public class practica {
 		}
 		
 		Integer[] Poblaciones = {10,100,500};
-		Integer[] generaciones = {100,1000};
+		Integer[] generaciones = {100,500};
 		Reemplazo[] reemStrategies = {new ReemplazoTotal(),new MejoresPorPeores()};
 		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
 		Integer[] reglas = {5,11,16,25};
 		
-		String msg = "Analisis importancia de reglas:\n";
+		/*String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
 			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
-		}
+		}*/
 		
-		msg += "\nApartado 2:\n";
-		for (Reemplazo reemp:reemStrategies)
-			for (Seleccion selec:selecStrategies)
-				for (int np : Poblaciones)
-					for (int ng : generaciones)
-
-						msg += getMsgFromClasificar(false,ng, np, 11, selec, reemp);
-		
-				
+		String msg = "\nApartado 2:\n";
 		writer.write(msg);
-		System.out.print(msg);
+		/*for (int np : Poblaciones)
+			for (int ng : generaciones){
+					msg = getMsgFromClasificar(false,ng, np, 11, new SeleccionProporcionalFitness(), new ReemplazoTotal());
+					writer.write(msg);
+					System.out.print(msg);
+				}*/
+						
+		for (Reemplazo r : reemStrategies)
+			for (Seleccion s : selecStrategies){
+				msg = getMsgFromClasificar(false,73, 73, 11,s, r);
+				writer.write(msg);
+				System.out.print(msg);
+			}
+		
+		
 		
 		
 		

@@ -37,20 +37,41 @@ public class practica {
 			return;
 		}
 		
+<<<<<<< HEAD
 		Integer[] Poblaciones = {10,100,500};
 		Integer[] generaciones = {100,500};
+=======
+		Integer[] Poblaciones = {1,1,1};
+		Integer[] generaciones = {1,1};
+>>>>>>> 904661785c61b32c9c815ec06b54ea594bec7221
 		Reemplazo[] reemStrategies = {new ReemplazoTotal(),new MejoresPorPeores()};
 		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
-		Integer[] reglas = {5,11,16,25};
+		Integer[] reglas = {5,11,16,25,50,150};
 		
 		/*String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
+<<<<<<< HEAD
 			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
 		}*/
+=======
+			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(false,75,75,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+		}
+		writer.write(msg);
+		System.out.print(msg);
+		/*
+		msg += "\nApartado 2:\n";
+		for (Reemplazo reemp:reemStrategies)
+			for (Seleccion selec:selecStrategies)
+				for (int np : Poblaciones)
+					for (int ng : generaciones)
+
+						msg += getMsgFromClasificar(false,ng, np, 11, selec, reemp);
+>>>>>>> 904661785c61b32c9c815ec06b54ea594bec7221
 		
 		String msg = "\nApartado 2:\n";
 		writer.write(msg);
+<<<<<<< HEAD
 		/*for (int np : Poblaciones)
 			for (int ng : generaciones){
 					msg = getMsgFromClasificar(false,ng, np, 11, new SeleccionProporcionalFitness(), new ReemplazoTotal());
@@ -67,6 +88,10 @@ public class practica {
 		
 		
 		
+=======
+		System.out.print(msg);
+		*/
+>>>>>>> 904661785c61b32c9c815ec06b54ea594bec7221
 		
 		
 		writer.close();

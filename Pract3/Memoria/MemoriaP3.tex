@@ -3,8 +3,9 @@
 \documentclass[nochap]{apuntes}
 
 \title{Memoria Práctica 3}
-\author{}
-\date{15/16 C1}
+\author{Víctor de Juan, Alberto Parramón, Mounaime Mellouk}
+\date{C1}
+
 
 % Paquetes adicionales
 
@@ -36,209 +37,166 @@ showstringspaces=false
 \tableofcontents
 \newpage
 
-\section{Introducción de la práctica}
-1 individuo -> 20 o 30 reglas.
+\chapter{Detalles de la implementación}
+Los detalles de implementación que son relevantes son los que vamos a comentar en las siguientes secciones, que no incluyen información sobre \textit{Regla.java}, \textit{Individuo.java}\footnote{El único detalle de esta clase es que es la que almacena la clase por defecto fija. Podría haber sido aleatoria, pero hemos preferido esta implementación} ni \textit{Poblacion.java}. 
 
-Fitness = \% de aciertos al clasificar los datos de train con el individuo.
+\section{Generación de la población inicial}
 
-Formas de evolución:
-- Cruce en un punto (pto interno de una regla o intercambio de reglas)
-- Mutación (mutar un bit o eliminar/añadir una regla aleatoria)
-
-Formas de reemplazo
-- Hijos sustituyen a padres// Hijos sustituyen a los peores// aleatorio // lo que sea
+La generación de la población inicial es aleatoria, con un número de reglas por individuo fijo o aleatorio (pero acotado). En el constructor del clasificador, se utiliza un argumento \textit{boolean numReglasAleat} que supone que el número de reglas es aleatorio (entre 1 y \textit{numReglas}\footnote{otro argumento del constructor}) en caso de ser \textit{True} o con número de reglas fijo, en caso de ser \textit{False}.
 
 
-La memoria tiene que incluir medidas de todos las diversas formas de reemplazo y evolución.
+\section{Cruce}
+El cruce implementado es a nivel de regla. Se intercambia reglas enteras entre individuos. Se ha implementado de manera genérica de tal modo que se permite el cruce en $n$ puntos. Al ser un aspecto que consideramos menos influyente, todas las ejecuciones han utilizado cruce en 1 punto.
 
-Todos los datos serán siempre nominales.
+En caso de que los individuos a cruzar tengan número de reglas variable, el cruce en 1 punto permite la generación de vástagos con un número de reglas distinto.
 
-\subsection{Proceso de Train}
+\section{Mutación}
+La mutación utilizada ha sido la propuesta en clase de teoría. Recorremos todos los bits de cada regla de cada individuo de la población generando un número aleatorio. Si es menor que la probabilidad de mutación de la población, entonces cambiamos el valor del bit.
 
-Genero una población aleatoria. Para cada individuo clasifico los datos de train y obtengo el \% de aciertos (fitness).
 
-Recorridos todos los individuos de mi población, empezamos la \textbf{evolución} $\to$ muto/cruzo - reemplazo y vuelta a empezar a recorrer todos los individuos. (El orden puede ser algo distinto. Podemos ir mutando a la vez que vamos recorriendo, y tal vez sería más eficiente pero se pierde en modularidad).
+\section{Selección y reemplazo}
+Para ambas funcionalidades hemos utilizado el patrón de diseño \textbf{Estrategia}. Esto ha aportado una gran facilidad para intercambiar un método de selección (y de reemplazo) por otros.
 
-\subsection{Proceso de clasificación}
+El patrón de diseño provoca que la clase \textit{Población.java} tenga 2 variables especiales. Una es de tipo Selección y la otra es de tipo Reemplazo. 
 
-Dado un individo, ¿cómo clasifico? El individuo tiene reglas. Por ejemplo,
-
-individuo  = (rojo, si, clase = par) donde los atributos son: (rojo/verde/amarillo; si/no ; clase (par/impar))
-
-1) Pasamos la información a bits -> individuo = (10,1) -> 101
-
-1.1) Construimos reglas (un poco al tuntún. Recordamos que la primera población es totalmente aleatoria):
-	101 -> par
-	011 -> par
-	100 -> par
-	000 -> impar
+\begin{lstlisting}
+public class Poblacion {
 	...
-	default -> par
-
-2) Cuando clasificamos. Sea un indiduo nuevo = (verde,no) -> 100. Miramos las reglas y como cuadra con "100 -> par", le asignamos la clase par.
-
-
-\subsection{Para la práctica}
-
-Utilizamos el conjunto de datos "tic-tac-toe.data" en el que todos son nominales. En este caso, la codificación en bits es más sencilla.
-
-Como tenemos 7 atributos de 3 posibles valores, tendremos 21 reglas aprox. Habría que tener cuidado con reglas que no se cotradigan... Aunque si hay contradictorias y elegimos siempre la primera que nos encontremos dan igual las contradicciones.
-
-
-
-\section{Propuesta de cógido}
-
-Propongo dividir el código en 4 clases de la siguiente manera.
-
-\subsection{Regla}
-Implementada como \textit{array de booleans} o como un \textit{long} para poder trabajar con las operaciones con bits. Como esta práctica es lenta de ejecución, yo tiraría con el long, aunque esta propuesta está hecha con array de booleanos, que es más fácil de hacer.
-
-\textbf{Problema:} La regla tiene que llevar una clase asociada, y dependiendo del fichero, puede tomar sólo 2 valores o mas. Como el plan es que todo sea modular, creamos la clase regla para el fichero que nos piden. Si cambiamos de fichero, habría que redefinir una clase regla para ese fichero. La idea es que por arriba, nada dependa de la implementación de regla.java
-
-\begin{lstlisting}[language=Java]
-Class Regla.java
-
-public boolean[] regla;
-
-public constructor(n){
-	regla = new boolean[n];
-}
-
-public void set(int index, boolean value){
-	regla[index]=value
-}
-
-public void switch(int index){
-	regla[index] = not regla[index]
-}
-
-public String get_class(){
-	//esto no está muy definido
-}
-
-public regla convert(ArrayList<String> row){
-	//recibiendo una fila de datos, la convierte en una regla.
-}
-
-public String match(Regla rule){
-	/*dada una regla devuelve la clase si las reglas coinciden.
-	En caso de no coincidir, null*/
-}
-
-public static newRandRule(n){
-	//creamos una regla aleatoria de tamano n.
+Reemplazo estrategiaReemplazo;
+Seleccion estrategiaSeleccion;
+    ...
 }
 \end{lstlisting}
 
+La facilidad de intercambio de método de selección (y/o de reemplazo) reside en la instanciación de una clase u otra a la hora de construir la población.
 
-\subsection{Individuo}
+Ahora vamos a ver cada uno de los módulos: \textbf{Selección} y \textbf{Reemplazo}
 
-\begin{lstlisting}[language=Java]
-Class individuo.java
+\subsection{Selección}
 
-Regla []rules;
+A continuación, incluimos el diagrama de clases que hemos utilizado.
 
-public String clasifica(ArrayList<String> row){
-	/*recorre las reglas y devuelve la clase asignada
-	 por la regla que corresponda.
-	 En caso de no haber ninguna, se devuelve una por defecto.*/
-}
+\begin{center}
+\includegraphics[scale=0.5]{img/SeleccionUML.png}
+\end{center}
 
-public double fitness(ArrayList<ArrayList<String>> dataTrain) {
-	/* % de datos clasificados correctamente por este individuo */
-}
-
-\end{lstlisting}
-
-\paragraph*{Dificultades} A priori ninguna
-\subsection{Poblacíon}
-
-\begin{lstlisting}[language=Java]
-Class Poblacion.java
-
-List<Individuo> Poblacion;
-Int size; //fijo para todas las poblaciones. Lo dijo en clase
-Method reemplazo; // Un metodo como variable, para modular a tope.
-double elitismo; /*Porcentaje de individuos que no mutan.
-		Se hace con los mejores.*/
-Int cruce; /* cruce = 0 es mutacion aleatoria.
-			cruce = n es cruce en n puntos. */
-
-Public List<Individuo> newPoblacionAleat(Int n){
-	// crea una lista de individuos aleatoria.
-}
-
-public Poblacion evolucionar (){
-	/* crea una nueva poblacion a partir de this
-	 segun el reemplazo, elitismo y cruce elegidos.
-	 Se le pueden parametros para que no sean fijos de la
-	 instancia el cruce,elitismo, etc
-	 */
-}
-
-public void mutacion(){
-
-}
-
-public void cruce_en_n_puntos(Integer n){
-
-}
-
-public Poblacion reemplazo_i (Poblacion Padres, Poblacion Hijos){
-	/** Esto corresponde a varios metodos de reemplazo
-	para la generacion de la poblacion a partir de las anteriores*/
-}
-
-\end{lstlisting}
-
-\paragraph{Dificultades:}
-\begin{itemize}
-	\item Reemplazo como variable que almacena métodos (reemplazo) y entonces hay que ``llamar'' a una variable. Algunos ejemplos de reemplazo son: todos los hijos sustituyen a los padres, los mejores hijos sustituyen a los peores padres, aleatorio,...
-
-	\item Mucho código no muy complicado (a priori).
-\end{itemize}
-
-
-
-
-\subsection{Clasificador}
-
-\paragraph{Dificultades}
+Hemos implementado 3 formas de selección. Cada clase simplemente implementa el método seleccionar de una manera distinta. A continuación, describimos los métodos implementados en cada clase.
 
 \begin{itemize}
-	\item Definir la condición
-	\item Definir el comparador para ordenar en función de fitness.
-	\subitem El orden es necesario para el elitismo y algunas políticas de reemplazo buenas (como, los mejores reemplazan a los peores).
+ 	\item \textit{SelccionSimple.java}: Implementada primera para la fase de pruebas. Es tan simple como devolver una población igual que la recibida.
+ 	\item \textit{SeleccionProporcionalFitness.java}: el método sugerido por el enunciado visto en clase de teoría.
+ 	\item \textit{SeleccionGreedy.java} Una selección avariciosa que crea una nueva población con todos sus individuos iguales al mejor de la recibida como argumento.
+ \end{itemize}  
+
+
+ El análisis sobre los resultados obtenidos con un método de selección u otro se encuentra en la sección de resultados (\ref{sec:Resultados}) 
+
+
+\subsection{Reemplazo}
+A continuación, incluimos el diagrama de clases que hemos utilizado.
+
+
+\begin{center}
+\includegraphics[scale=0.4]{img/ReemplazoUML.png}
+\end{center}
+
+La necesidad de la clase abstracta intermedia es que en la versión de Java utilizada (1.7) no es posible incluir implementaciones de métodos en una interfaz\footnote{En la siguiente versión de Java (1.8) sí es posible, pero hemos preferido utilizar la versión 1.7, creando esta clase abstracta intermedia para evitar problemas de compatibilidad}. Es por ello que incluimos la clase abstracta intermedia \texit{ReemplazoAbstract.java} con un método para seleccionar un porcentaje de la población (pensando para la selección de la élite de la población).
+
+De esta manera, todas las maneras de reemplazar implementan de la misma manera el elitismo.
+
+Como se aprecia en el diagrama, hemos implementado 2 clases, cada una con un método de reemplazo distinto.
+
+\begin{itemize}
+	\item \textit{ReemplazoTotal.java} implementa el reemplazo natural. Los hijos sustituyen a los padres. En caso de utilizar elitismo (sea $p$ el porcentaje de elitismo), la población resultante del reemplazo tendrá $p\%$ de padres y $(100-p)\%$ de hijos.
+	\item \textit{MejoresPorPeores.java} implementa el reemplazo que pensamos que debería ser óptimo. Se juntan las 2 poblaciones (padres e hijos) y se seleccionan los $n$ mejores individuos (donde $n$ es el tamaño de la población). 
+	\subitem En caso de implementar elitismo (sea $p$ el porcentaje de elitismo), la población resultante incluirá $p\%$ de padres (independientemente de que estos sean mejores que los hijos).
 \end{itemize}
 
-\begin{lstlisting}[language=Java]
-Class Clasificador.java
+El análisis sobre los resultados obtenidos con un método de selección u otro se encuentra en la sección de resultados (\ref{sec:Resultados}) 
 
-Individuo train_result;
-Int tamano_poblacion;
 
-public double[] clasifica(Datos datosTest){
-	for (ArrayList<String> fila : datosTrain.getDatos)
-		train_result.clasifica(fila);
+\chapter{Resultados}
+\section{Tabla de resultados}
 
-	...
-}
+A continuación incluimos la tabla con todos los resultados obtenidos (para individuos de 11 reglas).
 
-public void entrenamiento(Datos datosTrain){
-	P = new Poblacion(tamano_poblacion); //aleatoria
-	while (condicion){ //hay que definir la condicion
-		/**
-		1 - Ordenamos la poblacion en cuanto a fitness
-			(utilizando un comparador, como KNN).
-			El comparador DEBE almacenar en
-				el individuo su porcentaje de fitness)
-		2 - Evolucionamos la poblacion
-		3 - Reemplazamos individuos de la poblacion
-		de acuerdo a los parametros de la poblacion
-		*/
-	}
-}
+\input{tex/ResultadosProfundos}
 
-\end{lstlisting}
+
+
+\section{Análisis de resultados}
+\label{sec:Resultados}
+
+\subsection{Importancia del número de Reglas}
+\label{subsec:numReglas}
+
+El número de reglas es un factor muy importante. Si tenemos una única regla, será muy poco probable que los datos a clasificar la cumplan y por lo tanto asignaremos la clase por defecto a prácticamente todos los datos, provocando una clasificación muy sesgada. En caso de tener demasiadas reglas a las que asignamos una clase, es fácil que los datos a clasificar cumplan alguna de esas reglas (por las disyuntivas de las reglas). Por otro lado, al tener muchas reglas, hay más posibilidades de que se generen a partir de mutaciones y cruces las reglas óptimas.
+
+Por ello, hemos tomado 2 decisiones. La primera es el estudio de la importancia del número de regla, utilizando un número fijo de reglas para todos los individuos. Además, el número de reglas utilizado en el análisis de los resultados ha sido variable,  dando lugar a una mejor algoritmo de esta manera.
+
+A continuación, la tabla de los resultados del estudio de la importancia del número de reglas.
+
+\input{tex/ResultadosReglas.tex}
+
+Vemos que es un factor influyente. Por estos resultados es por los que hemos elegido un número inicial de reglas = 11 (aunque lo que sugería el enunciado era cercano a 25).
+
+
+\section{Evolución del fitness}
+
+
+
+\appendix
+
+\chapter{Gráficas}
+\section{Evolución del fitness para reglas fijas}
+
+Primero mostramos las gráficas y a continuación un breve análisis.
+\paragraph{Evolución del fitness para un número fijo de $5$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg5.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $11$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg11.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $16$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg16.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $25$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg25.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $50$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg50.png}
+\end{center}
+\paragraph{Evolución del fitness para un número fijo de $150$ reglas}
+\begin{center}
+\includegraphics[scale=0.5]{tex/img/g75_p75_MejoresPorPeores_SeleccionProporcionalAlFitness_reg150.png}
+\end{center}
+
+Se puede ver cómo el fitness medio (en verde) es más cercano al máximo cuantas menos reglas tenemos. Esto se debe a que el fitness mínimo es, en general, mayor cuantas menos reglas tienen los individuos. Pero lo más interesante de ver es cómo para 25 reglas, la convergencia es mucho más lenta, empieza en un valor mucho menor, con un fitness medio muy cercano al mínimo, para al final acabar llegando a valores similares.
+
+Por otro lado, al aumentar demasiado el número de reglas (y mantenerlo fijo), el fitness mínimo, medio y máximo se mantienen constantes para todas las generaciones.
+
+Por último, si observamos los valores máximos alcanzados, con $25$ reglas se obtiene un fitness mayor.
+
+
+\subsection{Número de reglas variable}
+
+A continuación, mostramos la evolución del fitness y el número de reglas (del mejor individuo) para cada población.
+
+\begin{center}
+\includegraphics[scale=0.4]{tex/img/g76_p76_ReemplazoTotal_SeleccionProporcionalAlFitness_reg11.png}
+\includegraphics[scale=0.4]{tex/img/g76_p76_ReemplazoTotal_SeleccionProporcionalAlFitness_reg11_reglas.png}
+\end{center}
+
+Vemos que obtenemos un fitness parecido a las 25 reglas anteriores, pero con una convergencia mayor. El valor constante final es $10$, lo que es perfectamente coherente con el análisis de la importancia del número de reglas.
+
+\section{Evolución del fitness para el resto de ejecuciones}
+
+Incluimos algunas gráficas más generadas del estudio de resultados que hemos preferido incluir como apéndice en vez de en el análisis anterior. De esta manera, incluimos toda la información que hemos obtenido, sin saturar las conclusiones importantes en cuanto al análisis.
+
 
 \end{document}

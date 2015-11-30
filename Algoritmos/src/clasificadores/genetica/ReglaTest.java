@@ -94,7 +94,7 @@ public class ReglaTest {
 
 
 		
-		Regla[] result = Regla.CruceNPuntos(r1, r2, n);
+		Regla[] result = Regla.CruceNPuntos(r1, r2, n,true);
 		
 		Assert.assertArrayEquals(expected, result);
 		
@@ -122,7 +122,7 @@ public class ReglaTest {
 		System.arraycopy(r1, idx[0], expected, offset+idx[0], 12-idx[0]);
 		
 		
-		Regla[] result = Regla.CruceNPuntos(r1, r2, n);
+		Regla[] result = Regla.CruceNPuntos(r1, r2, n,true);
 		
 		Assert.assertArrayEquals(expected, result);
 		

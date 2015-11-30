@@ -7,6 +7,7 @@ package clasificadores.genetica;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import static particionado.EstrategiaParticionado.SEED;
 
@@ -18,7 +19,11 @@ public class Individuo {
 	int numAtributos;
 	int numReglas;
 	boolean numReglasAleat;
-	public static String DEFAULT_CLASS = "positive";
+	Random r = new Random(SEED);
+	/*
+	 * La clase por defecto es aleatoria. 
+	 */
+	public static String DEFAULT_CLASS = Regla.getClases()[(int) Math.round(new Random(SEED).nextDouble())];
 	double fitness;
 
 	public void setDefault(String def){
@@ -53,6 +58,7 @@ public class Individuo {
 		numReglas = nReglas;
 		fitness = 0.0;
 		numReglasAleat = numReglasRandom;
+		
 	}
 
 	
@@ -70,6 +76,7 @@ public class Individuo {
 
 	public void setReglas(Regla[] reglas) {
 		this.reglas = reglas;
+		this.setNumReglas(reglas.length);
 	}
 
 	/**
@@ -82,7 +89,7 @@ public class Individuo {
 	 */
 	public Individuo(int numReglas, int numAtributos, boolean numReglasRandom) {
 		int nReglas;
-		Random r = new Random(SEED);
+		
 		if (numReglasRandom) {
 			nReglas = r.nextInt(numReglas);
 		} else {
@@ -92,7 +99,7 @@ public class Individuo {
 		for (int i = 0; i < nReglas; i++)
 			reglas[i] = new Regla(numAtributos);
 		this.numAtributos = numAtributos;
-		this.numReglas = numReglas;
+		this.numReglas = nReglas;
 		fitness = 0.0;
 		numReglasAleat = numReglasRandom;
 	}
@@ -101,10 +108,17 @@ public class Individuo {
 		this(individuo.numReglas,individuo.numAtributos,individuo.numReglasAleat);
 		this.setFitness(individuo.fitness);
 		reglas = new Regla[individuo.numReglas];
-		for (int i = 0; i < individuo.numReglas; i++)
+		for (int i = 0; i < individuo.numReglas; i++){
 			reglas[i] = new Regla(numAtributos,individuo.getReglas()[i].regla);
+		}
+		this.setNumReglas(individuo.numReglas);
+			
 		this.setReglas(reglas);
 		this.ContruirRmasRmenos();
+	}
+	private void setNumReglas(int numReglas2) {
+		this.numReglas = numReglas2;
+		
 	}
 	/**
 	 *
@@ -220,8 +234,8 @@ public class Individuo {
 	@Override
 	public String toString() {
 		String toret = "{";
-		
-		toret +=  String.format("[numero de reglas: %d] , ",this.numReglas);
+
+		toret +=  String.format("[min numero de reglas: %d] , ",this.numReglas);
 		toret +=  String.format("[numero de Atributos %d] , ",this.numAtributos);
 		toret +=  String.format("[fitness %f] ,  ",this.fitness);
 		toret +=  "[default class: "+Individuo.getDEFAULT_CLASS() + "] ";

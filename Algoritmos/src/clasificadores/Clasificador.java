@@ -16,7 +16,10 @@ import particionado.ValidacionSimple;
 
 
 abstract public class Clasificador {
-	final static int SEED = 50;//(int) Math.round(Math.random()*System.currentTimeMillis()/10000);
+	final static long SEED = 7671814; 
+	//(int) Math.round(Math.random()*System.currentTimeMillis()/10000);
+	//7671814 -> 27
+	//25230938 -> 27
 	// Métodos abstractos que se implementan en cada clasificador concreto
 	abstract public void entrenamiento(Datos datosTrain);
 
@@ -140,7 +143,7 @@ abstract public class Clasificador {
 	public static void main(String[] args) {
 
 		Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-		Clasificador c = new ClasificadorGenetico(5,5, 16, false, 0.01, 0.6, 0.05, new MejoresPorPeores(),
+		Clasificador c = new ClasificadorGenetico(100,50, 16, true, 0.6, 0.01, 0.05, new MejoresPorPeores(),
 				new SeleccionProporcionalFitness());
 		EstrategiaParticionado part;
 		int porc;
@@ -150,12 +153,12 @@ abstract public class Clasificador {
 	 //Scanner sc = new Scanner(System.in);
      System.out.println("Introduzca el tipo de validacion, S(simple) o C(cruzada)");
 	 //String val = sc.nextLine();
-     String val = "C";
+     String val = "S";
 	 if(val.equals("S")){
 		 part =  new ValidacionSimple ();
 		 System.out.println("Introduzca el porcentaje de train (entre cero y cien)");
 		  //porc = sc.nextInt();
-		  porc = 15;
+		  porc = 66;
 		  System.out.println("El porcentaje de error en la única partición es:");
 	 }else{
 		 part =  new ValidacionCruzada ();
@@ -169,6 +172,7 @@ abstract public class Clasificador {
 		for (Double err : errores)
 			System.out.println(err);
 
+		System.out.println("SEED: " + SEED);
 	}
 
 }

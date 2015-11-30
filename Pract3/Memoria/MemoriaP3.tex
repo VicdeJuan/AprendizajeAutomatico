@@ -140,8 +140,6 @@ A continuación, la tabla de los resultados del estudio de la importancia del n�
 
 Vemos que es un factor influyente. Por estos resultados es por los que hemos elegido un número inicial de reglas = 11 (aunque lo que sugería el enunciado era cercano a 25).
 
-Aun así, hemos preferido un número variable de reglas. 
-
 
 \section{Evolución del fitness}
 
@@ -182,6 +180,19 @@ Se puede ver cómo el fitness medio (en verde) es más cercano al máximo cuanta
 
 Por otro lado, al aumentar demasiado el número de reglas (y mantenerlo fijo), el fitness mínimo, medio y máximo se mantienen constantes para todas las generaciones.
 
+Por último, si observamos los valores máximos alcanzados, con $25$ reglas se obtiene un fitness mayor.
+
+
+\subsection{Número de reglas variable}
+
+A continuación, mostramos la evolución del fitness y el número de reglas (del mejor individuo) para cada población.
+
+\begin{center}
+\includegraphics[scale=0.4]{tex/img/g76_p76_ReemplazoTotal_SeleccionProporcionalAlFitness_reg11.png}
+\includegraphics[scale=0.4]{tex/img/g76_p76_ReemplazoTotal_SeleccionProporcionalAlFitness_reg11_reglas.png}
+\end{center}
+
+Vemos que obtenemos un fitness parecido a las 25 reglas anteriores, pero con una convergencia mayor. El valor constante final es $10$, lo que es perfectamente coherente con el análisis de la importancia del número de reglas.
 
 \section{Evolución del fitness para el resto de ejecuciones}
 

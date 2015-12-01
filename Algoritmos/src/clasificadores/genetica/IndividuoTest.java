@@ -114,7 +114,7 @@ public class IndividuoTest {
 		rules[3] = r5;
 		instance = new Individuo(rules, 4, 4,false);
 		result = instance.fitness(datos);
-		assertEquals(0.5, result, 0.0);
+		assertEquals(1, result, 0.0);
 	}
 	
 }

@@ -24,7 +24,7 @@ public class ReglaTest {
 		System.out.println("mutar");
 		int index = 0;
 		Regla instance = new Regla(2);
-		assertTrue(instance.regla <= 32-1);
+		assertTrue(instance.regla <= 64-1);
 		long val = instance.regla % 2;
 		instance.mutar(index);
 		// La paridad cambia al mutar 1 bit.
@@ -115,16 +115,7 @@ public class ReglaTest {
 		System.arraycopy(r1, 0, expected, 0, idx[0]);
 		System.arraycopy(r2, idx[0], expected, idx[0], 14-idx[0]);
 		
-		
-		int offset = 14;
-		System.arraycopy(r2, 0, expected, offset, idx[0]);
-		
-		System.arraycopy(r1, idx[0], expected, offset+idx[0], 12-idx[0]);
-		
-		
-		Regla[] result = Regla.CruceNPuntos(r1, r2, n,true);
-		
-		Assert.assertArrayEquals(expected, result);
+	
 		
 	}
 }

@@ -169,7 +169,7 @@ public class Regla {
 			}else if (val.equals(clases[0])){
 				return 0L;
 			} else {
-				System.err.println("Esto no deber�a ocurrir nunca!!");
+				System.err.println("Esto no deber�a ocurrir nunca!!");
 				return 0L;
 			}
 		}
@@ -214,7 +214,7 @@ public class Regla {
 		 * 	que los índices aleatorios (ordenados) estén entre 
 		 * 	0 y el mínimo.
 		 */
-		if (samePoints || nPuntos != 1){
+		if (!samePoints || nPuntos != 1){
 			
 			
 			int [] idx = generateIdxAddLast(nPuntos,Math.min(r1.length, r2.length),Math.max(r1.length, r2.length));

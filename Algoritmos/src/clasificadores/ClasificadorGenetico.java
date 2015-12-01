@@ -1,6 +1,8 @@
 package clasificadores;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -45,9 +47,9 @@ public class ClasificadorGenetico extends Clasificador {
 	
 	@Override
 	public void entrenamiento(Datos datosTrain) {
-		PrintWriter writer;
+		BufferedWriter writer;
 		try {
-			writer = new PrintWriter(filename, "UTF-8");
+			writer = new BufferedWriter(new PrintWriter(filename, "UTF-8"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return;
@@ -75,7 +77,7 @@ public class ClasificadorGenetico extends Clasificador {
 								
 			Pprime.mutacion();
 			Pprime.calcularFitness(datosTrain);
-			Pprime.cruceNPuntos(2);
+			Pprime.cruceNPuntos(1);
 			Pprime.calcularFitness(datosTrain);
 			Pprime.OrdenarPorFitness();
 			P = P.getEstrategiaReemplazo().Reemplazar(P, Pprime);
@@ -87,7 +89,12 @@ public class ClasificadorGenetico extends Clasificador {
 			max = train_result.getFitness();
 
 			System.out.println(String.format("%.3f - %d", max,P.getIndividuos().get(0).getReglas().length));
-			writer.println(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f \n\tNum Reglas: %d",i,max,media,min,P.getIndividuos().get(0).getNumReglas()));
+			
+			try {
+				writer.write(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f \n\tNum Reglas: %d\n",i,max,media,min,P.getIndividuos().get(0).getNumReglas()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			i++;
 		}
@@ -95,34 +102,26 @@ public class ClasificadorGenetico extends Clasificador {
 	
 			
 
-		print_end_train();
-		writer.close();
-	}
-	
-	
-	
-	private void print_end_train(){
 		String toprint = "Finalizado proceso de train.\n   Fitness: ";
 		toprint += train_result;
 		toprint += String.format("\nGen: %d  - Pob: %d\n",this.generaciones,this.sizePoblacion);
 		toprint += this.estrategiaReemplazo.toString() + this.estrategiaSeleccion.toString();
 		
 		System.out.println(toprint);
-		
-		PrintWriter writer;
 		try {
-			writer = new PrintWriter(filename, "UTF-8");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return;
+			writer.write(toprint+"\n");
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 		
-		writer.println(toprint);
-		writer.close();
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	
 
 	@Override
 	public ArrayList<String> clasifica(Datos datosTest) {

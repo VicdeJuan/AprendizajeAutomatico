@@ -15,8 +15,8 @@ f.readlines.join.split("Apartado 2:")[1].split("Valores:")[1..-1].each do  |line
 	gen = line.split()[3]
 
 	reemp = line.split()[13]
-	selec = line.split()[15][9..-8]
-	err = line.split()[17][1..-2]
+	selec = line.split()[15]
+	err = line.split()[18][1..-2]
 
 	print "#{reemp} & #{selec} & #{pobl} & #{gen} & #{format("%.3f\\%",err.to_f*100)} \\\\\n"
 end

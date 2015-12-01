@@ -2,6 +2,12 @@ output_plot=".toplot"
 
 for d in $(ls res/*);
 do
+	sed 's/,/\./g' $d > /tmp/aux
+	cat /tmp/aux > $d"_point"
+done
+
+for d in $(ls res/*point);
+do
 	ruby genGraph.rb $d $output_plot
 done
 

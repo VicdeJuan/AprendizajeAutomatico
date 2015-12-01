@@ -70,7 +70,7 @@ public class ClasificadorGenetico extends Clasificador {
 
 		double min,media,max;
 		while(i < this.generaciones){
-			System.out.print(String.format("Ronda %d -> ",i));
+			System.out.print(String.format("Generación %d -> ",i));
 			P.calcularFitness(datosTrain);
 
 			Pprime = P.getEstrategiaSeleccion().seleccionar(P);
@@ -88,7 +88,7 @@ public class ClasificadorGenetico extends Clasificador {
 			train_result = Collections.max(P.getIndividuos(),new ComparadorFitness());
 			max = train_result.getFitness();
 
-			System.out.println(String.format("%.3f - %d", max,P.getIndividuos().get(0).getReglas().length));
+			System.out.println(String.format("\n\tMejor fitness: %.3f \n\tNúmero de reglas: %d", max,P.getIndividuos().get(0).getReglas().length));
 			
 			try {
 				writer.write(String.format("Ronda %d: \n\tFitness maximo: %.3f \n\t Fitness medio: %.3f\n\tFitness minimo: %.3f \n\tNum Reglas: %d\n",i,max,media,min,P.getIndividuos().get(0).getNumReglas()));

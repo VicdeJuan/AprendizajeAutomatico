@@ -45,15 +45,16 @@ public class practica {
 		Seleccion[] selecStrategies = {new SeleccionProporcionalFitness(),new SeleccionGreedy(),new SeleccionSimple()};
 		Integer[] reglas = {5,11,16,25,50,150};
 		
-		/*String msg = "Analisis importancia de reglas:\n";
+		String msg = "Analisis importancia de reglas:\n";
 		
 		for (int nr : reglas){
-<<<<<<< HEAD
-			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
-		}*/
 
+			msg += "NumReglas : " + nr + "\n" + getMsgFromClasificar(true,101,101,nr,new SeleccionProporcionalFitness(),new MejoresPorPeores());
+		}
+
+		writer.write(msg);
 		
-		String msg = "\nApartado 2:\n";
+		msg = "\nApartado 2:\n";
 		writer.write(msg);
 
 		for (int np : Poblaciones)
@@ -63,12 +64,12 @@ public class practica {
 					System.out.print(msg);
 				}
 						
-		/*for (Reemplazo r : reemStrategies)
+		for (Reemplazo r : reemStrategies)
 			for (Seleccion s : selecStrategies){
 				msg = getMsgFromClasificar(false,77, 77, 11,s, r);
 				writer.write(msg);
 				System.out.print(msg);
-			}*/
+			}
 		
 		
 

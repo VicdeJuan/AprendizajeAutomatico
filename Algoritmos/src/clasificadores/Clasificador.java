@@ -1,5 +1,6 @@
 package clasificadores;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 import Datos.Datos;
@@ -142,37 +143,70 @@ abstract public class Clasificador {
 
 	public static void main(String[] args) {
 
-		Datos d = Datos.cargaDeFichero("tic-tac-toe.data.txt");
-		Clasificador c = new ClasificadorGenetico(100,50, 16, true, 0.6, 0.01, 0.05, new MejoresPorPeores(),
+		Datos d = Datos.cargaDeFichero("tic-tac-toe.data");
+		Scanner sc = new Scanner(System.in);
+		int pob = 0;
+		
+		while (pob < 5){
+			System.out.println("Introduzca el tamaño de la población:");
+			pob = sc.nextInt();
+			if (pob < 5)
+				System.out.println("Mayor de 5 por favor");
+		}
+		
+		int gen=0;
+		while (gen < 5){
+			System.out.println("Introduzca el número de generaciones:");
+			gen = sc.nextInt();
+			if (gen < 5)
+				System.out.println("Mayor de 5 por favor");
+		}
+		
+		
+		double pMut = 0.01;
+		double pCruce = 0.6;
+		double elitismo = 0.05;
+		int numReglas = 11;
+		Clasificador c = new ClasificadorGenetico(gen,pob, numReglas, true, pCruce, pMut, elitismo, new MejoresPorPeores(),
 				new SeleccionProporcionalFitness());
 		EstrategiaParticionado part;
 		int porc;
 
 		ArrayList<Double> errores;
      
-	 //Scanner sc = new Scanner(System.in);
+	 sc = new Scanner(System.in);
      System.out.println("Introduzca el tipo de validacion, S(simple) o C(cruzada)");
-	 //String val = sc.nextLine();
-     String val = "S";
+	 String val = sc.nextLine();
+     
 	 if(val.equals("S")){
 		 part =  new ValidacionSimple ();
 		 System.out.println("Introduzca el porcentaje de train (entre cero y cien)");
-		  //porc = sc.nextInt();
+		  porc = sc.nextInt();
 		  porc = 66;
 		  System.out.println("El porcentaje de error en la única partición es:");
 	 }else{
 		 part =  new ValidacionCruzada ();
-		 System.out.println("Introduzca el numero k de particiones");
 		 porc = 5;
+		 
 	 }
 	 errores = Clasificador.validacion(part, d, c,porc,true);
 
-		// sc.close();
+	sc.close();
+		double media = 0;
+		System.out.println("Los errores obtenidos son:");
+		for (Double err : errores){
+			System.out.print(err);
+			media += err;
+			System.out.print(",");
+		}
+		if(errores.size() > 1){
+			System.out.println("\nMaximo: " + Collections.max(errores));
+			System.out.println("Minimo: " + Collections.min(errores));
+			System.out.println("Media: " + media/errores.size());	
+		}
+			
 
-		for (Double err : errores)
-			System.out.println(err);
 
-		System.out.println("SEED: " + SEED);
 	}
 
 }
